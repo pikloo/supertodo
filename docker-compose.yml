@@ -1,0 +1,58 @@
+version: '3'
+services:
+  web-app:
+    image: nginx:1-alpine
+    ports:
+      - 8089:80
+    volumes:
+      - ./app:/app
+      - ./app/:/usr/share/nginx/html
+    restart: always
+    depends_on:
+      - api
+
+  api:
+    build: ./api
+    ports:
+      - 8000:80
+    volumes:
+      - ./api/public:/var/www/html
+      - ./api/src:/var/www/src
+      - ./api/vendor:/var/www/vendor
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  composer:
+    restart: 'no'
+    image: composer/composer
+    command: install
+    volumes:
+      - ./api:/app
+  
+  db:
+    image: mysql:latest
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: ${PMA_HOST}
+      PMA_USER: ${PMA_USER}
+      PMA_PASSWORD: ${PMA_PASSWORD}
+
+volumes:
+  db-data:

@@ -1,0 +1,24 @@
+{
+    "name": "supertodo/api",
+    "description": "API supertodo",
+    "authors": [
+        {
+            "name": "Pierre-Yves LOUKAKOU",
+            "email": "p.loukakou@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SuperTodo\\": "./src"
+        },
+        "classmap": [
+            "./tests"   
+        ]
+    },
+    "require": {
+      "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    }
+}
