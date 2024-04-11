@@ -25,8 +25,6 @@ $router->map(
 
 $match = $router->match();
 
-var_dump($router);
-
 if ($match) {
     $controllerToUse = '\SuperTodo\Controllers\\' . $match['target']['controller'];
     $methodToUse = $match['target']['action'];

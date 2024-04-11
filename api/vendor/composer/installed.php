@@ -3,7 +3,7 @@
         'name' => 'supertodo/api',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '623ad05ac96e79f2d1c4c829ad179da6e0a135a5',
+        'reference' => '55d5ce233c4e7d349a9e25e0cb54e73e98517fd4',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -27,6 +27,15 @@
             'install_path' => __DIR__ . '/../doctrine/instantiator',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'firebase/php-jwt' => array(
+            'pretty_version' => 'v6.10.0',
+            'version' => '6.10.0.0',
+            'reference' => 'a49db6f0a5033aef5143295342f1c95521b075ff',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../firebase/php-jwt',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(
             'pretty_version' => '1.11.1',
@@ -265,7 +274,7 @@
         'supertodo/api' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '623ad05ac96e79f2d1c4c829ad179da6e0a135a5',
+            'reference' => '55d5ce233c4e7d349a9e25e0cb54e73e98517fd4',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

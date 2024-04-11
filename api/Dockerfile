@@ -1,6 +1,7 @@
 FROM php:8.2-apache
 
 RUN a2enmod rewrite
+RUN service apache2 restart
 
 RUN apt-get update && apt-get install -y git unzip zip
 

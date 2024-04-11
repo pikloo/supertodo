@@ -26,6 +26,10 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
         array (
             'PhpParser\\' => 10,
         ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
+        ),
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
@@ -53,6 +57,10 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
         'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

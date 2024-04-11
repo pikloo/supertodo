@@ -4,18 +4,17 @@ namespace SuperTodo\Controllers;
 
 class CoreController
 {
-
-    public function __construct(
-        protected $router,
-        protected $urlReferer,
-        protected $baseURI
-    ) {
+    protected $router;
+    protected $urlReferer;
+    protected $baseURI;
+    public function __construct()
+    {
         $this->urlReferer = isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : null;
         $this->baseURI = $_SERVER['BASE_URI'];
     }
 
 
-    
+
     /**
      * Gestion de l'nevoie de la réponse et de son status code HTTP
      * Supprime l'ancien entête et le remplace avec le status code fourni
@@ -25,7 +24,7 @@ class CoreController
      * @param [type] $message
      * @return void
      */
-    public function json_response($code = 200, $message = null)
+    public function json_response($code = 200, $message, $key = 'message')
     {
         header_remove();
         http_response_code($code);
@@ -53,9 +52,10 @@ class CoreController
             505 => '505 HTTP Version Not Supported',
         );
         header('Status: ' . $status[$code]);
-        return json_encode(array(
+
+        echo json_encode([
             'status' => $code < 300, // success or not?
-            'message' => $message
-        ));
+            $key => $message
+        ]);
     }
 }
