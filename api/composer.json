@@ -1,24 +1,26 @@
 {
-    "name": "supertodo/api",
-    "description": "API supertodo",
-    "authors": [
-        {
-            "name": "Pierre-Yves LOUKAKOU",
-            "email": "p.loukakou@gmail.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "SuperTodo\\": "./src"
-        },
-        "classmap": [
-            "./tests"   
-        ]
-    },
-    "require": {
-      "ext-json": "*"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^9"
+  "name": "supertodo/api",
+  "description": "API supertodo",
+  "authors": [
+    {
+      "name": "Pierre-Yves LOUKAKOU",
+      "email": "p.loukakou@gmail.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "SuperTodo\\": "src/"
+    },
+    "classmap": [
+      "./tests"
+    ]
+  },
+  "require": {
+    "altorouter/altorouter": "^2.0",
+    "symfony/var-dumper": "^5.2",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9"
+  }
 }

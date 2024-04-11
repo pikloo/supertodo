@@ -1,16 +1,38 @@
 <?php
-require __DIR__.'/../vendor/autoload.php';
-$host = 'db';
-$user = 'pikloo';
-$pass = 'Lamar291120!';
-$db = 'supertodo';
+require __DIR__ . '/../vendor/autoload.php';
+session_start();
 
-try {
-    $dbh = new PDO('mysql:host='. $host.';dbname='. $db.'', $user, $pass);
-    echo "Connected to MySQL successfully";
-} catch (PDOException $e) {
-    die("Connection failed: " . $e);
+$router = new AltoRouter();
+
+if (array_key_exists('BASE_URI', $_SERVER)) {
+    $router->setBasePath($_SERVER['BASE_URI']);
+} else {
+    $_SERVER['BASE_URI'] = '';
 }
 
-$dbh = null;
-?>
+
+$router->map(
+    'POST',
+    '/login',
+    [
+        'action' => 'getToken',
+        'controller' => 'SecurityController',
+    ],
+    'getToken'
+);
+
+//Dispatcher
+
+$match = $router->match();
+
+var_dump($router);
+
+if ($match) {
+    $controllerToUse = '\SuperTodo\Controllers\\' . $match['target']['controller'];
+    $methodToUse = $match['target']['action'];
+    $controller = new $controllerToUse();
+    $controller->$methodToUse($match['params']);
+} else {
+    //TODO: Créer un controller Error
+    echo 'PAGE NON TROUVEE';
+}
