@@ -13,6 +13,8 @@ class Task extends CoreModel
 
     private $todo_id;
 
+    private $workers;
+
     public function insert()
     {
         $pdo = Database::getPDO();
@@ -87,13 +89,15 @@ class Task extends CoreModel
 
     public static function findAllByTodoAndStatus($todoId, $status){
         $pdo = Database::getPDO();
-        $sql =  '
-        SELECT * FROM st_task t
+        $sql =  `
+        SELECT t.*, GROUP_CONCAT(CONCAT(u.firstname, ' ', u.lastname)) AS workers, FROM st_task t
         INNER JOIN st_todo to on t.todo_id = to.id
+        INNER JOIN st_user_task ut ON ut.task_id = t.id
+        INNER JOIN st_user u on ut.user_id = u.id
         WHERE to.id = :id
         AND t.status = :status
-        GROUP BY t.id
-        ORDER BY t.created_at DESC';
+        GROUP BY u.id
+        ORDER BY t.created_at DESC`;
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':id', $todoId, PDO::PARAM_INT);
         $pdoStatement->bindParam(':status', $status, PDO::PARAM_STR);
@@ -158,6 +162,26 @@ class Task extends CoreModel
     public function setTodo_id($todo_id)
     {
         $this->todo_id = $todo_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of workers
+     */ 
+    public function getWorkers()
+    {
+        return $this->workers;
+    }
+
+    /**
+     * Set the value of workers
+     *
+     * @return  self
+     */ 
+    public function setWorkers($workers)
+    {
+        $this->workers = $workers;
 
         return $this;
     }
