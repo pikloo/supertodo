@@ -60,6 +60,21 @@ class User extends CoreModel
         return ($pdoStatement->rowCount() > 0);
     }
 
+    public static function find($id)
+    {
+        $pdo = Database::getPDO();
+        $sql = '
+        SELECT * FROM st_user
+        WHERE id = :id
+        ';
+        $pdoStatement = $pdo->prepare($sql);
+        $pdoStatement->bindParam(':id', $id, PDO::PARAM_INT);
+        $pdoStatement->execute();
+        return ($pdoStatement->rowCount() > 0)
+            ? $pdoStatement->fetchObject(self::class)
+            : null;
+    }
+    
     public static function findBy($field, $value)
     {
         $pdo = Database::getPDO();
@@ -75,7 +90,20 @@ class User extends CoreModel
         return $item;
     }
 
-
+    public function delete(){
+        $pdo = Database::getPDO();
+        $sql = '
+        DELETE FROM `st_user`
+        WHERE id = :id
+        ';
+        $pdoStatement = $pdo->prepare($sql);
+        $pdoStatement->bindParam(':id', $this->id, PDO::PARAM_INT);
+        $pdoStatement->execute();
+        if ($pdoStatement->rowCount() > 0) {
+            return true;
+        }
+        return false;
+    }
 
 
     /**

@@ -25,6 +25,7 @@ abstract class CoreModel {
 
     protected abstract function insert();
     protected abstract function update();
+    protected abstract function delete();
 
     /**
      * Get the value of id

@@ -13,8 +13,6 @@ class CoreController
         $this->baseURI = $_SERVER['BASE_URI'];
     }
 
-
-
     /**
      * Gestion de l'nevoie de la réponse et de son status code HTTP
      * Supprime l'ancien entête et le remplace avec le status code fourni
