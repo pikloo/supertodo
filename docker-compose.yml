@@ -25,6 +25,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       PMA_HOST: ${PMA_HOST}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
     depends_on:
       - db
     restart: unless-stopped

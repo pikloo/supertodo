@@ -22,7 +22,7 @@ class CoreController
      * @param [type] $message
      * @return void
      */
-    public function json_response($code = 200, $message, $key = 'message')
+    public function json_response($code, $message, $key = 'message')
     {
         header_remove();
         http_response_code($code);
@@ -55,5 +55,7 @@ class CoreController
             'status' => $code < 300, // success or not?
             $key => $message
         ]);
+
+        exit();
     }
 }

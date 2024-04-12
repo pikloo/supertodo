@@ -10,7 +10,7 @@ if (array_key_exists('BASE_URI', $_SERVER)) {
     $_SERVER['BASE_URI'] = '';
 }
 
-require_once __DIR__ . './router.php';
+require __DIR__ . '/router.php';
 
 //Dispatcher
 $match = $router->match();

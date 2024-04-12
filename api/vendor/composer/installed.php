@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'supertodo/api',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => '55d5ce233c4e7d349a9e25e0cb54e73e98517fd4',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -272,9 +272,9 @@
             'dev_requirement' => true,
         ),
         'supertodo/api' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => '55d5ce233c4e7d349a9e25e0cb54e73e98517fd4',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

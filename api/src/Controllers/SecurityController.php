@@ -4,12 +4,10 @@ namespace SuperTodo\Controllers;
 
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
-use SuperTodo\Controllers\CoreController;
 use SuperTodo\Models\User;
 
 class SecurityController extends CoreController
 {
-
     public function getToken()
     {
         $jsonData = file_get_contents('php://input');
@@ -27,12 +25,6 @@ class SecurityController extends CoreController
             if ($password === '') {
                 $errorsList[] = 'Le mot de passe est obligatoire';
             }
-
-
-            //StrongPassword
-            // if ($password !== '' && !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',$password)) {
-            //     $errorsList[] = 'Le mot de passe est invalide';
-            // }
 
             $user = User::findBy('email', $email);
             if (!$user) {
@@ -63,7 +55,7 @@ class SecurityController extends CoreController
 
     private function createJWT($lastname , $firstname)
     {
-        $secret_Key  = 'RMwFrA5IKIwZLnAoRmJ3g1AHiLNIJbWe';
+        $secretKey  = getenv('JWT_SECRET_KEY');
         $date   = new DateTimeImmutable();
         $expire_at     = $date->modify('+6 minutes')->getTimestamp();
         $domainName = $_SERVER['HTTP_HOST'];
@@ -78,9 +70,21 @@ class SecurityController extends CoreController
 
         return JWT::encode(
             $request_data,
-            $secret_Key,
+            $secretKey,
             'HS512'
         );
     
+    }
+
+
+    public function logout() {
+        $user = $_SESSION['userObject'];
+        session_destroy();
+        $this->json_response(200, 'message', $user->getFirstName(). ' ' .$user->getLastName . 'est déconnecté(e). A bientôt !');
+    }
+
+
+    public function refreshToken() {
+        
     }
 }
