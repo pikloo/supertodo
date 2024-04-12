@@ -11,7 +11,7 @@ class Todo extends CoreModel
 
     private $desc;
 
-    private $user_id;
+    private $userId;
 
     public function insert()
     {
@@ -24,7 +24,7 @@ class Todo extends CoreModel
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':title', $this->title, PDO::PARAM_STR);
         $pdoStatement->bindParam(':desc', $this->desc, PDO::PARAM_LOB);
-        $pdoStatement->bindParam(':user_id', $this->user_id, PDO::PARAM_INT);
+        $pdoStatement->bindParam(':user_id', $this->userId, PDO::PARAM_INT);
         $pdoStatement->execute();
         if ($pdoStatement->rowCount() > 0) {
             //Récupération de l'auto-incrément généré par Mysql
@@ -48,7 +48,7 @@ class Todo extends CoreModel
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':title', $this->title, PDO::PARAM_STR);
         $pdoStatement->bindParam(':desc', $this->desc, PDO::PARAM_LOB);
-        $pdoStatement->bindParam(':user_id', $this->user_id, PDO::PARAM_INT);
+        $pdoStatement->bindParam(':user_id', $this->userId, PDO::PARAM_INT);
         $pdoStatement->bindParam(':id', $this->id, PDO::PARAM_INT);
         $pdoStatement->execute();
         return ($pdoStatement->rowCount() > 0);
@@ -143,9 +143,9 @@ class Todo extends CoreModel
     /**
      * Get the value of user_id
      */ 
-    public function getUser_id()
+    public function getUserId()
     {
-        return $this->user_id;
+        return $this->userId;
     }
 
     /**
@@ -153,9 +153,14 @@ class Todo extends CoreModel
      *
      * @return  self
      */ 
-    public function setUser_id($user_id)
+    public function setUserId($user_id)
     {
-        $this->user_id = $user_id;
+        $this->userId = $user_id;
+        // Ajouter un userTodo
+        $userTodo = new UserHasTodo();
+        $userTodo->setUserId($user_id);
+        $userTodo->setTodoId($this->id);
+        $userTodo->insert();
 
         return $this;
     }

@@ -9,6 +9,8 @@ class UserController extends CoreController
 
     public function create()
     {
+        //TODO: check if user is logged in
+        
         $jsonData = file_get_contents('php://input');
         $data = json_decode($jsonData, true);
         if ($data !== null) {
@@ -65,14 +67,58 @@ class UserController extends CoreController
     }
 
 
-    public function update($userId){
+    public function update($userId)
+    {
         $user = User::find($userId);
         $user === null && $this->json_response(404,  'Utilisateur non trouvé ', 'error');
         //TODO: check authorization
 
         $jsonData = file_get_contents('php://input');
+        $data = json_decode($jsonData, true);
+        if ($data !== null) {
+            $errorsList = [];
+            foreach ($data as $key => $value) {
+                match (true) {
+                    $key === 'firstname' && $value === '' => $errorsList[] = 'Le prénom est obligatoire',
+                    $key === 'lastname' && $value === '' => $errorsList[] = 'Le nom est obligatoire',
+                    $key === 'email' && $value === '' => $errorsList[] = 'L\'email est obligatoire',
+                    $key === 'password' && $value === '' => $errorsList[] = 'Le mot de passe est obligatoire',
+                    $key === 'email' && $value !== $user->getEmail() && User::findBy('email', $value) => $errorsList[] = 'Cet e-mail est déja utilisé'
+                };
+            }
+            if (count($errorsList) > 0) {
+                $this->json_response(503, $errorsList, 'errors');
+            } else {
+                foreach ($data as $key => $value) {
+                    match (true) {
+                        $key === 'firstname' => $user->setFirstname($value),
+                        $key === 'lastname' => $user->setLastname($value),
+                        $key === 'email' => $user->setEmail($value),
+                        $key === 'password' => $user->setPassword(password_hash($value, PASSWORD_DEFAULT))
+                    };
+                }
+                $user->save() ? $this->json_response(200,  $user, 'user') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+            }
+        } else {
+            // JSON decoding failed
+            $this->json_response(400, 'invalid JSON data', 'error');
+        }
+    }
 
 
+    public function read($userId){
+        $user = User::find($userId);
+        $user === null && $this->json_response(404,  'Utilisateur non trouvé ', 'error');
+        //TODO: check authorization
+
+        $this->json_response(200,  $user, 'user');
+    }
+
+    public function delete($userId){
+        $user = User::find($userId);
+        $user === null && $this->json_response(404,  'Utilisateur non trouvé ', 'error');
+        //TODO: check authorization
+
+        $user->delete() ? $this->json_response(200,  'L\'utilisateur ' .$user->getId() .' a bien été supprimé(e) ' , 'message') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
     }
 }
- 
