@@ -2,13 +2,19 @@
 
 namespace SuperTodo\Controllers;
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+use UnexpectedValueException;
+
 class CoreController
 {
     protected $router;
     protected $urlReferer;
     protected $baseURI;
+
     public function __construct()
     {
+        $this->configureAcl();
         $this->urlReferer = isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : null;
         $this->baseURI = $_SERVER['BASE_URI'];
     }
@@ -58,4 +64,85 @@ class CoreController
 
         exit();
     }
+
+
+    /**
+     * Configure Acl: Paramétrage des restrictions d'accès à certaines routes en fonction des rôles
+     *
+     * @return void
+     */
+    private function configureAcl()
+    {
+        $acl = [
+            'logout' => ['ROLE_USER'],
+            'refreshToken' => ['ROLE_USER'],
+            'readUser' => ['ROLE_USER'],
+            'updateUser' => ['ROLE_USER'],
+            'deleteUser' => ['ROLE_USER'],
+            'createTodo' => ['ROLE_USER'],
+            'readTodo' => ['ROLE_USER'],
+            'deleteTodo' => ['ROLE_USER'],
+            'readUserTodos' => ['ROLE_USER'],
+            'createUserTodo' => ['ROLE_USER'],
+            'updateUserTodo' => ['ROLE_USER'],
+            'deleteUserTodo' => ['ROLE_USER'],
+            'createUserTask' => ['ROLE_USER'],
+            'createTask' => ['ROLE_USER'],
+            'readTask' => ['ROLE_USER'],
+            'updateTask' => ['ROLE_USER'],
+            'deleteTask' => ['ROLE_USER'],
+        ];
+
+        $match = $this->router->match();
+        if ($match) {
+            $currentRouteName = $match['name'];
+
+            if (array_key_exists($currentRouteName, $acl)) {
+                $authorizedRoles = $acl[$currentRouteName];
+                $this->checkRoleAuthorization($authorizedRoles);
+            }
+        }
+    }
+
+
+    /**
+     * Check Role Authorization: Vérifie si le rôle de l'utilisateur connecté est dans le tableau de rôle donné en paramètre
+     * 
+     * Si la vérification échoue une réponse 403 est affichée
+     * 
+     * @param array $roles
+     * @return void
+     */
+    private function checkRoleAuthorization($roles = [])
+    {
+        $headers = getallheaders();
+
+        if (!array_key_exists('Authorization', $headers)) {
+            $this->json_response(403, 'L\'en-tête authorization est manquant', 'error');
+            exit();
+        } else {
+            if (substr($headers['Authorization'], 0, 7) !== 'Bearer ') {
+                $this->json_response(403, 'Mot clé Bearer manquant', 'error');
+                exit();
+            } else {
+                $token = trim(substr($headers['Authorization'], 7));
+                $secretKey  = getenv('JWT_SECRET_KEY');
+                try {
+                    $decoded = JWT::decode($token, new Key($secretKey, 'HS512'));
+                    $payload = json_decode(json_encode($decoded), true);
+                    foreach ($payload['roles'] as $currentUserRole) {
+                        if (in_array($currentUserRole, $roles)) {
+                            return true;
+                        } else {
+                            $this->json_response(403, 'Accès non autorisé', 'error');
+                            exit();
+                        }
+                    }
+                } catch (UnexpectedValueException $e) {
+                    $this->json_response(500, $e, 'error');
+                }
+            }
+        }
+    }
+
 }

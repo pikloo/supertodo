@@ -3,21 +3,26 @@
 namespace SuperTodo\Controllers;
 
 use SuperTodo\Models\User;
+use SuperTodo\Security\UserSecurity;
 
 class UserController extends CoreController
 {
+    private $security;
 
+    public function __construct(UserSecurity $security)
+    {
+        $this->security = $security;
+    }
+    
     public function create()
     {
-        //TODO: check if user is logged in
-        
         $jsonData = file_get_contents('php://input');
         $data = json_decode($jsonData, true);
         if ($data !== null) {
-            $firstname = $data['firstname'];
-            $lastname = $data['lastname'];
-            $email = $data['email'];
-            $password = $data['password'];
+            $firstname = htmlspecialchars($data['firstname']);
+            $lastname = htmlspecialchars($data['lastname']);
+            $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
+            $password = filter_var($data['password'], FILTER_SANITIZE_SPECIAL_CHARS);
 
             $errorsList = [];
             if ($firstname === '') {
@@ -71,7 +76,7 @@ class UserController extends CoreController
     {
         $user = User::find($userId);
         $user === null && $this->json_response(404,  'Utilisateur non trouvé ', 'error');
-        //TODO: check authorization
+        $this->security->checkUserAuthorization($userId);
 
         $jsonData = file_get_contents('php://input');
         $data = json_decode($jsonData, true);
@@ -83,7 +88,7 @@ class UserController extends CoreController
                     $key === 'lastname' && $value === '' => $errorsList[] = 'Le nom est obligatoire',
                     $key === 'email' && $value === '' => $errorsList[] = 'L\'email est obligatoire',
                     $key === 'password' && $value === '' => $errorsList[] = 'Le mot de passe est obligatoire',
-                    $key === 'email' && $value !== $user->getEmail() && User::findBy('email', $value) => $errorsList[] = 'Cet e-mail est déja utilisé'
+                    $key === 'email' && $value !== $user->getEmail() && User::findBy('email', filter_var($value, FILTER_VALIDATE_EMAIL)) => $errorsList[] = 'Cet e-mail est déja utilisé'
                 };
             }
             if (count($errorsList) > 0) {
@@ -91,10 +96,10 @@ class UserController extends CoreController
             } else {
                 foreach ($data as $key => $value) {
                     match (true) {
-                        $key === 'firstname' => $user->setFirstname($value),
-                        $key === 'lastname' => $user->setLastname($value),
-                        $key === 'email' => $user->setEmail($value),
-                        $key === 'password' => $user->setPassword(password_hash($value, PASSWORD_DEFAULT))
+                        $key === 'firstname' => $user->setFirstname(htmlspecialchars($value)),
+                        $key === 'lastname' => $user->setLastname(htmlspecialchars($value)),
+                        $key === 'email' => $user->setEmail(filter_var($value, FILTER_VALIDATE_EMAIL)),
+                        $key === 'password' => $user->setPassword(password_hash(filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS), PASSWORD_DEFAULT))
                     };
                 }
                 $user->save() ? $this->json_response(200,  $user, 'user') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
@@ -106,19 +111,21 @@ class UserController extends CoreController
     }
 
 
-    public function read($userId){
+    public function read($userId)
+    {
         $user = User::find($userId);
         $user === null && $this->json_response(404,  'Utilisateur non trouvé ', 'error');
-        //TODO: check authorization
+        $this->security->checkUserAuthorization($userId);
 
         $this->json_response(200,  $user, 'user');
     }
 
-    public function delete($userId){
+    public function delete($userId)
+    {
         $user = User::find($userId);
         $user === null && $this->json_response(404,  'Utilisateur non trouvé ', 'error');
-        //TODO: check authorization
-
-        $user->delete() ? $this->json_response(200,  'L\'utilisateur ' .$user->getId() .' a bien été supprimé(e) ' , 'message') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+        $this->security->checkUserAuthorization($userId);
+        
+        $user->delete() ? $this->json_response(200,  'L\'utilisateur ' . $user->getId() . ' a bien été supprimé(e) ', 'message') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
     }
 }

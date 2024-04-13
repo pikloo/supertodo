@@ -24,6 +24,7 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
         ),
         'P' => 
         array (
+            'Psr\\Http\\Message\\' => 17,
             'PhpParser\\' => 10,
         ),
         'F' => 
@@ -53,6 +54,10 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
         'SuperTodo\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'PhpParser\\' => 
         array (

@@ -87,6 +87,21 @@ class UserHasTodo extends CoreModel
     }
 
 
+    public static function findAllUsersByTodo($todoId)
+    {
+        $pdo = Database::getPDO();
+        $sql =  '
+        SELECT user_id FROM st_user_todo ut
+        WHERE ut.todo_id = :todo_id
+        ';
+        $pdoStatement = $pdo->prepare($sql);
+        $pdoStatement->bindParam(':todo_id', $todoId, PDO::PARAM_INT);
+        $pdoStatement->execute();
+        $results = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
+        return $results;
+    }
+
+
     public static function find($userId, $todoId)
     {
         $pdo = Database::getPDO();

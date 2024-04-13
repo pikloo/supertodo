@@ -5,14 +5,19 @@ namespace SuperTodo\Controllers;
 use SuperTodo\Models\Task;
 use SuperTodo\Models\Todo;
 use SuperTodo\Models\UserHasTodo;
+use SuperTodo\Security\TodoSecurity;
 
 class TodoController extends CoreController
 {
+    private $security;
+
+    public function __construct(TodoSecurity $security)
+    {
+        $this->security = $security;
+    }
 
     public function create()
     {
-        //TODO: check if user is logged in
-
         $jsonData = file_get_contents('php://input');
         $data = json_decode($jsonData, true);
         if ($data !== null) {
@@ -45,7 +50,7 @@ class TodoController extends CoreController
     {
         $todo = Todo::find($todoId);
         $todo === null && $this->json_response(404,  'Ressource non trouvée ', 'error');
-        //TODO: check if user is logged in
+        $this->security->checkTodoAuthorization($todo, 'update');
 
         $jsonData = file_get_contents('php://input');
         $data = json_decode($jsonData, true);
@@ -77,31 +82,35 @@ class TodoController extends CoreController
     }
 
 
-    public function read($todoId){
+    public function read($todoId)
+    {
         $todo = Todo::find($todoId);
         $todo === null && $this->json_response(404,  'Ressource non trouvée ', 'error');
-        //TODO: check authorization
+        $this->security->checkTodoAuthorization($todo, 'read');
 
         $this->json_response(200,  $todo, 'todo');
     }
 
 
-    public function getTasks($todoId, $status){
+    public function getTasks($todoId, $status)
+    {
         $todo = Todo::find($todoId);
         $todo === null && $this->json_response(404,  'Ressource non trouvée ', 'error');
-        //TODO: check authorization
+        $this->security->checkTodoAuthorization($todo, 'getTasks');
 
         $tasks = Task::findAllByTodoAndStatus($todoId, $status);
         $this->json_response(200,  $tasks, 'tasks');
     }
 
-    public function delete($todoId, $userId){
+    public function delete($todoId, $userId)
+    {
         $todo = Todo::find($todoId);
         $todo === null && $this->json_response(404,  'Ressource non trouvée', 'error');
-        $userTodo = UserHasTodo::find($userId,$todoId);
+        $userTodo = UserHasTodo::find($userId, $todoId);
         $userTodo === null && $this->json_response(404,  'Ressource non trouvée', 'error');
-        //TODO: check authorization
+        $this->security->checkTodoAuthorization($todo, 'delete');
 
-        $todo->delete() && $userTodo->delete() ? $this->json_response(200,  'La liste de tâches' . $todo->getTitle() .' a bien été supprimée ' , 'message') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+        $todo->delete() && $userTodo->delete() ? $this->json_response(200,  'La liste de tâches' . $todo->getTitle() . ' a bien été supprimée ', 'message') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
     }
+
 }

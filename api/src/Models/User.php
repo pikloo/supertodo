@@ -15,19 +15,22 @@ class User extends CoreModel
 
     private $password;
 
+    private $roles;
+
     public function insert()
     {
         $pdo = Database::getPDO();
         $sql = '
         INSERT INTO st_user(
-        `firsname`, `lastname`,`email`,`password`
-        ) values (:firstname, :lastname, :email, :password)
+        `firsname`, `lastname`,`email`,`password`, `roles`)
+        ) values (:firstname, :lastname, :email, :password, :roles)
         ';
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':firstname', $this->firstname, PDO::PARAM_STR);
         $pdoStatement->bindParam(':lastname', $this->lastname, PDO::PARAM_STR);
         $pdoStatement->bindParam(':email', $this->email, PDO::PARAM_STR);
         $pdoStatement->bindParam(':password', $this->password, PDO::PARAM_STR);
+        $pdoStatement->bindParam(':roles', $this->roles, PDO::PARAM_LOB);
         $pdoStatement->execute();
         if ($pdoStatement->rowCount() > 0) {
             //Récupération de l'auto-incrément généré par Mysql
@@ -47,6 +50,7 @@ class User extends CoreModel
             lastname = :lastname,
             email = :email,
             password = :password,
+            roles = :roles
             updated_at = NOW()
         WHERE id = :id
         ';
@@ -55,6 +59,7 @@ class User extends CoreModel
         $pdoStatement->bindParam(':lastname', $this->lastname, PDO::PARAM_STR);
         $pdoStatement->bindParam(':email', $this->email, PDO::PARAM_STR);
         $pdoStatement->bindParam(':password', $this->password, PDO::PARAM_STR);
+        $pdoStatement->bindParam(':roles', $this->roles, PDO::PARAM_LOB);
         $pdoStatement->bindParam(':id', $this->id, PDO::PARAM_INT);
         $pdoStatement->execute();
         return ($pdoStatement->rowCount() > 0);
@@ -103,6 +108,11 @@ class User extends CoreModel
             return true;
         }
         return false;
+    }
+
+
+    public function __construct() {
+        $this->roles = ['ROLE_USER'];
     }
 
 
@@ -182,6 +192,27 @@ class User extends CoreModel
     public function setPassword($password)
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of roles
+     */ 
+    public function getRoles(): array
+    {
+        $rolesArray = explode(",", json_encode($this->roles));
+        return $rolesArray;
+    }
+
+    /**
+     * Set the value of roles
+     *
+     * @return  self
+     */ 
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
 
         return $this;
     }

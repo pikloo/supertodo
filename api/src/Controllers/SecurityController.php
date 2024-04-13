@@ -4,7 +4,9 @@ namespace SuperTodo\Controllers;
 
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use SuperTodo\Models\User;
+use UnexpectedValueException;
 
 class SecurityController extends CoreController
 {
@@ -14,8 +16,8 @@ class SecurityController extends CoreController
         $data = json_decode($jsonData, true);
         if ($data !== null) {
             // Access the data and perform operations
-            $email = $data['email'];
-            $password = $data['password'];
+            $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
+            $password = filter_var($data['password'], FILTER_SANITIZE_SPECIAL_CHARS);
 
             $errorsList = [];
             if ($email === '') {
@@ -40,11 +42,11 @@ class SecurityController extends CoreController
             }
 
             if (count($errorsList) > 0) {
-                $this->json_response(503,$errorsList, 'errors');
+                $this->json_response(503, $errorsList, 'errors');
             } else {
                 $_SESSION['userId'] = $user->getId();
                 $_SESSION['userObject'] = $user;
-                $token = $this->createJWT($user->getFirstName(), $user->getLastName());
+                $token = $this->createJWT($user->getId(), $user->getRoles());
                 $this->json_response(200,  $token, 'token');
             }
         } else {
@@ -53,38 +55,37 @@ class SecurityController extends CoreController
         }
     }
 
-    private function createJWT($lastname , $firstname)
+    private function createJWT($userID, $roles)
     {
         $secretKey  = getenv('JWT_SECRET_KEY');
         $date   = new DateTimeImmutable();
         $expire_at     = $date->modify('+6 minutes')->getTimestamp();
         $domainName = $_SERVER['HTTP_HOST'];
-        $username   = $firstname . ' ' . $lastname;
-        $request_data = [
+        $payload = [
             'iat'  => $date->getTimestamp(),         // Issued at: time when the token was generated
             'iss'  => $domainName,                       // Issuer
             'nbf'  => $date->getTimestamp(),         // Not before
             'exp'  => $expire_at,                           // Expire
-            'userName' => $username,   
+            'sub' => $userID,
+            'roles' => $roles
         ];
 
         return JWT::encode(
-            $request_data,
+            $payload,
             $secretKey,
             'HS512'
         );
-    
     }
 
-
-    public function logout() {
+    public function logout()
+    {
         $user = $_SESSION['userObject'];
         session_destroy();
-        $this->json_response(200, 'message', $user->getFirstName(). ' ' .$user->getLastName . 'est déconnecté(e). A bientôt !');
+        $this->json_response(200, 'message', $user->getFirstName() . ' ' . $user->getLastName . 'est déconnecté(e). A bientôt !');
     }
 
 
-    public function refreshToken() {
-        
+    public function refreshToken()
+    {
     }
 }

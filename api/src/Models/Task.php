@@ -149,7 +149,7 @@ class Task extends CoreModel
     /**
      * Get the value of todo_id
      */ 
-    public function getTodo_id()
+    public function getTodoId()
     {
         return $this->todo_id;
     }
@@ -159,7 +159,7 @@ class Task extends CoreModel
      *
      * @return  self
      */ 
-    public function setTodo_id($todo_id)
+    public function setTodoId($todo_id)
     {
         $this->todo_id = $todo_id;
 
