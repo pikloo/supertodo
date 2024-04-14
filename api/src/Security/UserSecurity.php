@@ -37,7 +37,7 @@ final class UserSecurity extends CoreController{
                 try {
                     $decoded = JWT::decode($token, new Key($secretKey, 'HS512'));
                     $payload = json_decode(json_encode($decoded), true);
-                    if ($payload['sub'] === $owner || in_array('ROLE_ADMIN', $payload['roles'])) {
+                    if ($payload['sub'] == $owner || $payload['role'] === "ROLE_ADMIN"){
                         return true;
                     } else {
                         $this->json_response(403, 'Accès non autorisé', 'error');

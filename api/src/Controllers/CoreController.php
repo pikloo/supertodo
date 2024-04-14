@@ -8,12 +8,16 @@ use UnexpectedValueException;
 
 class CoreController
 {
-    protected $router;
+    // protected $router;
     protected $urlReferer;
     protected $baseURI;
+    protected $router;
 
     public function __construct()
     {
+        //TODO: Passer le routeur en arguments aux controllers au lieu d'utiliser global
+        global $router;
+        $this->router = $router;
         $this->configureAcl();
         $this->urlReferer = isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : null;
         $this->baseURI = $_SERVER['BASE_URI'];
@@ -130,13 +134,12 @@ class CoreController
                 try {
                     $decoded = JWT::decode($token, new Key($secretKey, 'HS512'));
                     $payload = json_decode(json_encode($decoded), true);
-                    foreach ($payload['roles'] as $currentUserRole) {
-                        if (in_array($currentUserRole, $roles)) {
-                            return true;
-                        } else {
-                            $this->json_response(403, 'Accès non autorisé', 'error');
-                            exit();
-                        }
+
+                    if (in_array($payload['role'], $roles)) {
+                        return true;
+                    } else {
+                        $this->json_response(403, 'Accès non autorisé', 'error');
+                        exit();
                     }
                 } catch (UnexpectedValueException $e) {
                     $this->json_response(500, $e, 'error');
@@ -144,5 +147,4 @@ class CoreController
             }
         }
     }
-
 }

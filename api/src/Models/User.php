@@ -15,22 +15,24 @@ class User extends CoreModel
 
     private $password;
 
-    private $roles;
+    private $role;
+
+    private $role_id;
 
     public function insert()
     {
         $pdo = Database::getPDO();
         $sql = '
         INSERT INTO st_user(
-        `firsname`, `lastname`,`email`,`password`, `roles`)
-        ) values (:firstname, :lastname, :email, :password, :roles)
+        `firstname`, `lastname`,`email`,`password`, `role_id`)
+        values (:firstname, :lastname, :email, :password, :role_id)
         ';
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':firstname', $this->firstname, PDO::PARAM_STR);
         $pdoStatement->bindParam(':lastname', $this->lastname, PDO::PARAM_STR);
         $pdoStatement->bindParam(':email', $this->email, PDO::PARAM_STR);
         $pdoStatement->bindParam(':password', $this->password, PDO::PARAM_STR);
-        $pdoStatement->bindParam(':roles', $this->roles, PDO::PARAM_LOB);
+        $pdoStatement->bindValue(':role_id', $this->getRoleId(), PDO::PARAM_INT);
         $pdoStatement->execute();
         if ($pdoStatement->rowCount() > 0) {
             //Récupération de l'auto-incrément généré par Mysql
@@ -50,7 +52,7 @@ class User extends CoreModel
             lastname = :lastname,
             email = :email,
             password = :password,
-            roles = :roles
+            role_id = :role_id,
             updated_at = NOW()
         WHERE id = :id
         ';
@@ -59,7 +61,7 @@ class User extends CoreModel
         $pdoStatement->bindParam(':lastname', $this->lastname, PDO::PARAM_STR);
         $pdoStatement->bindParam(':email', $this->email, PDO::PARAM_STR);
         $pdoStatement->bindParam(':password', $this->password, PDO::PARAM_STR);
-        $pdoStatement->bindParam(':roles', $this->roles, PDO::PARAM_LOB);
+        $pdoStatement->bindValue(':role_id', $this->getRoleId(), PDO::PARAM_INT);
         $pdoStatement->bindParam(':id', $this->id, PDO::PARAM_INT);
         $pdoStatement->execute();
         return ($pdoStatement->rowCount() > 0);
@@ -104,16 +106,18 @@ class User extends CoreModel
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':id', $this->id, PDO::PARAM_INT);
         $pdoStatement->execute();
-        if ($pdoStatement->rowCount() > 0) {
-            return true;
-        }
-        return false;
+        return ($pdoStatement->rowCount() > 0);
     }
 
 
-    public function __construct() {
-        $this->roles = ['ROLE_USER'];
+    public function __construct()
+    {
+        $role_user = Role::findByTitle('ROLE_USER');
+        
+        $this->role_id = $role_user->getId();
+        $this->role = $role_user->getTitle();
     }
+
 
 
     /**
@@ -197,22 +201,41 @@ class User extends CoreModel
     }
 
     /**
-     * Get the value of roles
+     * Get the value of role_id
      */ 
-    public function getRoles(): array
+    public function getRoleId()
     {
-        $rolesArray = explode(",", json_encode($this->roles));
-        return $rolesArray;
+        return $this->role_id;
     }
 
     /**
-     * Set the value of roles
+     * Set the value of role_id
      *
      * @return  self
      */ 
-    public function setRoles($roles)
+    public function setRoleId($role_id)
     {
-        $this->roles = $roles;
+        $this->role_id = $role_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of role
+     */ 
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * Set the value of role
+     *
+     * @return  self
+     */ 
+    public function setRole($role)
+    {
+        $this->role = $role;
 
         return $this;
     }

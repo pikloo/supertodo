@@ -1,6 +1,6 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
-session_start();
+// session_start();
 
 $router = new AltoRouter();
 
@@ -19,7 +19,11 @@ if ($match) {
     $controllerToUse = '\SuperTodo\Controllers\\' . $match['target']['controller'];
     $methodToUse = $match['target']['action'];
     $controller = new $controllerToUse();
-    $controller->$methodToUse($match['params']);
+    if ($match['params'] && $match['params']['id'] && count($match['params']) === 1) {
+        $controller->$methodToUse($match['params']['id']);
+    } else {
+        $controller->$methodToUse($match['params']);
+    }
 } else {
     //TODO: Créer un controller Error
     echo 'PAGE NON TROUVEE';

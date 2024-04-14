@@ -33,11 +33,7 @@ class SecurityController extends CoreController
                 $errorsList[] = 'L\'email ou le mot de passe sont invalides';
             }
 
-            // if ($user && !password_verify($password, $user->getPassword())) {
-            //     $errorsList[] = 'L\'email ou le mot de passe sont invalides';
-            // }
-
-            if ($user && $password !== $user->getPassword()) {
+            if ($user && !password_verify($password, $user->getPassword())) {
                 $errorsList[] = 'L\'email ou le mot de passe sont invalides';
             }
 
@@ -46,7 +42,8 @@ class SecurityController extends CoreController
             } else {
                 $_SESSION['userId'] = $user->getId();
                 $_SESSION['userObject'] = $user;
-                $token = $this->createJWT($user->getId(), $user->getRoles());
+                // var_dump($user->getRole());exit();
+                $token = $this->createJWT($user->getId(), $user->getRole());
                 $this->json_response(200,  $token, 'token');
             }
         } else {
@@ -55,11 +52,11 @@ class SecurityController extends CoreController
         }
     }
 
-    private function createJWT($userID, $roles)
+    private function createJWT($userID, $role)
     {
         $secretKey  = getenv('JWT_SECRET_KEY');
         $date   = new DateTimeImmutable();
-        $expire_at     = $date->modify('+6 minutes')->getTimestamp();
+        $expire_at     = $date->modify('+20 minutes')->getTimestamp();
         $domainName = $_SERVER['HTTP_HOST'];
         $payload = [
             'iat'  => $date->getTimestamp(),         // Issued at: time when the token was generated
@@ -67,7 +64,7 @@ class SecurityController extends CoreController
             'nbf'  => $date->getTimestamp(),         // Not before
             'exp'  => $expire_at,                           // Expire
             'sub' => $userID,
-            'roles' => $roles
+            'role' => $role
         ];
 
         return JWT::encode(
