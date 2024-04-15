@@ -39,11 +39,13 @@ CREATE TABLE IF NOT EXISTS `st_todo` (
 CREATE TABLE IF NOT EXISTS `st_task` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `title` VARCHAR(128) NOT NULL,
-    `status` ENUM('todo', 'doing', 'done') NOT NULL,
+    `status` ENUM('todo', 'doing', 'complete') NOT NULL,
     `todo_id` INT UNSIGNED NOT NULL,
+    `user_id` INT UNSIGNED NOT NULL,
     `created_at` TIMESTAMP NOT NULL DEFAULT now(),
     `updated_at` TIMESTAMP NOT NULL DEFAULT now(),
-    FOREIGN KEY (`todo_id`) REFERENCES `st_todo` (`id`) ON DELETE CASCADE
+    FOREIGN KEY (`todo_id`) REFERENCES `st_todo` (`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`user_id`) REFERENCES `st_user` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `st_user_task` (

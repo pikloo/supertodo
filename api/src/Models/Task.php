@@ -13,6 +13,8 @@ class Task extends CoreModel
 
     private $todo_id;
 
+    private $todo;
+
     private $workers;
 
     public function insert()
@@ -40,17 +42,17 @@ class Task extends CoreModel
     {
         $pdo = Database::getPDO();
         $sql = '
-        UPDATE st_task
+        UPDATE `st_task`
         SET
-        title = :title,
-        status = :status,
-        todo_id = :todo_id,
-        WHERE id = :id
+        `title` = :title,
+        `status` = :status,
+        `todo_id` = :todo_id
+        WHERE `id` = :id
         ';
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':title', $this->title, PDO::PARAM_STR);
         $pdoStatement->bindParam(':status', $this->status, PDO::PARAM_LOB);
-        $pdoStatement->bindParam(':todo_id', $this->todo_id, PDO::PARAM_INT);
+        $pdoStatement->bindValue(':todo_id', $this->todo_id, PDO::PARAM_INT);
         $pdoStatement->bindParam(':id', $this->id, PDO::PARAM_INT);
         $pdoStatement->execute();
         return ($pdoStatement->rowCount() > 0);
@@ -184,6 +186,14 @@ class Task extends CoreModel
         $this->workers = $workers;
 
         return $this;
+    }
+
+    /**
+     * Get the value of todo
+     */ 
+    public function getTodo()
+    {
+        return Todo::find($this->todo_id);
     }
 }
 

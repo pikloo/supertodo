@@ -127,6 +127,52 @@ $router->map(
 
 
 /************************************* 
+             TASKS
+/************************************/
+
+$router->map(
+    'POST',
+    '/tasks',
+    [
+        'action' => 'create',
+        'controller' => 'TaskController',
+    ],
+    'createTask'
+);
+
+$router->map(
+    'GET',
+    '/tasks/[i:id]',
+    [
+        'action' => 'read',
+        'controller' => 'TaskController',
+    ],
+    'readTask'
+);
+
+$router->map(
+    'PATCH',
+    '/tasks/[i:id]',
+    [
+        'action' => 'update',
+        'controller' => 'TaskController',
+    ],
+    'updateTask'
+);
+
+$router->map(
+    'DELETE',
+    '/tasks/[i:id]',
+    [
+        'action' => 'delete',
+        'controller' => 'TaskController',
+    ],
+    'deleteTask'
+);
+
+
+
+/************************************* 
     USER HAS TODO (COLLABORATION)
 /************************************/
 
@@ -198,49 +244,6 @@ $router->map(
 
 
 
-/************************************* 
-             TASKS
-/************************************/
-
-$router->map(
-    'POST',
-    '/tasks',
-    [
-        'action' => 'create',
-        'controller' => 'TaskController',
-    ],
-    'createTask'
-);
-
-$router->map(
-    'GET',
-    '/tasks/[i:id]',
-    [
-        'action' => 'read',
-        'controller' => 'TaskController',
-    ],
-    'readTask'
-);
-
-$router->map(
-    'PATCH',
-    '/tasks/[i:id]',
-    [
-        'action' => 'update',
-        'controller' => 'TaskController',
-    ],
-    'updateTask'
-);
-
-$router->map(
-    'DELETE',
-    '/tasks/[i:id]',
-    [
-        'action' => 'delete',
-        'controller' => 'TaskController',
-    ],
-    'deleteTask'
-);
 
 
 
