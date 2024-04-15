@@ -67,11 +67,17 @@ class SecurityController extends CoreController
             'role' => $role
         ];
 
-        return JWT::encode(
-            $payload,
-            $secretKey,
-            'HS512'
-        );
+        $jwt = JWT::encode($payload, $secretKey, 'HS512');
+
+        setcookie('jwt', $jwt, [
+            'expires' => $date->getTimestamp(),
+            'domain' => $domainName,
+            'path' => '/', 'secure' => true,
+            'httpOnly' => true
+        ]);
+
+
+        return $jwt;
     }
 
     public function logout()
