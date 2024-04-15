@@ -24,7 +24,7 @@ class CoreController
     }
 
     /**
-     * Gestion de l'nevoie de la réponse et de son status code HTTP
+     * Gestion de l'enevoie de la réponse et de son status code HTTP
      * Supprime l'ancien entête et le remplace avec le status code fourni
      * Force le cache et renvoie une réponse avec le message
      *

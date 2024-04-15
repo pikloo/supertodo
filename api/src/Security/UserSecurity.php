@@ -5,10 +5,10 @@ namespace SuperTodo\Security;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use SuperTodo\Models\UserHasTodo;
-use SuperTodo\Controllers\CoreController;
+use SuperTodo\Controllers\CoreController as Core;
 use UnexpectedValueException;
 
-final class UserSecurity extends CoreController{
+final class UserSecurity extends Core{
 
     const WRITE_ACTIONS = ['update', 'delete'];
     const READ_ACTIONS = ['read'];

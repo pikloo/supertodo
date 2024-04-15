@@ -79,6 +79,7 @@ class SecurityController extends CoreController
 
         return $jwt;
     }
+    
 
     public function logout()
     {
