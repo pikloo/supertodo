@@ -13,6 +13,10 @@ class Todo extends CoreModel
 
     private $userId;
 
+    private $owner;
+
+    private const OWNER_TODO_ROLE = "update";
+
     public function insert()
     {
         $pdo = Database::getPDO();
@@ -29,6 +33,12 @@ class Todo extends CoreModel
         if ($pdoStatement->rowCount() > 0) {
             //Récupération de l'auto-incrément généré par Mysql
             $this->id = $pdo->lastInsertId();
+            // Ajouter un userTodo
+            $userTodo = new UserHasTodo();
+            $userTodo->setUserId($this->userId);
+            $userTodo->setTodoId($this->getId());
+            $userTodo->setRole(self::OWNER_TODO_ROLE);
+            $userTodo->insert();
             return true;
         }
         return false;
@@ -38,12 +48,13 @@ class Todo extends CoreModel
     {
         $pdo = Database::getPDO();
         $sql = '
-        UPDATE st_user
+        UPDATE `st_todo`
         SET
-        title = :title,
-        desc = :desc,
-        user_id = :user_id,
-        WHERE id = :id
+            `title` = :title,
+            `desc` = :desc,
+            `user_id` = :user_id,
+            `updated_at` = NOW()
+        WHERE `id` = :id
         ';
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':title', $this->title, PDO::PARAM_STR);
@@ -54,7 +65,8 @@ class Todo extends CoreModel
         return ($pdoStatement->rowCount() > 0);
     }
 
-    public function delete(){
+    public function delete()
+    {
         $pdo = Database::getPDO();
         $sql = '
         DELETE FROM `st_todo`
@@ -73,8 +85,9 @@ class Todo extends CoreModel
     {
         $pdo = Database::getPDO();
         $sql = '
-        SELECT * FROM st_todo
-        WHERE id = :id
+        SELECT t.`id`, `title`, `desc`, t.`created_at`, t.`updated_at`, `user_id` AS userId
+        FROM `st_todo` AS t
+        WHERE t.`id` = :id
         ';
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':id', $id, PDO::PARAM_INT);
@@ -85,7 +98,8 @@ class Todo extends CoreModel
     }
 
 
-    public static function findAllByUser($userId){
+    public static function findAllByUser($userId)
+    {
         $pdo = Database::getPDO();
         $sql =  '
         SELECT * FROM st_todo t
@@ -103,7 +117,7 @@ class Todo extends CoreModel
 
     /**
      * Get the value of title
-     */ 
+     */
     public function getTitle()
     {
         return $this->title;
@@ -113,7 +127,7 @@ class Todo extends CoreModel
      * Set the value of title
      *
      * @return  self
-     */ 
+     */
     public function setTitle($title)
     {
         $this->title = $title;
@@ -123,7 +137,7 @@ class Todo extends CoreModel
 
     /**
      * Get the value of desc
-     */ 
+     */
     public function getDesc()
     {
         return $this->desc;
@@ -133,7 +147,7 @@ class Todo extends CoreModel
      * Set the value of desc
      *
      * @return  self
-     */ 
+     */
     public function setDesc($desc)
     {
         $this->desc = $desc;
@@ -143,7 +157,7 @@ class Todo extends CoreModel
 
     /**
      * Get the value of user_id
-     */ 
+     */
     public function getUserId()
     {
         return $this->userId;
@@ -153,20 +167,19 @@ class Todo extends CoreModel
      * Set the value of user_id
      *
      * @return  self
-     */ 
+     */
     public function setUserId($user_id)
     {
         $this->userId = $user_id;
-        // Ajouter un userTodo
-        $userTodo = new UserHasTodo();
-        $userTodo->setUserId($user_id);
-        $userTodo->setTodoId($this->id);
-        $userTodo->insert();
 
         return $this;
     }
 
-    
-    
+    /**
+     * Get the value of owner
+     */ 
+    public function getOwner()
+    {
+        return User::find($this->userId);
+    }
 }
-

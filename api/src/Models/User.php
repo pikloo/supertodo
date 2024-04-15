@@ -46,15 +46,15 @@ class User extends CoreModel
     {
         $pdo = Database::getPDO();
         $sql = '
-        UPDATE st_user
+        UPDATE `st_user`
         SET
-            firstname = :firstname,
-            lastname = :lastname,
-            email = :email,
-            password = :password,
-            role_id = :role_id,
-            updated_at = NOW()
-        WHERE id = :id
+            `firstname` = :firstname,
+            `lastname` = :lastname,
+            `email` = :email,
+            `password` = :password,
+            `role_id` = :role_id,
+            `updated_at` = NOW()
+        WHERE `id` = :id
         ';
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':firstname', $this->firstname, PDO::PARAM_STR);

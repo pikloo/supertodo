@@ -18,12 +18,13 @@ class UserHasTodo extends CoreModel
         $pdo = Database::getPDO();
         $sql = '
         INSERT INTO st_user_todo(
-        `user_id`,`todo_id`
-        ) values (:user_id, :todo_id)
+        `user_id`,`todo_id`,`role`
+        ) values (:user_id, :todo_id, :role)
         ';
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':user_id', $this->user_id, PDO::PARAM_INT);
         $pdoStatement->bindParam(':todo_id', $this->todo_id, PDO::PARAM_INT);
+        $pdoStatement->bindValue(':role', $this->role, PDO::PARAM_STR);
         $pdoStatement->execute();
         if ($pdoStatement->rowCount() > 0) {
             //Récupération de l'auto-incrément généré par Mysql
@@ -44,7 +45,7 @@ class UserHasTodo extends CoreModel
         AND todo_id = :todo_id
         ';
         $pdoStatement = $pdo->prepare($sql);
-        $pdoStatement->bindParam(':role', json_encode($this->role), PDO::PARAM_LOB);
+        $pdoStatement->bindParam(':role', $this->role, PDO::PARAM_STR);
         $pdoStatement->bindParam(':user_id', $this->user_id, PDO::PARAM_INT);
         $pdoStatement->bindParam(':todo_id', $this->todo_id, PDO::PARAM_INT);
         $pdoStatement->execute();

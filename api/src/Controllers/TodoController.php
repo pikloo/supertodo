@@ -4,6 +4,7 @@ namespace SuperTodo\Controllers;
 
 use SuperTodo\Models\Task;
 use SuperTodo\Models\Todo;
+use SuperTodo\Models\User;
 use SuperTodo\Models\UserHasTodo;
 use SuperTodo\Security\TodoSecurity;
 
@@ -11,9 +12,9 @@ class TodoController extends CoreController
 {
     private $security;
 
-    public function __construct(TodoSecurity $security)
+    public function __construct()
     {
-        $this->security = $security;
+        $this->security = new TodoSecurity;
     }
 
     public function create()
@@ -26,6 +27,7 @@ class TodoController extends CoreController
                 match (true) {
                     $key === 'title' && $value === '' => $errorsList[] = 'Le titre est obligatoire',
                     $key === 'user' && $value === '' => $errorsList[] = 'L\'utilisateur propriétaire est obligatoire',
+                    default => true,
                 };
             }
             if (count($errorsList) > 0) {
@@ -33,10 +35,29 @@ class TodoController extends CoreController
             } else {
                 $todo = new Todo();
                 $todo->setTitle($data['title']);
-                $todo->setDesc($data['desc']);
+                isset($data['desc']) && $todo->setDesc($data['desc']);
                 $todo->setUserId($data['user']);
 
-                $todo->save() ? $this->json_response(200,  $todo, 'todo') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+                $this->security->checkTodoAuthorization($todo, 'create');
+
+                if($todo->save()) {
+                    $user = User::find($todo->getUserId());
+                    $data = [
+                        'id' => $todo->getId(),
+                        'title' => $todo->getTitle(),
+                        'desc' => $todo->getDesc(),
+                        'user' => [
+                            'firstname' => $user->getFirstname(),
+                            'lastname' => $user->getLastname(),
+                            'email' => $user->getEmail()
+                        ]
+                        ];
+
+                        $this->json_response(201, $data , 'todo');
+                        exit();
+                }
+
+                $this->json_response(502,  'La sauvegarde a échoué', 'error');
             }
         } else {
             // JSON decoding failed
@@ -61,6 +82,7 @@ class TodoController extends CoreController
                 match (true) {
                     $key === 'title' && $value === '' => $errorsList[] = 'Le titre est obligatoire',
                     $key === 'user' && $value === '' => $errorsList[] = 'L\'utilisateur propriétaire est obligatoire',
+                    default => true,
                 };
             }
 
@@ -74,10 +96,29 @@ class TodoController extends CoreController
                         $key === 'user' => $todo->setUserId($value),
                     };
                 }
-                $todo->save() ? $this->json_response(200,  $todo, 'todo') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+                
+                if($todo->save()) {
+                    $user = User::find($todo->getUserId());
+                    $data = [
+                        'id' => $todo->getId(),
+                        'title' => $todo->getTitle(),
+                        'desc' => $todo->getDesc(),
+                        'user' => [
+                            'firstname' => $user->getFirstname(),
+                            'lastname' => $user->getLastname(),
+                            'email' => $user->getEmail()
+                        ]
+                        ];
+
+                        $this->json_response(200, $data , 'todo');
+                        exit();
+                }
+
+                $this->json_response(502,  'La sauvegarde a échoué', 'error');
+
             }
         } else {
-            $this->json_response(502,  'La sauvegarde a échoué', 'error');
+            $this->json_response(400, 'invalid JSON data', 'error');
         }
     }
 
@@ -88,7 +129,16 @@ class TodoController extends CoreController
         $todo === null && $this->json_response(404,  'Ressource non trouvée ', 'error');
         $this->security->checkTodoAuthorization($todo, 'read');
 
-        $this->json_response(200,  $todo, 'todo');
+        $this->json_response(200,  [
+            'id' => $todo->getId(),
+            'title' => $todo->getTitle(),
+            'desc' => $todo->getDesc(),
+            'owner' => [
+                'firstname' => $todo->getOwner()->getFirstname(),
+                'lastname' => $todo->getOwner()->getLastname(),
+                'email' => $todo->getOwner()->getEmail()
+            ]
+            ], 'todo');
     }
 
 
@@ -102,15 +152,15 @@ class TodoController extends CoreController
         $this->json_response(200,  $tasks, 'tasks');
     }
 
-    public function delete($todoId, $userId)
+    public function delete($todoId)
     {
         $todo = Todo::find($todoId);
         $todo === null && $this->json_response(404,  'Ressource non trouvée', 'error');
-        $userTodo = UserHasTodo::find($userId, $todoId);
-        $userTodo === null && $this->json_response(404,  'Ressource non trouvée', 'error');
+        // $userTodo = UserHasTodo::find($userId, $todoId);
+        // $userTodo === null && $this->json_response(404,  'Ressource non trouvée', 'error');
         $this->security->checkTodoAuthorization($todo, 'delete');
 
-        $todo->delete() && $userTodo->delete() ? $this->json_response(200,  'La liste de tâches' . $todo->getTitle() . ' a bien été supprimée ', 'message') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+        $todo->delete() ? $this->json_response(204,  'La liste de tâches' . $todo->getTitle() . ' a bien été supprimée ', 'message') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
     }
 
 }

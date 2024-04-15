@@ -142,6 +142,6 @@ class UserController extends CoreController
         $user === null && $this->json_response(404,  'Utilisateur non trouvé ', 'error');
         $this->security->checkUserAuthorization($userId);
 
-        $user->delete() ? $this->json_response(200,  'L\'utilisateur ' . $user->getId() . ' a bien été supprimé(e) ', 'message') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+        $user->delete() ? $this->json_response(204,  'L\'utilisateur ' . $user->getId() . ' a bien été supprimé(e) ', 'message') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
     }
 }
