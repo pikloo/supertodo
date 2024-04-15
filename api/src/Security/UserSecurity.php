@@ -4,7 +4,6 @@ namespace SuperTodo\Security;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use SuperTodo\Models\UserHasTodo;
 use SuperTodo\Controllers\CoreController as Core;
 use UnexpectedValueException;
 

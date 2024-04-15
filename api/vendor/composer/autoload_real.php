@@ -28,6 +28,10 @@ class ComposerAutoloaderInit8412d2bf73c6486009f6ffb136f81600
         self::$loader = $loader = new \Composer\Autoload\ClassLoader(\dirname(__DIR__));
         spl_autoload_unregister(array('ComposerAutoloaderInit8412d2bf73c6486009f6ffb136f81600', 'loadClassLoader'));
 
+        $includePaths = require __DIR__ . '/include_paths.php';
+        $includePaths[] = get_include_path();
+        set_include_path(implode(PATH_SEPARATOR, $includePaths));
+
         require __DIR__ . '/autoload_static.php';
         call_user_func(\Composer\Autoload\ComposerStaticInit8412d2bf73c6486009f6ffb136f81600::getInitializer($loader));
 

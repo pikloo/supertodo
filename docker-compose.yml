@@ -22,12 +22,15 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_DATABASE_TEST: ${MYSQL_DATABASE_TEST}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       PMA_HOST: ${PMA_HOST}
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      API_HOST: ${API_HOST}
     depends_on:
       - db
+      - db_test
     restart: unless-stopped
 
   composer:
@@ -46,6 +49,20 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports: 
+      - "3306:3306"
+
+  db_test:
+    image: mysql:latest
+    volumes:
+      - db-data-test:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE_TEST: ${MYSQL_DATABASE_TEST}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports: 
+      - "3307:3306"
   
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -58,3 +75,4 @@ services:
 
 volumes:
   db-data:
+  db-data-test:

@@ -1,0 +1,1 @@
+{"version":1,"defects":{"SuperTodo\\Tests\\Controllers\\UserControllerTest::testGet_NoTokenSend":4},"times":{"SuperTodo\\Tests\\Controllers\\UserControllerTest::testGet_NoTokenSend":0.004}}

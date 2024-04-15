@@ -1,3 +1,4 @@
 api/vendor/
 api/tests/
 .env.local
+phpunit.*

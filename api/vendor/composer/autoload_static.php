@@ -7,23 +7,23 @@ namespace Composer\Autoload;
 class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
 {
     public static $files = array (
-        '9c67151ae59aff4788964ce8eb2a0f43' => __DIR__ . '/..' . '/clue/stream-filter/src/functions_include.php',
-        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
-        '8cff32064859f4559445b89279f3199c' => __DIR__ . '/..' . '/php-http/message/src/filters.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
-            'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Symfony\\Component\\Yaml\\' => 23,
             'Symfony\\Component\\VarDumper\\' => 28,
-            'Symfony\\Component\\OptionsResolver\\' => 34,
             'SuperTodo\\Tests\\' => 16,
             'SuperTodo\\' => 10,
         ),
@@ -37,14 +37,11 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
         array (
             'Nyholm\\Psr7\\' => 12,
         ),
-        'H' => 
+        'G' => 
         array (
-            'Http\\Promise\\' => 13,
-            'Http\\Mock\\' => 10,
-            'Http\\Message\\' => 13,
-            'Http\\Discovery\\' => 15,
-            'Http\\Client\\Common\\' => 19,
-            'Http\\Client\\' => 12,
+            'GuzzleHttp\\Psr7\\' => 16,
+            'GuzzleHttp\\Promise\\' => 19,
+            'GuzzleHttp\\' => 11,
         ),
         'F' => 
         array (
@@ -55,28 +52,24 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
             'Doctrine\\Instantiator\\' => 22,
             'DeepCopy\\' => 9,
         ),
-        'C' => 
-        array (
-            'Clue\\StreamFilter\\' => 18,
-        ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Symfony\\Polyfill\\Php80\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
-        ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'Symfony\\Component\\Yaml\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/yaml',
+        ),
         'Symfony\\Component\\VarDumper\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/var-dumper',
-        ),
-        'Symfony\\Component\\OptionsResolver\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/options-resolver',
         ),
         'SuperTodo\\Tests\\' => 
         array (
@@ -103,29 +96,17 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
         array (
             0 => __DIR__ . '/..' . '/nyholm/psr7/src',
         ),
-        'Http\\Promise\\' => 
+        'GuzzleHttp\\Psr7\\' => 
         array (
-            0 => __DIR__ . '/..' . '/php-http/promise/src',
+            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
-        'Http\\Mock\\' => 
+        'GuzzleHttp\\Promise\\' => 
         array (
-            0 => __DIR__ . '/..' . '/php-http/mock-client/src',
+            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
         ),
-        'Http\\Message\\' => 
+        'GuzzleHttp\\' => 
         array (
-            0 => __DIR__ . '/..' . '/php-http/message/src',
-        ),
-        'Http\\Discovery\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-http/discovery/src',
-        ),
-        'Http\\Client\\Common\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-http/client-common/src',
-        ),
-        'Http\\Client\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-http/httplug/src',
+            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
         'Firebase\\JWT\\' => 
         array (
@@ -139,15 +120,10 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
         ),
-        'Clue\\StreamFilter\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/clue/stream-filter/src',
-        ),
     );
 
     public static $classMap = array (
         'AltoRouter' => __DIR__ . '/..' . '/altorouter/altorouter/AltoRouter.php',
-        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\ActualValueIsNotAnObjectException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Exception/ActualValueIsNotAnObjectException.php',
@@ -498,6 +474,100 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
         'PHPUnit\\Util\\Xml\\SuccessfulSchemaDetectionResult' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/Xml/SuccessfulSchemaDetectionResult.php',
         'PHPUnit\\Util\\Xml\\ValidationResult' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/Xml/ValidationResult.php',
         'PHPUnit\\Util\\Xml\\Validator' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/Xml/Validator.php',
+        'PHPUnit_Extensions_Database_AbstractTester' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/AbstractTester.php',
+        'PHPUnit_Extensions_Database_Constraint_DataSetIsEqual' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Constraint/DataSetIsEqual.php',
+        'PHPUnit_Extensions_Database_Constraint_TableIsEqual' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Constraint/TableIsEqual.php',
+        'PHPUnit_Extensions_Database_Constraint_TableRowCount' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Constraint/TableRowCount.php',
+        'PHPUnit_Extensions_Database_DB_DataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/DataSet.php',
+        'PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/DefaultDatabaseConnection.php',
+        'PHPUnit_Extensions_Database_DB_FilteredDataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/FilteredDataSet.php',
+        'PHPUnit_Extensions_Database_DB_IDatabaseConnection' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/IDatabaseConnection.php',
+        'PHPUnit_Extensions_Database_DB_IMetaData' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/IMetaData.php',
+        'PHPUnit_Extensions_Database_DB_MetaData' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/MetaData.php',
+        'PHPUnit_Extensions_Database_DB_MetaData_Dblib' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/MetaData/Dblib.php',
+        'PHPUnit_Extensions_Database_DB_MetaData_Firebird' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/MetaData/Firebird.php',
+        'PHPUnit_Extensions_Database_DB_MetaData_InformationSchema' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/MetaData/InformationSchema.php',
+        'PHPUnit_Extensions_Database_DB_MetaData_MySQL' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/MetaData/MySQL.php',
+        'PHPUnit_Extensions_Database_DB_MetaData_Oci' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/MetaData/Oci.php',
+        'PHPUnit_Extensions_Database_DB_MetaData_PgSQL' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/MetaData/PgSQL.php',
+        'PHPUnit_Extensions_Database_DB_MetaData_SqlSrv' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/MetaData/SqlSrv.php',
+        'PHPUnit_Extensions_Database_DB_MetaData_Sqlite' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/MetaData/Sqlite.php',
+        'PHPUnit_Extensions_Database_DB_ResultSetTable' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/ResultSetTable.php',
+        'PHPUnit_Extensions_Database_DB_Table' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/Table.php',
+        'PHPUnit_Extensions_Database_DB_TableIterator' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/TableIterator.php',
+        'PHPUnit_Extensions_Database_DB_TableMetaData' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DB/TableMetaData.php',
+        'PHPUnit_Extensions_Database_DataSet_AbstractDataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/AbstractDataSet.php',
+        'PHPUnit_Extensions_Database_DataSet_AbstractTable' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/AbstractTable.php',
+        'PHPUnit_Extensions_Database_DataSet_AbstractTableMetaData' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/AbstractTableMetaData.php',
+        'PHPUnit_Extensions_Database_DataSet_AbstractXmlDataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/AbstractXmlDataSet.php',
+        'PHPUnit_Extensions_Database_DataSet_CompositeDataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/CompositeDataSet.php',
+        'PHPUnit_Extensions_Database_DataSet_CsvDataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/CsvDataSet.php',
+        'PHPUnit_Extensions_Database_DataSet_DataSetFilter' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/DataSetFilter.php',
+        'PHPUnit_Extensions_Database_DataSet_DefaultDataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/DefaultDataSet.php',
+        'PHPUnit_Extensions_Database_DataSet_DefaultTable' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/DefaultTable.php',
+        'PHPUnit_Extensions_Database_DataSet_DefaultTableIterator' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/DefaultTableIterator.php',
+        'PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/DefaultTableMetaData.php',
+        'PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/FlatXmlDataSet.php',
+        'PHPUnit_Extensions_Database_DataSet_IDataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/IDataSet.php',
+        'PHPUnit_Extensions_Database_DataSet_IPersistable' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/IPersistable.php',
+        'PHPUnit_Extensions_Database_DataSet_ISpec' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/ISpec.php',
+        'PHPUnit_Extensions_Database_DataSet_ITable' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/ITable.php',
+        'PHPUnit_Extensions_Database_DataSet_ITableIterator' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/ITableIterator.php',
+        'PHPUnit_Extensions_Database_DataSet_ITableMetaData' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/ITableMetaData.php',
+        'PHPUnit_Extensions_Database_DataSet_IYamlParser' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/IYamlParser.php',
+        'PHPUnit_Extensions_Database_DataSet_MysqlXmlDataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/MysqlXmlDataSet.php',
+        'PHPUnit_Extensions_Database_DataSet_Persistors_Abstract' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/Persistors/Abstract.php',
+        'PHPUnit_Extensions_Database_DataSet_Persistors_Factory' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/Persistors/Factory.php',
+        'PHPUnit_Extensions_Database_DataSet_Persistors_FlatXml' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/Persistors/FlatXml.php',
+        'PHPUnit_Extensions_Database_DataSet_Persistors_MysqlXml' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/Persistors/MysqlXml.php',
+        'PHPUnit_Extensions_Database_DataSet_Persistors_Xml' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/Persistors/Xml.php',
+        'PHPUnit_Extensions_Database_DataSet_Persistors_Yaml' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/Persistors/Yaml.php',
+        'PHPUnit_Extensions_Database_DataSet_QueryDataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/QueryDataSet.php',
+        'PHPUnit_Extensions_Database_DataSet_QueryTable' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/QueryTable.php',
+        'PHPUnit_Extensions_Database_DataSet_ReplacementDataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/ReplacementDataSet.php',
+        'PHPUnit_Extensions_Database_DataSet_ReplacementTable' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/ReplacementTable.php',
+        'PHPUnit_Extensions_Database_DataSet_ReplacementTableIterator' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/ReplacementTableIterator.php',
+        'PHPUnit_Extensions_Database_DataSet_Specs_Csv' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/Specs/Csv.php',
+        'PHPUnit_Extensions_Database_DataSet_Specs_DbQuery' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/Specs/DbQuery.php',
+        'PHPUnit_Extensions_Database_DataSet_Specs_DbTable' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/Specs/DbTable.php',
+        'PHPUnit_Extensions_Database_DataSet_Specs_Factory' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/Specs/Factory.php',
+        'PHPUnit_Extensions_Database_DataSet_Specs_FlatXml' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/Specs/FlatXml.php',
+        'PHPUnit_Extensions_Database_DataSet_Specs_IFactory' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/Specs/IFactory.php',
+        'PHPUnit_Extensions_Database_DataSet_Specs_Xml' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/Specs/Xml.php',
+        'PHPUnit_Extensions_Database_DataSet_Specs_Yaml' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/Specs/Yaml.php',
+        'PHPUnit_Extensions_Database_DataSet_SymfonyYamlParser' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/SymfonyYamlParser.php',
+        'PHPUnit_Extensions_Database_DataSet_TableFilter' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/TableFilter.php',
+        'PHPUnit_Extensions_Database_DataSet_TableMetaDataFilter' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/TableMetaDataFilter.php',
+        'PHPUnit_Extensions_Database_DataSet_XmlDataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/XmlDataSet.php',
+        'PHPUnit_Extensions_Database_DataSet_YamlDataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/YamlDataSet.php',
+        'PHPUnit_Extensions_Database_DefaultTester' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/DefaultTester.php',
+        'PHPUnit_Extensions_Database_Exception' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Exception.php',
+        'PHPUnit_Extensions_Database_IDatabaseListConsumer' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/IDatabaseListConsumer.php',
+        'PHPUnit_Extensions_Database_ITester' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/ITester.php',
+        'PHPUnit_Extensions_Database_Operation_Composite' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Operation/Composite.php',
+        'PHPUnit_Extensions_Database_Operation_Delete' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Operation/Delete.php',
+        'PHPUnit_Extensions_Database_Operation_DeleteAll' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Operation/DeleteAll.php',
+        'PHPUnit_Extensions_Database_Operation_Exception' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Operation/Exception.php',
+        'PHPUnit_Extensions_Database_Operation_Factory' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Operation/Factory.php',
+        'PHPUnit_Extensions_Database_Operation_IDatabaseOperation' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Operation/IDatabaseOperation.php',
+        'PHPUnit_Extensions_Database_Operation_Insert' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Operation/Insert.php',
+        'PHPUnit_Extensions_Database_Operation_Null' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Operation/Null.php',
+        'PHPUnit_Extensions_Database_Operation_Replace' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Operation/Replace.php',
+        'PHPUnit_Extensions_Database_Operation_RowBased' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Operation/RowBased.php',
+        'PHPUnit_Extensions_Database_Operation_Truncate' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Operation/Truncate.php',
+        'PHPUnit_Extensions_Database_Operation_Update' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/Operation/Update.php',
+        'PHPUnit_Extensions_Database_TestCase' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/TestCase.php',
+        'PHPUnit_Extensions_Database_UI_Command' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/UI/Command.php',
+        'PHPUnit_Extensions_Database_UI_Context' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/UI/Context.php',
+        'PHPUnit_Extensions_Database_UI_IMedium' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/UI/IMedium.php',
+        'PHPUnit_Extensions_Database_UI_IMediumPrinter' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/UI/IMediumPrinter.php',
+        'PHPUnit_Extensions_Database_UI_IMode' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/UI/IMode.php',
+        'PHPUnit_Extensions_Database_UI_IModeFactory' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/UI/IModeFactory.php',
+        'PHPUnit_Extensions_Database_UI_InvalidModeException' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/UI/InvalidModeException.php',
+        'PHPUnit_Extensions_Database_UI_Mediums_Text' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/UI/Mediums/Text.php',
+        'PHPUnit_Extensions_Database_UI_ModeFactory' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/UI/ModeFactory.php',
+        'PHPUnit_Extensions_Database_UI_Modes_ExportDataSet' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/UI/Modes/ExportDataSet.php',
+        'PHPUnit_Extensions_Database_UI_Modes_ExportDataSet_Arguments' => __DIR__ . '/..' . '/phpunit/dbunit/PHPUnit/Extensions/Database/UI/Modes/ExportDataSet/Arguments.php',
         'PharIo\\Manifest\\Application' => __DIR__ . '/..' . '/phar-io/manifest/src/values/Application.php',
         'PharIo\\Manifest\\ApplicationName' => __DIR__ . '/..' . '/phar-io/manifest/src/values/ApplicationName.php',
         'PharIo\\Manifest\\Author' => __DIR__ . '/..' . '/phar-io/manifest/src/values/Author.php',
@@ -570,7 +640,6 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
         'PharIo\\Version\\VersionConstraintParser' => __DIR__ . '/..' . '/phar-io/version/src/VersionConstraintParser.php',
         'PharIo\\Version\\VersionConstraintValue' => __DIR__ . '/..' . '/phar-io/version/src/VersionConstraintValue.php',
         'PharIo\\Version\\VersionNumber' => __DIR__ . '/..' . '/phar-io/version/src/VersionNumber.php',
-        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'SebastianBergmann\\CliParser\\AmbiguousOptionException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/AmbiguousOptionException.php',
         'SebastianBergmann\\CliParser\\Exception' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/Exception.php',
         'SebastianBergmann\\CliParser\\OptionDoesNotAllowArgumentException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/OptionDoesNotAllowArgumentException.php',
@@ -771,7 +840,6 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
         'SebastianBergmann\\Type\\UnknownType' => __DIR__ . '/..' . '/sebastian/type/src/type/UnknownType.php',
         'SebastianBergmann\\Type\\VoidType' => __DIR__ . '/..' . '/sebastian/type/src/type/VoidType.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
-        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'SuperTodo\\Tests\\Controllers\\UserControllerTest' => __DIR__ . '/../..' . '/tests/Controllers/UserControllerTest.php',
         'TheSeer\\Tokenizer\\Exception' => __DIR__ . '/..' . '/theseer/tokenizer/src/Exception.php',
         'TheSeer\\Tokenizer\\NamespaceUri' => __DIR__ . '/..' . '/theseer/tokenizer/src/NamespaceUri.php',
@@ -781,8 +849,6 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
         'TheSeer\\Tokenizer\\TokenCollectionException' => __DIR__ . '/..' . '/theseer/tokenizer/src/TokenCollectionException.php',
         'TheSeer\\Tokenizer\\Tokenizer' => __DIR__ . '/..' . '/theseer/tokenizer/src/Tokenizer.php',
         'TheSeer\\Tokenizer\\XMLSerializer' => __DIR__ . '/..' . '/theseer/tokenizer/src/XMLSerializer.php',
-        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
-        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

@@ -4,9 +4,7 @@ namespace SuperTodo\Controllers;
 
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use SuperTodo\Models\User;
-use UnexpectedValueException;
 
 class SecurityController extends CoreController
 {
