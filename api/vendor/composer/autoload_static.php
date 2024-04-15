@@ -841,6 +841,7 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
         'SebastianBergmann\\Type\\VoidType' => __DIR__ . '/..' . '/sebastian/type/src/type/VoidType.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
         'SuperTodo\\Tests\\Controllers\\UserControllerTest' => __DIR__ . '/../..' . '/tests/Controllers/UserControllerTest.php',
+        'SuperTodo\\Tests\\Utils\\Database' => __DIR__ . '/../..' . '/tests/Utils/Database.php',
         'TheSeer\\Tokenizer\\Exception' => __DIR__ . '/..' . '/theseer/tokenizer/src/Exception.php',
         'TheSeer\\Tokenizer\\NamespaceUri' => __DIR__ . '/..' . '/theseer/tokenizer/src/NamespaceUri.php',
         'TheSeer\\Tokenizer\\NamespaceUriException' => __DIR__ . '/..' . '/theseer/tokenizer/src/NamespaceUriException.php',
