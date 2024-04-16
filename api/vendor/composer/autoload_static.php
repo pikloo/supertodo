@@ -124,6 +124,7 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
 
     public static $classMap = array (
         'AltoRouter' => __DIR__ . '/..' . '/altorouter/altorouter/AltoRouter.php',
+        'ArrayDataSet' => __DIR__ . '/../..' . '/tests/Utils/ArrayDataSet.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\ActualValueIsNotAnObjectException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Exception/ActualValueIsNotAnObjectException.php',
@@ -841,6 +842,7 @@ class ComposerStaticInit8412d2bf73c6486009f6ffb136f81600
         'SebastianBergmann\\Type\\VoidType' => __DIR__ . '/..' . '/sebastian/type/src/type/VoidType.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
         'SuperTodo\\Tests\\Controllers\\UserControllerTest' => __DIR__ . '/../..' . '/tests/Controllers/UserControllerTest.php',
+        'SuperTodo\\Tests\\Persistence\\DatabaseTestCase' => __DIR__ . '/../..' . '/tests/Persistence/DatabaseTestCase.php',
         'SuperTodo\\Tests\\Utils\\Database' => __DIR__ . '/../..' . '/tests/Utils/Database.php',
         'TheSeer\\Tokenizer\\Exception' => __DIR__ . '/..' . '/theseer/tokenizer/src/Exception.php',
         'TheSeer\\Tokenizer\\NamespaceUri' => __DIR__ . '/..' . '/theseer/tokenizer/src/NamespaceUri.php',

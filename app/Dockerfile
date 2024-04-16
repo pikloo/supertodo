@@ -1,8 +1,20 @@
-FROM node:latest
+FROM node:latest AS dev
 
-WORKDIR /home/app
-COPY package.json ./
-RUN npm install
+
+RUN mkdir -p /srv/todo/app/dist && chown -R node:node /srv/todo
+
+# USER node
+
+WORKDIR /srv/todo/app
+COPY package.json package-lock.json ./
+RUN npm install --quiet
+# COPY ./ .
+
+# RUN npm run build
+CMD ["npm", "run", "start"]
+
+FROM dev AS build
+
 COPY ./ .
 
-ENTRYPOINT ["npm", "run", "build"]
+RUN npm run build

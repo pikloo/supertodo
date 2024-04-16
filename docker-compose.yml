@@ -1,15 +1,22 @@
 version: '3'
 services:
   web-app:
-    image: nginx:1-alpine
+    build: 
+      context: ./app
+      target: dev
+    command: npx webpack-dev-server
     ports:
-      - 8089:80
+      - 8080:8080
     volumes:
-      - ./app:/app
-      - ./app/:/usr/share/nginx/html
-    restart: always
+      - ./app:/srv/todo/app
+      # - ./app/:/usr/share/nginx/html
     depends_on:
       - api
+    environment:
+      DOMAIN_URL: ${DOMAIN_URL}
+      APP_PORT: ${APP_PORT}
+      API_PORT: ${API_PORT}
+
 
   api:
     build: ./api
@@ -26,7 +33,9 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       PMA_HOST: ${PMA_HOST}
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
-      API_HOST: ${API_HOST}
+      DOMAIN_URL: ${DOMAIN_URL}
+      APP_PORT: ${APP_PORT}
+      API_PORT: ${API_PORT}
     depends_on:
       - db
     restart: unless-stopped
@@ -40,6 +49,7 @@ services:
   
   db:
     image: mysql:latest
+    container_name: db
     volumes:
       - db-data:/var/lib/mysql
     environment:
@@ -51,7 +61,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
-      - 8080:80
+      - 8089:80
     environment:
       PMA_HOST: ${PMA_HOST}
       PMA_USER: ${PMA_USER}
@@ -60,5 +70,5 @@ services:
       - db
 
 volumes:
+  app_node_modules:
   db-data:
-  db-data-test:
