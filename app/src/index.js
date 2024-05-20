@@ -1,6 +1,7 @@
 import App from './App';
 import Home from './pages/Home';
 import Router from './helpers/router.js' ;
+import './style.css';
 
 const app = App();
 
