@@ -9,14 +9,25 @@ module.exports = {
         host: process.env.HOST || '0.0.0.0',
         // Proxy api routes through to the todo backend.
         proxy: [
-          {
-            context: ['/api'],
-            target: `${process.env.DOMAIN_URL}:${process.env.APP_PORT}`
-          }
+            {
+                context: ['/api'],
+                target: `${process.env.DOMAIN_URL}:${process.env.APP_PORT}`
+            }
         ]
-      },
+    },
     output: {
         filename: 'main.js',
         path: path.resolve(__dirname, 'dist'),
+        // library: "my-library",
+        // libraryTarget: "umd"
+    },
+    module: {
+        rules: [
+            {
+                test: /\.css$/i,
+                include: path.resolve(__dirname, 'src'),
+                use: ['style-loader', 'css-loader', 'postcss-loader'],
+            },
+        ],
     },
 };

@@ -1,12 +1,16 @@
-import _ from 'lodash';
-console.log('test')
- function component() {
-   const element = document.createElement('div');
+import App from './App';
+import Home from './pages/Home';
+import Router from './helpers/router.js' ;
 
-  // Lodash, now imported by this script
-   element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+const app = App();
 
-   return element;
- }
-
- document.body.appendChild(component());
+const router = new Router({
+  type: "history",
+  routes: {
+      "/": Home,
+      "/about": "about",
+      "/products": "products"
+  }
+}).listen().on("route", async e => {
+  app.render(e.detail.route)
+});

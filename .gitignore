@@ -2,3 +2,4 @@ api/vendor/
 api/tests/
 .env.local
 phpunit.*
+app/node_modules/
