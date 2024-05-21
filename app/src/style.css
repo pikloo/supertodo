@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: 250 255 253;
+    --color-text: 45 39 47;
+    --color-success: 159 211 86;
+    --color-info: 60 145 230;
+    --color-warn: 251 133 0;
+    --color-error: 214 40 40;
+  }
+
+  :root[class~="dark"] {
+    --color-primary: 45 39 47;
+    --color-text: 250 255 253;
+    --color-success: 159 211 86;
+    --color-info: 60 145 230;
+    --color-warn: 251 133 0;
+    --color-error: 214 40 40;
+  }
+
+  h1 {
+    @apply w-fit
+  }
+
+  body {
+    @apply font-primary;
+  }
+
+  input, button {
+    @apply rounded p-2;
+  }
+
+  button {
+    @apply bg-text text-primary pt-4 px-8 shadow-xl border-b-8 border-text relative hover:border-primary/30 duration-300
+  }
+
+  .errors {
+    @apply text-error text-xs mt-2
+  }
+}
+

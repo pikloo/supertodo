@@ -1,17 +1,9 @@
 import App from './App';
-import Home from './pages/Home';
-import Router from './helpers/router.js' ;
 import './style.css';
+import { router } from './router.js';
 
 const app = App();
 
-const router = new Router({
-  type: "history",
-  routes: {
-      "/": Home,
-      "/about": "about",
-      "/products": "products"
-  }
-}).listen().on("route", async e => {
+router.listen().on("route", async e => {
   app.render(e.detail.route)
 });

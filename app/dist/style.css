@@ -446,6 +446,68 @@ video {
   display: none;
 }
 
+:root {
+  --color-primary: 250 255 253;
+  --color-text: 45 39 47;
+  --color-success: 159 211 86;
+  --color-info: 60 145 230;
+  --color-warn: 251 133 0;
+  --color-error: 214 40 40;
+}
+
+:root[class~="dark"] {
+  --color-primary: 45 39 47;
+  --color-text: 250 255 253;
+  --color-success: 159 211 86;
+  --color-info: 60 145 230;
+  --color-warn: 251 133 0;
+  --color-error: 214 40 40;
+}
+
+h1 {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+body {
+  font-family: Montserrat, Arial, sans-serif;
+}
+
+input, button {
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+}
+
+button {
+  position: relative;
+  border-bottom-width: 8px;
+  --tw-border-opacity: 1;
+  border-color: rgb(var(--color-text) / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: rgb(var(--color-text) / var(--tw-bg-opacity));
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1rem;
+  --tw-text-opacity: 1;
+  color: rgb(var(--color-primary) / var(--tw-text-opacity));
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  transition-duration: 300ms;
+}
+
+button:hover {
+  border-color: rgb(var(--color-primary) / 0.3);
+}
+
+.errors {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  --tw-text-opacity: 1;
+  color: rgb(var(--color-error) / var(--tw-text-opacity));
+}
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -553,3 +615,61 @@ video {
   --tw-contain-paint:  ;
   --tw-contain-style:  ;
 }
+
+.flex {
+  display: flex;
+}
+
+.h-screen {
+  height: 100vh;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.gap-y-2 {
+  row-gap: 0.5rem;
+}
+
+.gap-y-4 {
+  row-gap: 1rem;
+}
+
+.gap-y-6 {
+  row-gap: 1.5rem;
+}
+
+.bg-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(var(--color-primary) / var(--tw-bg-opacity));
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.text-text {
+  --tw-text-opacity: 1;
+  color: rgb(var(--color-text) / var(--tw-text-opacity));
+}
+

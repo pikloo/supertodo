@@ -27,7 +27,7 @@ class SecurityController extends CoreController
             }
 
             $user = User::findBy('email', $email);
-            if (!$user) {
+            if (!$user && !empty($password)) {
                 $errorsList[] = 'L\'email ou le mot de passe sont invalides';
             }
 
@@ -40,7 +40,6 @@ class SecurityController extends CoreController
             } else {
                 $_SESSION['userId'] = $user->getId();
                 $_SESSION['userObject'] = $user;
-                // var_dump($user->getRole());exit();
                 $token = $this->createJWT($user->getId(), $user->getRole());
                 $this->json_response(200,  $token, 'token');
             }

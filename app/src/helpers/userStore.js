@@ -1,10 +1,7 @@
-const USERS_API_ROOT = '/api/users'
-import dotenv from 'dotenv'
-dotenv.config()
+const USERS_API_ROOT = '/users'
 
 class UserStore {
   constructor() {
-    this.tasks = []
     this.listener = () => {}
   }
 
@@ -15,25 +12,7 @@ class UserStore {
   unlisten() {
     this.listener = () => {}
   }
-
-  async login(email, password){
-    const response = await fetchJson(rootUrl(), {
-        method: 'POST',
-        body: JSON.stringify({ email, password })
-      })
-      console.log(response)
-    //   if (!response.ok) {
-    //     if (response.status === 400) {
-    //       const body = await response.json()
-    //       throw new Error(body.error.message)
-    //     }
-    //     throw new Error('Failed to create task')
-    //   }else {
-    //     console.log(response);
-    //   }
-  }
   
-
 }
 
 async function fetchJson(url, options) {
@@ -48,7 +27,7 @@ async function fetchJson(url, options) {
 }
 
 function rootUrl() {
-  return new URL(USERS_API_ROOT, `${process.env.DOMAIN_URL}:${API_PORT}`)
+  return new URL(USERS_API_ROOT, `${process.env.DOMAIN_URL}:${process.env.API_PORT}`)
 }
 
 function itemUrl(id) {

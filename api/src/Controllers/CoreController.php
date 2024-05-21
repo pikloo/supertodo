@@ -12,6 +12,11 @@ class CoreController
     protected $urlReferer;
     protected $baseURI;
     protected $router;
+    private const ALLOWED_DOMAINS = [
+        'localhost',
+        '127.0.0.1',
+        '192.168.127.12',
+    ];
 
     public function __construct()
     {
@@ -34,12 +39,9 @@ class CoreController
      */
     public function json_response($code, $message, $key = 'message')
     {
-        header_remove();
+        // header_remove();
         http_response_code($code);
-        //!CORS provisoire
-        header("Access-Control-Allow-Origin: *");
-        header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
-        header('Content-Type: application/json');
+        
         $status = array(
             200 => '200 OK',
             201 => '201 Created',
@@ -62,6 +64,12 @@ class CoreController
             505 => '505 HTTP Version Not Supported',
         );
         header('Status: ' . $status[$code]);
+        //!CORS provisoire
+        // if (in_array(strtolower($http_origin), SELF::ALLOWED_DOMAINS)){
+            // header("Access-Control-Allow-Origin:*");
+            // header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
+            // header('Content-Type: application/json');
+        // }
 
         echo json_encode([
             'status' => $code < 300, // success or not?
