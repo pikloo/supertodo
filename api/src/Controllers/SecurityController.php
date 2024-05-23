@@ -4,6 +4,7 @@ namespace SuperTodo\Controllers;
 
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use SuperTodo\Models\User;
 
 class SecurityController extends CoreController
@@ -27,11 +28,11 @@ class SecurityController extends CoreController
             }
 
             $user = User::findBy('email', $email);
-            if (!$user && !empty($password)) {
+            if (!$user && !empty($password) && $email !== '') {
                 $errorsList[] = 'L\'email ou le mot de passe sont invalides';
             }
 
-            if ($user && !password_verify($password, $user->getPassword())) {
+            if ($user && !password_verify($password, $user->getPassword()) && !empty($password)) {
                 $errorsList[] = 'L\'email ou le mot de passe sont invalides';
             }
 
@@ -76,6 +77,9 @@ class SecurityController extends CoreController
 
         return $jwt;
     }
+
+
+    
     
 
     public function logout()

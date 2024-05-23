@@ -38,7 +38,7 @@
   }
 
   .errors {
-    @apply text-error text-xs mt-2
+    @apply text-error text-xs mt-2 max-w-64 mx-auto text-center
   }
 }
 

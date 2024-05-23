@@ -51,6 +51,16 @@ $router->map(
 
 $router->map(
     'GET',
+    '/me',
+    [
+        'action' => 'read',
+        'controller' => 'UserController',
+    ],
+    'readCurrentUser'
+);
+
+$router->map(
+    'GET',
     '/users/[i:id]',
     [
         'action' => 'read',

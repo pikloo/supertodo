@@ -1,6 +1,9 @@
 import AuthStore from "../helpers/authStore";
 
 const Dashboard = (() => {
+
+  const userDatas = AuthStore.getUserDatas();
+  console.log(userDatas);
   
   const shell = document.querySelector('#app');
   // notice the data-navigo attribute in the anchor tag.  this is used by navigo to bind event handlers to the element
@@ -8,6 +11,9 @@ const Dashboard = (() => {
   shell.innerHTML = `
     <div>
       <h2 class="text-xl">Tableau de bord</h2>
+      <header>Salut P</header>
+      <aside></aside>
+      <main><main>
 
       <a href="tasty" data-navigo>Tasty</a>
     </div>

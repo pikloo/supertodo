@@ -4,18 +4,20 @@ const Home = (() => {
 
   const shell = document.querySelector('#app');
   shell.innerHTML = `
-    <div class="home h-screen flex flex-col justify-center items-center gap-y-6">
-      <div class="title-container flex flex-col items-center">
-        <h1 class="text-3xl">Toudou</h1>
-        <h2 class="text-2xl">Connexion</h2>
+    <div class="home h-screen flex flex-col justify-center items-center">
+      <div class="w-fit py-10 px-20 rounded bg-gray-300/30 backdrop-blur-sm flex flex-col gap-y-10">
+        <div class="title-container flex flex-col items-center">
+          <h1 class="text-3xl">Toudou</h1>
+          <h2 class="text-2xl">Connexion</h2>
+        </div>
+        <form id="login" class="flex flex-col gap-y-4 items-center">
+          <fieldset class="flex flex-col gap-y-2">
+            <input type="text" name="email" placeholder="email">
+            <input type="password" name="password" placeholder="********">
+          </fieldset>
+          <button type="submit">Se connecter</button>
+        </form>
       </div>
-      <form id="login" class="flex flex-col gap-y-4 items-center">
-        <fieldset class="flex flex-col gap-y-2">
-          <input type="text" name="email" placeholder="email">
-          <input type="password" name="password" placeholder="********">
-        </fieldset>
-        <button type="submit">Se connecter</button>
-      </form>
     </div>
   `;
 

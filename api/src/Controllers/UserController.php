@@ -2,6 +2,8 @@
 
 namespace SuperTodo\Controllers;
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use SuperTodo\Models\User;
 use SuperTodo\Security\UserSecurity;
 
@@ -125,6 +127,9 @@ class UserController extends CoreController
 
     public function read($userId)
     {
+        // Route "me" (userId absent), décoder le token renvoyé
+        !$userId && $userId = $this->getUserIdFromToken();
+        
         $user = User::find($userId);
         $user === null && $this->json_response(404,  'Utilisateur non trouvé ', 'error');
         $this->security->checkUserAuthorization($user->getId());
@@ -143,5 +148,16 @@ class UserController extends CoreController
         $this->security->checkUserAuthorization($userId);
 
         $user->delete() ? $this->json_response(204,  'L\'utilisateur ' . $user->getId() . ' a bien été supprimé(e) ', 'message') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+    }
+
+    private function getUserIdFromToken(){
+        $jwt = $_COOKIE['jwt'];
+        $secretKey  = getenv('JWT_SECRET_KEY');
+        try {
+            $payload = JWT::decode($jwt, new Key($secretKey, 'HS512'));
+            return $payload->sub;
+        } catch (\Exception $e) {
+            $this->json_response(401, 'Token invalide', 'error');
+        }
     }
 }

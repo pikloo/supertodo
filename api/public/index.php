@@ -12,6 +12,7 @@ header('Content-Type: application/json');
 header("Access-Control-Allow-Headers: Content-Type, origin");
 header('Access-Control-Allow-Headers: Content-Type, X-Requested-With');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
+header('Access-Control-Allow-Credentials: true');
 
 if (array_key_exists('BASE_URI', $_SERVER)) {
     $router->setBasePath($_SERVER['BASE_URI']);
