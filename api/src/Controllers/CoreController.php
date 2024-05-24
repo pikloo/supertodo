@@ -63,7 +63,7 @@ class CoreController
             504 => '504 Gateway Timeout',
             505 => '505 HTTP Version Not Supported',
         );
-        header('Status: ' . $status[$code]);
+        // header('Status: ' . $status[$code]);
         //!CORS provisoire
         // if (in_array(strtolower($http_origin), SELF::ALLOWED_DOMAINS)){
             // header("Access-Control-Allow-Origin:*");

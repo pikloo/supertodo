@@ -49,7 +49,8 @@ class AuthStore {
       const titleContainer = document.querySelector('.title-container');
       titleContainer.after(errorList);
     } else {
-      await response.json().then(this.me())
+      await response.json()
+      await this.me()
       // Redirection vers la page dashboard
       router.setRoute('/dashboard')
     }
@@ -59,9 +60,7 @@ class AuthStore {
     const response = await fetchJson(new URL(ME_API_ROOT, `${process.env.DOMAIN_URL}:${process.env.API_PORT}`))
     if (!response.ok) throw new Error('Failed to fetch me')
     // Récupération de l'utilisateur connecté
-  console.log(await response.json())
-    this.user = await response.json()
-
+    this.user = await response.json().user
     return this.user
   }
 
@@ -76,11 +75,12 @@ async function fetchJson(url, options) {
   const response = await fetch(url, {
     credentials: 'include',
     headers: {
-      Accept: 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
     ...options
   })
+  console.log(response)
   return response
 }
 

@@ -54,7 +54,7 @@ class SecurityController extends CoreController
     {
         $secretKey  = getenv('JWT_SECRET_KEY');
         $date   = new DateTimeImmutable();
-        $expire_at     = $date->modify('+20 minutes')->getTimestamp();
+        $expire_at     = time() + 3600;
         $domainName = $_SERVER['HTTP_HOST'];
         $payload = [
             'iat'  => $date->getTimestamp(),         // Issued at: time when the token was generated
@@ -68,10 +68,10 @@ class SecurityController extends CoreController
         $jwt = JWT::encode($payload, $secretKey, 'HS512');
 
         setcookie('jwt', $jwt, [
-            'expires' => $date->getTimestamp(),
-            'domain' => $domainName,
-            'path' => '/', 'secure' => true,
-            'httpOnly' => true
+            'expires' => $expire_at,
+            'domain' => '',
+            'path' => '/', 'secure' => false,
+            'httpOnly' => true,
         ]);
 
 

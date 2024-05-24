@@ -9,9 +9,8 @@ header_remove();
 header("Access-Control-Allow-Origin: http://localhost:8080");
 header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
 header('Content-Type: application/json');
-header("Access-Control-Allow-Headers: Content-Type, origin");
-header('Access-Control-Allow-Headers: Content-Type, X-Requested-With');
-header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
+header('Access-Control-Allow-Headers: Content-Type, Accept, X-Requested-With');
+header('Access-Control-Allow-Methods: POST, GET, DELETE, PUT');
 header('Access-Control-Allow-Credentials: true');
 
 if (array_key_exists('BASE_URI', $_SERVER)) {
