@@ -23,7 +23,7 @@ final class UserSecurity extends Core
     public function checkUserAuthorization($owner)
     {
         if (!isset($_COOKIE['jwt'])) {
-            $this->json_response(403, 'Le cookie d\'authentification est manquant', 'error');
+            $this->json_response(403, ['error' => 'Le cookie d\'authentification est manquant']);
             exit();
         } else {
             $jwt = $_COOKIE['jwt'];
@@ -34,11 +34,11 @@ final class UserSecurity extends Core
                 if ($payload['sub'] == $owner || $payload['role'] === "ROLE_ADMIN") {
                     return true;
                 } else {
-                    $this->json_response(403, 'Accès non autorisé', 'error');
+                    $this->json_response(403, ['error' => 'Accès non autorisé']);
                     exit();
                 }
             } catch (UnexpectedValueException $e) {
-                $this->json_response(500, $e, 'error');
+                $this->json_response(500, ['error' => $e]);
             }
         }
     }

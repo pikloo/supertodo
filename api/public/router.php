@@ -190,7 +190,7 @@ $router->map(
     'GET',
     '/users/[i:id]/todos',
     [
-        'action' => 'read',
+        'action' => 'readAll',
         'controller' => 'UserTodoController',
     ],
     'readUserTodos'

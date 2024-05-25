@@ -36,7 +36,7 @@ class TaskController extends CoreController
                 };
             }
             if (count($errorsList) > 0) {
-                $this->json_response(503, $errorsList, 'errors');
+                $this->json_response(503, ['error' =>  $errorsList]);
                 exit();
             } else {
                 $todo =  Todo::find($data['todo']);
@@ -51,18 +51,18 @@ class TaskController extends CoreController
                     'title' => $task->getTitle(),
                     'status' => $task->getStatus(),
                     'todo' => $todo->getId()
-                ], 'task') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+                ]) :$this->json_response(502, ['error' => 'La sauvegarde a échoué']);
             }
         } else {
             // JSON decoding failed
-            $this->json_response(400, 'invalid JSON data', 'error');
+            $this->json_response(400,  ['error' => 'invalid JSON data']);
         }
     }
 
     public function update($taskId)
     {
         $task = Task::find($taskId);
-        $task === null && $this->json_response(404,  'Ressource non trouvée ', 'error');
+        $task === null && $this->json_response(404, ['error' => 'Ressource non trouvée ']);
         $this->security->checkTodoAuthorization($task->getTodo(), 'update');
 
         $jsonData = file_get_contents('php://input');
@@ -80,7 +80,7 @@ class TaskController extends CoreController
                 };
             }
             if (count($errorsList) > 0) {
-                $this->json_response(503, $errorsList, 'errors');
+                $this->json_response(503, ['errors' => $errorsList]);
             } else {
                 foreach ($data as $key => $value) {
                     match (true) {
@@ -93,11 +93,11 @@ class TaskController extends CoreController
                     'title' => $task->getTitle(),
                     'status' => $task->getStatus(),
                     'todo' => $task->getTodoId()
-                ], 'task') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+                ]) : $this->json_response(502, ['error' => 'La sauvegarde a échoué']);
             }
         } else {
             // JSON decoding failed
-            $this->json_response(400, 'invalid JSON data', 'error');
+            $this->json_response(400, ['error' => 'invalid JSON data']);
         }
     }
 
@@ -105,7 +105,7 @@ class TaskController extends CoreController
     public function read($taskId)
     {
         $task = Task::find($taskId);
-        $task === null && $this->json_response(404,  'Ressource non trouvée ', 'error');
+        $task === null && $this->json_response(404,['error' =>'Ressource non trouvé ']);
         $this->security->checkTodoAuthorization($task->getTodo(), 'read');
 
         $this->json_response(200,  [
@@ -119,8 +119,8 @@ class TaskController extends CoreController
     public function delete($taskId)
     {
         $task = Task::find($taskId);
-        $task === null && $this->json_response(404,  'Ressource non trouvée ', 'error');
+        $task === null && $this->json_response(404,  ['error' => 'Ressource non trouvée']);
         $this->security->checkTodoAuthorization($task->getTodo(), 'delete');
-        $task->delete() ? $this->json_response(204, 'La tâche' . $task->getTitle() . 'a été supprimée', 'message') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+        $task->delete() ? $this->json_response(204, ['message' => 'La tâche' . $task->getTitle() . 'a été supprimée']) :$this->json_response(502, ['error' =>'La sauvegarde a échoué']);
     }
 }

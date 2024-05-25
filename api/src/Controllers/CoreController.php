@@ -37,11 +37,11 @@ class CoreController
      * @param [type] $message
      * @return void
      */
-    public function json_response($code, $message, $key = 'message')
+    public function json_response($code, $message, $options = [])
     {
         // header_remove();
         http_response_code($code);
-        
+
         $status = array(
             200 => '200 OK',
             201 => '201 Created',
@@ -63,18 +63,16 @@ class CoreController
             504 => '504 Gateway Timeout',
             505 => '505 HTTP Version Not Supported',
         );
-        // header('Status: ' . $status[$code]);
-        //!CORS provisoire
-        // if (in_array(strtolower($http_origin), SELF::ALLOWED_DOMAINS)){
-            // header("Access-Control-Allow-Origin:*");
-            // header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
-            // header('Content-Type: application/json');
-        // }
 
-        echo json_encode([
-            'status' => $code < 300, // success or not?
-            $key => $message
-        ]);
+        header('Status:' . $status[$code]);
+
+        if (!empty($options)) {
+            foreach ($options as $option => $value) {
+                header("$option: $value");
+            };
+        }
+
+        echo json_encode($message);
 
         exit();
     }
@@ -131,29 +129,25 @@ class CoreController
     {
         $headers = getallheaders();
 
-        if (!array_key_exists('Authorization', $headers)) {
-            $this->json_response(403, 'L\'en-tête authorization est manquant', 'error');
+
+        if (!isset($_COOKIE['jwt'])) {
+            $this->json_response(403, ['error' => 'Le cookie d\'authentification est manquant']);
             exit();
         } else {
-            if (substr($headers['Authorization'], 0, 7) !== 'Bearer ') {
-                $this->json_response(403, 'Mot clé Bearer manquant', 'error');
-                exit();
-            } else {
-                $token = trim(substr($headers['Authorization'], 7));
-                $secretKey  = getenv('JWT_SECRET_KEY');
-                try {
-                    $decoded = JWT::decode($token, new Key($secretKey, 'HS512'));
-                    $payload = json_decode(json_encode($decoded), true);
+            $jwt = $_COOKIE['jwt'];
+            $secretKey  = getenv('JWT_SECRET_KEY');
+            try {
+                $decoded = JWT::decode($jwt, new Key($secretKey, 'HS512'));
+                $payload = json_decode(json_encode($decoded), true);
 
-                    if (in_array($payload['role'], $roles)) {
-                        return true;
-                    } else {
-                        $this->json_response(403, 'Accès non autorisé', 'error');
-                        exit();
-                    }
-                } catch (UnexpectedValueException $e) {
-                    $this->json_response(500, $e, 'error');
+                if (in_array($payload['role'], $roles)) {
+                    return true;
+                } else {
+                    $this->json_response(403, ['error' => 'Accès non autorisé']);
+                    exit();
                 }
+            } catch (UnexpectedValueException $e) {
+                $this->json_response(500, ['error' => $e]);
             }
         }
     }

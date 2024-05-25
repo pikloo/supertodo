@@ -37,16 +37,16 @@ class SecurityController extends CoreController
             }
 
             if (count($errorsList) > 0) {
-                $this->json_response(503, $errorsList, 'errors');
+                $this->json_response(503, ['errors' => $errorsList]);
             } else {
                 $_SESSION['userId'] = $user->getId();
                 $_SESSION['userObject'] = $user;
                 $token = $this->createJWT($user->getId(), $user->getRole());
-                $this->json_response(200,  $token, 'token');
+                $this->json_response(200, ['token' => $token]);
             }
         } else {
             // JSON decoding failed
-            $this->json_response(400, 'invalid JSON data', 'error');
+            $this->json_response(400, ['error' => 'invalid JSON data']);
         }
     }
 
@@ -79,14 +79,14 @@ class SecurityController extends CoreController
     }
 
 
-    
-    
+
+
 
     public function logout()
     {
         $user = $_SESSION['userObject'];
         session_destroy();
-        $this->json_response(200, 'message', $user->getFirstName() . ' ' . $user->getLastName . 'est déconnecté(e). A bientôt !');
+        $this->json_response(200, ['message' => $user->getFirstName() . ' ' . $user->getLastName . 'est déconnecté(e). A bientôt !']);
     }
 
 

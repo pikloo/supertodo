@@ -57,7 +57,7 @@ class UserController extends CoreController
             }
 
             if (count($errorsList) > 0) {
-                $this->json_response(503, $errorsList, 'errors');
+                $this->json_response(503, ['error' =>  $errorsList]);
             } else {
                 $user = new User();
                 $user->setFirstname($firstname);
@@ -70,11 +70,11 @@ class UserController extends CoreController
                     'firstname' => $user->getFirstname(),
                     'lastname' => $user->getLastname(),
                     'email' => $user->getEmail()
-                ], 'user') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+                ]) : $this->json_response(502, ['error' => 'La sauvegarde a échoué']);
             }
         } else {
             // JSON decoding failed
-            $this->json_response(400, 'invalid JSON data', 'error');
+            $this->json_response(400,  ['error' => 'invalid JSON data']);
         }
     }
 
@@ -82,7 +82,7 @@ class UserController extends CoreController
     public function update($userId)
     {
         $user = User::find($userId);
-        $user === null && $this->json_response(404,  'Utilisateur non trouvé ', 'error');
+        $user === null && $this->json_response(404, ['error' => 'Utilisateur non trouvé ']);
         $this->security->checkUserAuthorization($userId);
 
         $jsonData = file_get_contents('php://input');
@@ -101,7 +101,7 @@ class UserController extends CoreController
                 };
             }
             if (count($errorsList) > 0) {
-                $this->json_response(503, $errorsList, 'errors');
+                $this->json_response(503, ['errors' => $errorsList]);
             } else {
                 foreach ($data as $key => $value) {
                     match (true) {
@@ -116,11 +116,11 @@ class UserController extends CoreController
                     'firstname' => $user->getFirstname(),
                     'lastname' => $user->getLastname(),
                     'email' => $user->getEmail()
-                ], 'user') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+                ]) : $this->json_response(502, ['error' => 'La sauvegarde a échoué']);
             }
         } else {
             // JSON decoding failed
-            $this->json_response(400, 'invalid JSON data', 'error');
+            $this->json_response(400, ['error' => 'invalid JSON data']);
         }
     }
 
@@ -132,7 +132,7 @@ class UserController extends CoreController
         !$userId && $userId = $this->getUserIdFromToken();
 
         $user = User::find($userId);
-        $user === null && $this->json_response(404,  'Utilisateur non trouvé ', 'error');
+        $user === null && $this->json_response(404,['error' =>'Utilisateur non trouvé ']);
         $this->security->checkUserAuthorization($user->getId());
 
         $datas = [
@@ -146,16 +146,16 @@ class UserController extends CoreController
             'member_since' => $user->getMemberSince(),
         ]];
 
-        $this->json_response(200, $datas, 'user');
+        $this->json_response(200, $datas);
     }
 
     public function delete($userId)
     {
         $user = User::find($userId);
-        $user === null && $this->json_response(404,  'Utilisateur non trouvé ', 'error');
+        $user === null && $this->json_response(404, ['error' => 'Utilisateur non trouvé']);
         $this->security->checkUserAuthorization($userId);
 
-        $user->delete() ? $this->json_response(204,  'L\'utilisateur ' . $user->getId() . ' a bien été supprimé(e) ', 'message') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+        $user->delete() ? $this->json_response(204, ['message' =>'L\'utilisateur ' . $user->getId() . ' a bien été supprimé(e) '])  : $this->json_response(502, ['error' =>'La sauvegarde a échoué']);
     }
 
     private function getUserIdFromToken()
@@ -166,7 +166,7 @@ class UserController extends CoreController
             $payload = JWT::decode($jwt, new Key($secretKey, 'HS512'));
             return $payload->sub;
         } catch (\Exception $e) {
-            $this->json_response(401, 'Token invalide', 'error');
+            $this->json_response(401, ['error' => 'Token invalide']);
         }
     }
 }

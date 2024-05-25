@@ -31,7 +31,7 @@ class TodoController extends CoreController
                 };
             }
             if (count($errorsList) > 0) {
-                $this->json_response(503, $errorsList, 'errors');
+                $this->json_response(503, ['error' =>  $errorsList]);
             } else {
                 $todo = new Todo();
                 $todo->setTitle($data['title']);
@@ -40,7 +40,7 @@ class TodoController extends CoreController
 
                 $this->security->checkTodoAuthorization($todo, 'create');
 
-                if($todo->save()) {
+                if ($todo->save()) {
                     $user = User::find($todo->getUserId());
                     $data = [
                         'id' => $todo->getId(),
@@ -51,17 +51,18 @@ class TodoController extends CoreController
                             'lastname' => $user->getLastname(),
                             'email' => $user->getEmail()
                         ]
-                        ];
+                    ];
 
-                        $this->json_response(201, $data , 'todo');
-                        exit();
+                    $this->json_response(201, $data);
+
+                    exit();
                 }
 
-                $this->json_response(502,  'La sauvegarde a échoué', 'error');
+                $this->json_response(502, ['error' => 'La sauvegarde a échoué']);
             }
         } else {
             // JSON decoding failed
-            $this->json_response(400, 'invalid JSON data', 'error');
+            $this->json_response(400,  ['error' => 'invalid JSON data']);
         }
     }
 
@@ -70,7 +71,7 @@ class TodoController extends CoreController
     public function update($todoId)
     {
         $todo = Todo::find($todoId);
-        $todo === null && $this->json_response(404,  'Ressource non trouvée ', 'error');
+        $todo === null &&  $this->json_response(404, ['error' => 'Ressource non trouvée ']);
         $this->security->checkTodoAuthorization($todo, 'update');
 
         $jsonData = file_get_contents('php://input');
@@ -87,7 +88,7 @@ class TodoController extends CoreController
             }
 
             if (count($errorsList) > 0) {
-                $this->json_response(503, $errorsList, 'errors');
+                $this->json_response(503, ['errors' => $errorsList]);
             } else {
                 foreach ($data as $key => $value) {
                     match (true) {
@@ -96,8 +97,8 @@ class TodoController extends CoreController
                         $key === 'user' => $todo->setUserId($value),
                     };
                 }
-                
-                if($todo->save()) {
+
+                if ($todo->save()) {
                     $user = User::find($todo->getUserId());
                     $data = [
                         'id' => $todo->getId(),
@@ -108,17 +109,16 @@ class TodoController extends CoreController
                             'lastname' => $user->getLastname(),
                             'email' => $user->getEmail()
                         ]
-                        ];
+                    ];
 
-                        $this->json_response(200, $data , 'todo');
-                        exit();
+                    $this->json_response(200, $data);
+                    exit();
                 }
 
-                $this->json_response(502,  'La sauvegarde a échoué', 'error');
-
+                $this->json_response(502, ['error' => 'La sauvegarde a échoué']);
             }
         } else {
-            $this->json_response(400, 'invalid JSON data', 'error');
+            $this->json_response(400, ['error' => 'invalid JSON data']);
         }
     }
 
@@ -126,7 +126,7 @@ class TodoController extends CoreController
     public function read($todoId)
     {
         $todo = Todo::find($todoId);
-        $todo === null && $this->json_response(404,  'Ressource non trouvée ', 'error');
+        $todo === null && $this->json_response(404,['error' =>'Ressource non trouvé ']);
         $this->security->checkTodoAuthorization($todo, 'read');
 
         $this->json_response(200,  [
@@ -138,29 +138,28 @@ class TodoController extends CoreController
                 'lastname' => $todo->getOwner()->getLastname(),
                 'email' => $todo->getOwner()->getEmail()
             ]
-            ], 'todo');
+        ]);
     }
 
 
     public function getTasks($todoId, $status)
     {
         $todo = Todo::find($todoId);
-        $todo === null && $this->json_response(404,  'Ressource non trouvée ', 'error');
+        $todo === null && $this->json_response(404,['error' =>'Ressource non trouvé ']);;
         $this->security->checkTodoAuthorization($todo, 'getTasks');
 
         $tasks = Task::findAllByTodoAndStatus($todoId, $status);
-        $this->json_response(200,  $tasks, 'tasks');
+        $this->json_response(200,  $tasks);
     }
 
     public function delete($todoId)
     {
         $todo = Todo::find($todoId);
-        $todo === null && $this->json_response(404,  'Ressource non trouvée', 'error');
+        $todo === null && $this->json_response(404,['error' =>'Ressource non trouvé ']);;
         // $userTodo = UserHasTodo::find($userId, $todoId);
         // $userTodo === null && $this->json_response(404,  'Ressource non trouvée', 'error');
         $this->security->checkTodoAuthorization($todo, 'delete');
 
-        $todo->delete() ? $this->json_response(204,  'La liste de tâches' . $todo->getTitle() . ' a bien été supprimée ', 'message') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
+        $todo->delete() ? $this->json_response(204,  ['message '=> 'La liste de tâches' . $todo->getTitle() . ' a bien été supprimée ']) :$this->json_response(502, ['error' =>'La sauvegarde a échoué']);
     }
-
 }

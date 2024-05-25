@@ -2,16 +2,22 @@
 
 namespace SuperTodo\Models;
 
+use AllowDynamicProperties;
 use PDO;
 use SuperTodo\Utils\Database;
 
+#[AllowDynamicProperties]
 class UserHasTodo extends CoreModel
 {
     private $user_id;
 
     private $todo_id;
 
-    private $role;
+    //! A mettre en private 
+    public $role;
+
+    protected $created_at;
+    
 
     public function insert()
     {
@@ -74,17 +80,18 @@ class UserHasTodo extends CoreModel
     {
         $pdo = Database::getPDO();
         $sql =  '
-        SELECT * FROM st_user_todo ut
+        SELECT todo_id  FROM st_user_todo ut
         INNER JOIN st_user u on ut.user_id = u.id
         INNER JOIN st_todo t on ut.todo_id = t.id
         WHERE u.id = :id
-        GROUP BY t.id
         ORDER BY t.created_at DESC';
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':id', $userId, PDO::PARAM_INT);
         $pdoStatement->execute();
         $results = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
         return $results;
+
+
     }
 
 
@@ -99,6 +106,7 @@ class UserHasTodo extends CoreModel
         $pdoStatement->bindParam(':todo_id', $todoId, PDO::PARAM_INT);
         $pdoStatement->execute();
         $results = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
+        var_dump($results);
         return $results;
     }
 
@@ -178,5 +186,22 @@ class UserHasTodo extends CoreModel
         $this->role = $role;
 
         return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return User::find($this->user_id);
+    }
+
+
+    /**
+     * Get the value of todo
+     */ 
+    public function getTodo()
+    {
+        return Todo::find($this->todo_id);
     }
 }

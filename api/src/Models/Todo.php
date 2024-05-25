@@ -105,7 +105,6 @@ class Todo extends CoreModel
         SELECT * FROM st_todo t
         INNER JOIN st_user u on t.user_id = u.id
         WHERE u.id = :id
-        GROUP BY t.id
         ORDER BY t.created_at DESC';
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':id', $userId, PDO::PARAM_INT);

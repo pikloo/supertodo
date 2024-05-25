@@ -17,7 +17,7 @@ final class TodoSecurity extends CoreController
 
         $this->router->match();
         if (!isset($_COOKIE['jwt'])) {
-            $this->json_response(403, 'Le cookie d\'authentification est manquant', 'error');
+            $this->json_response(403, ['error' => 'Le cookie d\'authentification est manquant']);
             exit();
         } else {
             $jwt = $_COOKIE['jwt'];
@@ -43,10 +43,10 @@ final class TodoSecurity extends CoreController
                         &&  UserHasTodo::find($payload['sub'], $todo->getId())->getRole() === 'read')
                         && in_array($action, SELF::READ_ACTIONS) => true,
                         // Sinon Access Denied
-                    default => $this->json_response(403, 'Accès non autorisé', 'error'),
+                    default => $this->json_response(403, ['error' => 'Accès non autorisé']),
                 };
             } catch (UnexpectedValueException $e) {
-                $this->json_response(500, $e, 'error');
+                $this->json_response(500, ['error' => $e]);
             }
         }
     }
