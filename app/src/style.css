@@ -22,23 +22,114 @@
   }
 
   h1 {
-    @apply w-fit
+    @apply w-fit;
   }
 
   body {
-    @apply font-primary;
+    @apply font-primary text-text;
   }
 
-  input, button {
+  input,
+  button {
     @apply rounded p-2;
   }
 
   button {
-    @apply bg-text text-primary pt-4 px-8 shadow-xl border-b-8 border-text relative hover:border-primary/30 duration-300
+    @apply bg-text text-primary pt-4 px-8 shadow-xl border-b-8 border-text relative hover:border-primary/30 duration-300;
   }
 
   .errors {
-    @apply text-error text-xs mt-2 max-w-64 mx-auto text-center
+    @apply text-error text-xs mt-2 max-w-64 mx-auto text-center;
   }
-}
 
+  .box {
+    @apply rounded-xl bg-gray-300/30 backdrop-blur-sm shadow-xl;
+  }
+
+  /*---------------------Home-------------------------*/
+
+  #home {
+    @apply h-screen flex flex-col justify-center items-center;
+  }
+
+  #home__container {
+    @apply w-fit py-10 px-20 flex flex-col gap-y-10;
+  }
+
+  #home__container__title {
+    @apply flex flex-col items-center;
+  }
+
+  #home__container__title h1 {
+    @apply text-5xl font-bold;
+  }
+
+  #home__container__title h2 {
+    @apply text-3xl;
+  }
+
+  #home__container__form-login {
+    @apply flex flex-col gap-y-4 items-center;
+  }
+
+  #home__container__form-login fieldset {
+    @apply flex flex-col gap-y-2;
+  }
+
+  /*---------------------Dashboard-------------------------*/
+
+  h1.page-title {
+    @apply text-4xl font-bold mb-6;
+  }
+
+  #dashboard {
+    @apply container md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg mx-auto pt-20;
+  }
+
+  #dashboard h2 {
+    @apply text-2xl font-semibold mb-4 w-fit mx-auto;
+  }
+
+  #dashboard__header__text {
+    @apply text-2xl capitalize mb-6;
+  }
+
+  #dashboard__content {
+    @apply grid grid-cols-1 lg:grid-cols-3 gap-4 duration-300;
+  }
+
+  #dashboard__content__user,
+  #dashboard__content__projects {
+    @apply p-4;
+  }
+
+  #dashboard__content__user {
+    @apply h-full;
+  }
+
+  #dashboard__content__projects {
+    @apply lg:col-span-2 pb-10;
+  }
+
+  #dashboard__content__user__stats {
+    @apply  mb-6 mx-auto table-auto border-spacing-8 w-2/3;
+  }
+  
+
+  #dashboard__content__user a {
+    @apply hover:border-dotted hover:border-b-2 border-text;
+  }
+
+  #dashboard__content__projects__empty{
+    @apply w-fit mx-auto
+  }
+
+  #dashboard__content__projects__container{
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4;
+  }
+
+  .dashboard__content__projects__container__item{
+    @apply bg-white/70 border-2 border-gray-500 rounded-xl backdrop-blur-sm p-4;
+  }
+
+}

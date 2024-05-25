@@ -6,7 +6,7 @@ require __DIR__ . '/../vendor/autoload.php';
 $router = new AltoRouter();
 
 header_remove();
-header("Access-Control-Allow-Origin: http://localhost:8080");
+header("Access-Control-Allow-Origin: http://localhost:9000");
 header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
 header('Content-Type: application/json');
 header('Access-Control-Allow-Headers: Content-Type, Accept, X-Requested-With');

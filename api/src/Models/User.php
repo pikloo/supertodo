@@ -2,6 +2,9 @@
 
 namespace SuperTodo\Models;
 
+use DateTime;
+use IntlDateFormatter;
+use IntlTimeZone;
 use PDO;
 use SuperTodo\Utils\Database;
 
@@ -18,6 +21,8 @@ class User extends CoreModel
     private $role;
 
     private $role_id;
+
+    private $member_since;
 
     public function insert()
     {
@@ -81,7 +86,7 @@ class User extends CoreModel
             ? $pdoStatement->fetchObject(self::class)
             : null;
     }
-    
+
     public static function findBy($field, $value)
     {
         $pdo = Database::getPDO();
@@ -97,7 +102,8 @@ class User extends CoreModel
         return $item;
     }
 
-    public function delete(){
+    public function delete()
+    {
         $pdo = Database::getPDO();
         $sql = '
         DELETE FROM `st_user`
@@ -113,7 +119,7 @@ class User extends CoreModel
     public function __construct()
     {
         $role_user = Role::findByTitle('ROLE_USER');
-        
+
         $this->role_id = $role_user->getId();
         $this->role = $role_user->getTitle();
     }
@@ -122,7 +128,7 @@ class User extends CoreModel
 
     /**
      * Get the value of firstname
-     */ 
+     */
     public function getFirstname()
     {
         return $this->firstname;
@@ -132,7 +138,7 @@ class User extends CoreModel
      * Set the value of firstname
      *
      * @return  self
-     */ 
+     */
     public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
@@ -142,7 +148,7 @@ class User extends CoreModel
 
     /**
      * Get the value of lastname
-     */ 
+     */
     public function getLastname()
     {
         return $this->lastname;
@@ -152,7 +158,7 @@ class User extends CoreModel
      * Set the value of lastname
      *
      * @return  self
-     */ 
+     */
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
@@ -162,7 +168,7 @@ class User extends CoreModel
 
     /**
      * Get the value of email
-     */ 
+     */
     public function getEmail()
     {
         return $this->email;
@@ -172,7 +178,7 @@ class User extends CoreModel
      * Set the value of email
      *
      * @return  self
-     */ 
+     */
     public function setEmail($email)
     {
         $this->email = $email;
@@ -182,7 +188,7 @@ class User extends CoreModel
 
     /**
      * Get the value of password
-     */ 
+     */
     public function getPassword()
     {
         return $this->password;
@@ -192,7 +198,7 @@ class User extends CoreModel
      * Set the value of password
      *
      * @return  self
-     */ 
+     */
     public function setPassword($password)
     {
         $this->password = $password;
@@ -202,7 +208,7 @@ class User extends CoreModel
 
     /**
      * Get the value of role_id
-     */ 
+     */
     public function getRoleId()
     {
         return $this->role_id;
@@ -212,7 +218,7 @@ class User extends CoreModel
      * Set the value of role_id
      *
      * @return  self
-     */ 
+     */
     public function setRoleId($role_id)
     {
         $this->role_id = $role_id;
@@ -222,7 +228,7 @@ class User extends CoreModel
 
     /**
      * Get the value of role
-     */ 
+     */
     public function getRole()
     {
         return $this->role;
@@ -232,11 +238,22 @@ class User extends CoreModel
      * Set the value of role
      *
      * @return  self
-     */ 
+     */
     public function setRole($role)
     {
         $this->role = $role;
 
         return $this;
+    }
+
+    /**
+     * Get the value of member_since
+     */
+    public function getMemberSince()
+    {
+        $formatter = new IntlDateFormatter('fr_FR'
+                , IntlDateFormatter::LONG, IntlDateFormatter::LONG, null, null, 'dd MMMM yyyy');
+
+        return datefmt_format($formatter, new DateTime($this->created_at));
     }
 }

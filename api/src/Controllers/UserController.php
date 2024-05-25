@@ -127,18 +127,26 @@ class UserController extends CoreController
 
     public function read($userId)
     {
+        global $router;
         // Route "me" (userId absent), décoder le token renvoyé
         !$userId && $userId = $this->getUserIdFromToken();
-        
+
         $user = User::find($userId);
         $user === null && $this->json_response(404,  'Utilisateur non trouvé ', 'error');
         $this->security->checkUserAuthorization($user->getId());
 
-        $this->json_response(200, [
+        $datas = [
             'firstname' => $user->getFirstname(),
             'lastname' => $user->getLastname(),
-            'email' => $user->getEmail()
-        ], 'user');
+        ];
+
+        $router->match()['name'] === 'readCurrentUser' && $datas = [...$datas, ...[
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'member_since' => $user->getMemberSince(),
+        ]];
+
+        $this->json_response(200, $datas, 'user');
     }
 
     public function delete($userId)
@@ -150,7 +158,8 @@ class UserController extends CoreController
         $user->delete() ? $this->json_response(204,  'L\'utilisateur ' . $user->getId() . ' a bien été supprimé(e) ', 'message') : $this->json_response(502,  'La sauvegarde a échoué', 'error');
     }
 
-    private function getUserIdFromToken(){
+    private function getUserIdFromToken()
+    {
         $jwt = $_COOKIE['jwt'];
         $secretKey  = getenv('JWT_SECRET_KEY');
         try {

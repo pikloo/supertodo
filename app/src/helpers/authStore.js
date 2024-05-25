@@ -1,4 +1,5 @@
 import { router } from "../router"
+import { setState, state } from "../store";
 
 const LOGIN_API_ROOT = '/login';
 const ME_API_ROOT = '/me';
@@ -7,7 +8,6 @@ class AuthStore {
   constructor() {
     this.loginFormError = []
     this.listener = () => { }
-    this.user = null
   }
 
   listen(listener) {
@@ -49,10 +49,11 @@ class AuthStore {
       const titleContainer = document.querySelector('.title-container');
       titleContainer.after(errorList);
     } else {
-      await response.json()
-      await this.me()
+      const body = await response.json()
+      // await this.me()
       // Redirection vers la page dashboard
       router.setRoute('/dashboard')
+      return body
     }
   }
 
@@ -60,14 +61,18 @@ class AuthStore {
     const response = await fetchJson(new URL(ME_API_ROOT, `${process.env.DOMAIN_URL}:${process.env.API_PORT}`))
     if (!response.ok) throw new Error('Failed to fetch me')
     // Récupération de l'utilisateur connecté
-    this.user = await response.json().user
-    return this.user
+    const body = await response.json()
+    setUserDatas(body.user)
+    return body.user
   }
 
-  getUserDatas() {
-    return this.user;
-  }
 
+}
+
+function setUserDatas(userDatas) {
+  setState({
+    userDatas
+  });
 
 }
 
@@ -80,7 +85,6 @@ async function fetchJson(url, options) {
     },
     ...options
   })
-  console.log(response)
   return response
 }
 
