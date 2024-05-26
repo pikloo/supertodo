@@ -41,7 +41,6 @@ const Dashboard = (() => {
   `;
 
 
-
   // each component from this example has this API returned
   return {
     node: shell.firstElementChild, // node is used by the render function of App to place the element on the page

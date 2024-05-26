@@ -1,4 +1,5 @@
 import Button from "../components/Button"
+import { router } from "../router"
 import { setState, state, subscribe } from "../store"
 
 const USERS_API_ROOT = '/users'
@@ -6,6 +7,7 @@ const USERS_API_ROOT = '/users'
 class UserStore {
   constructor() {
     this.listener = () => { }
+    this.todos = state.todos
   }
 
   listen(listener) {
@@ -23,45 +25,57 @@ class UserStore {
     this.listener()
 
     subscribe(function (newState) {
-      const todos = newState.todos;
-      const projectSection = document.querySelector('#dashboard__content__projects')
-      if (todos.length > 0) {
-        const projectsList = document.createElement('ul');
-        projectsList.setAttribute('id', 'dashboard__content__projects__container');
+      if (newState.todos !== this.todos) {
+        const todos = newState.todos;
+        const projectSection = document.querySelector('#dashboard__content__projects')
+        if (todos.length > 0) {
+          const projectsList = document.createElement('ul');
+          projectsList.setAttribute('id', 'dashboard__content__projects__container');
 
-        todos.forEach(todo => {
-          const projectElement = document.createElement('li');
-          projectElement.classList.add('dashboard__content__projects__container__item');
-          projectElement.innerHTML = `
+          todos.forEach(todo => {
+            const projectElement = document.createElement('li');
+            projectElement.classList.add('dashboard__content__projects__container__item');
+            projectElement.innerHTML = `
           <a href="project/${todo.id}" data-navigo class="dashboard__content__projects__container__item__card">
             <h3>${todo.title}</h3>
             <p>${todo.createdAt}</p>
           </a>
         `;
-          projectsList.appendChild(projectElement);
-        });
-        projectSection.innerHTML += `
-          ${Button({ type: 'link', text:'Nouveau projet ➕', centeredPosition: true, href: 'newproject'})}
+            projectsList.appendChild(projectElement);
+          });
+          projectSection.innerHTML += `
+          ${Button({ type: 'link', text: 'Nouveau projet ➕', centeredPosition: true, href: 'newproject' })}
         `;
-        projectSection.appendChild(projectsList);
-      } else {
-        const projectEmptyDiv = document.createElement('div');
-        projectEmptyDiv.setAttribute('id', 'dashboard__content__projects__empty');
-        projectEmptyDiv.innerHTML = `
+          projectSection.appendChild(projectsList);
+        } else {
+          const projectEmptyDiv = document.createElement('div');
+          projectEmptyDiv.setAttribute('id', 'dashboard__content__projects__empty');
+          projectEmptyDiv.innerHTML = `
           <p>Vous n'avez pas encore de projet</p>
-          ${Button({ type: 'button', text: 'Créer un nouveau projet 📋'})}
+          ${Button({ type: 'link', text: 'Créer un nouveau projet 📋',  href: 'newproject' })}
         `;
 
-        projectSection.appendChild(projectEmptyDiv);
-      }
+          projectSection.appendChild(projectEmptyDiv);
+        }
+        this.todos = newState.todos
 
+      }
     })
     setUserTodos(body)
+
+    // const links = document.querySelectorAll('a[data-navigo]')
+    // links.forEach(link => {
+    //   link.addEventListener('click', (e) => {
+    //     e.preventDefault();
+    //     router.setRoute(`/${link.href.split('/')[3]}`)
+    //   });
+    // });
 
     return body
   }
 
 }
+
 
 
 async function fetchJson(url, options) {

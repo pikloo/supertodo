@@ -46,7 +46,7 @@ class TaskController extends CoreController
                 $task->setTodoId($data['todo']);
                 $task->setStatus($data['status']);
 
-                $task->save() ? $this->json_response(200,  [
+                $task->save() ? $this->json_response(201,  [
                     'id' => $task->getId(),
                     'title' => $task->getTitle(),
                     'status' => $task->getStatus(),

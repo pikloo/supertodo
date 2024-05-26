@@ -6,7 +6,7 @@
   :root {
     --color-primary: 250 255 253;
     --color-text: 45 39 47;
-    --color-success: 159 211 86;
+    --color-success: 66 167 20;
     --color-info: 60 145 230;
     --color-warn: 251 133 0;
     --color-error: 214 40 40;
@@ -15,7 +15,7 @@
   :root[class~="dark"] {
     --color-primary: 45 39 47;
     --color-text: 250 255 253;
-    --color-success: 159 211 86;
+    --color-success: 66 167 20;
     --color-info: 60 145 230;
     --color-warn: 251 133 0;
     --color-error: 214 40 40;
@@ -36,7 +36,7 @@
   input,
   .custom-button,
   a.custom-button {
-    @apply rounded p-2;
+    @apply rounded p-2 block;
   }
 
   .custom-button, a.custom-button {
@@ -71,6 +71,14 @@
     transform: none;
     transition-delay: 0.3s;
   } */
+
+  .flash-message {
+    @apply px-4 py-3 rounded relative;
+  }
+
+  .flash-message--success {
+    @apply bg-success border-green-500 text-primary px-4 py-3 rounded relative;
+  }
 
   /*---------------------Home-------------------------*/
 

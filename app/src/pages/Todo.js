@@ -1,16 +1,20 @@
 import Button from "../components/Button";
+import FlashMessage from "../components/FlashMessage";
 import todoStore from "../helpers/todoStore";
+import { setState, state } from "../store";
 
 const Todo = () => {
 
   //Récupérer le dernier morceau de l'url et appeler la todo avec l'id récupéré
   const url = new URL(window.location.href);
 
+
+
   const id = url.pathname.split('/')[1];
-  let todo = null;
-  if (id) {
-    todo = todoStore.getTodo(id);
-  }
+  let todoId = null;
+  // if (id) {
+  //   todo = todoStore.getTodo(id);
+  // }
 
   const shell = document.querySelector('#app');
   shell.innerHTML = `
@@ -21,22 +25,22 @@ const Todo = () => {
           <h1 id="todo__header__meta__title">Nouveau projet</h1>
           <p id="todo__header__meta__description">Description du projet</p>
         </div>
-        ${Button({ type: "submit", text: "Enregistrer", color: "green", data: "todo-submit" })}
+        ${Button({ type: "button", text: "Enregistrer", color: "green", data: "todo-submit" })}
       </header>
       <main id="todo__container">
       <aside id="todo__container__sidebar" class="box">
         <p>Aucun collaborateur pour l'instant</p>
       </aside>
       <main id="todo__container__tasks">
-        <div id="todo__container__tasks__todo" class="box">
+        <div id="todo__container__tasks__todo" data-tasks-status="todo" class="box">
             <h2>A faire</h2>
             <input type="text" name="newTaskTodo" placeholder="Mettre en place un certificat SSL..." />
         </div>
-        <div id="todo__container__tasks__in-progress" class="box">
+        <div id="todo__container__tasks__in-progress" data-tasks-status="progress" class="box">
             <h2>En cours</h2>
             <input type="text" name="newTaskInProgress" placeholder="Tester la connexion..." />
         </div>
-        <div id="todo__container__tasks__done" class="box">
+        <div id="todo__container__tasks__done" data-tasks-status="done" class="box">
             <h2>Terminées</h2>
             <input type="text" name="newTaskDone" placeholder="Créer la base de données..." />
         </div>
@@ -46,6 +50,33 @@ const Todo = () => {
       
     </div>
     `;
+
+  const todo = document.querySelector('#todo');
+
+  //Enregistrement du projet
+  const submitButton = document.querySelector('button[data-todo-submit]');
+  submitButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    todoStore.createTodo();
+  })
+
+  if (state.message.text) {
+    todo.insertAdjacentHTML('afterbegin', FlashMessage({ message: state.message.text, type: state.message.type }));
+  }
+
+  const messageElement = document.querySelector('.flash-message');
+  if (messageElement) {
+    messageElement.animate([
+      { opacity: 1, transform: 'translateY(0)' },
+      { opacity: 0, transform: 'translateY(-200%)' }
+    ],
+      {
+        duration: 1000,
+        delay: 2000,
+        fill: "both",
+      },
+    );
+  }
 
   //Transformer le titre et la description au clic en input
   const title = document.querySelector('#todo__header__meta__title');
@@ -57,9 +88,9 @@ const Todo = () => {
       element.addEventListener('click', () => {
         const input = document.createElement('input');
         input.setAttribute('type', 'text');
-        input.setAttribute('name', element.id.split('__')[2]);
+        input.setAttribute('name', element.id.split('__')[3]);
         input.setAttribute('value', element.textContent);
-        input.setAttribute('id', element.id);
+        input.setAttribute('id', element.id.split('__')[3]);
         element.replaceWith(input);
         input.focus();
         input.value = '';
@@ -71,11 +102,17 @@ const Todo = () => {
         //Au blur rendre à l'élément son état précédent
         input.addEventListener('blur', () => {
           input.replaceWith(element);
-          if (input.id.split('__')[2] === "title" && input.value.length > 0 && input.value !== element.textContent) {
-            const todo = document.querySelector('#todo');
+          if (input.id === "title" && input.value.length > 0 && input.value !== element.textContent) {
+
             todo.removeAttribute("data-new-todo");
           }
           element.textContent = input.value.length > 0 ? input.value : element.textContent;
+          //Ajouter les informations dans le state todo
+          input.value.length > 0 && setTodoInformations({
+            field: input.id,
+            value: input.value
+          })
+
         });
       });
     });
@@ -98,8 +135,6 @@ const Todo = () => {
             list.setAttribute('class', `todo__container__tasks__list`);
           }
 
-          list.classList.add('group');
-
           const task = document.createElement('li');
           task.setAttribute('class', `todo__container__tasks__list__item`);
           task.addEventListener('mouseover', () => {
@@ -120,8 +155,19 @@ const Todo = () => {
                 <button data-action="delete"><i class="fa-solid fa-trash-can"></i></button>
               </div>
             `;
+
+          //Récupérer le status de la liste de tâche
+          const status = container.getAttribute('data-tasks-status');
+          //Ajout de la tâche dans le state
+          setTasks({
+            field: status,
+            value: input.value
+          })
+
           list.prepend(task);
           container.appendChild(list);
+
+
           input.value = '';
           input.setAttribute('placeholder', 'Nouvelle tâche...')
 
@@ -162,6 +208,29 @@ const Todo = () => {
     })
 
 
+    function setTodoInformations({ field, value }) {
+      setState({
+        ...state, currentTodo: {
+          [field]: value,
+          ...state.currentTodo
+        }
+      })
+    }
+
+    function setTasks({ field, value }) {
+      setState({
+        ...state, currentTodo: {
+          ...state.currentTodo,
+          tasks: {
+            ...state.currentTodo.tasks,
+            [field]: [
+              ...state.currentTodo.tasks[field],
+              value
+            ]
+          }
+        }
+      })
+    }
 
 
   }

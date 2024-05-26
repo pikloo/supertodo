@@ -10,7 +10,7 @@ class TaskStore {
   }
 
   unlisten() {
-    this.listener = () => {}
+    this.listener = () => { }
   }
 
   async list() {
@@ -21,19 +21,20 @@ class TaskStore {
     this.listener()
   }
 
-  async create(description) {
+  async create(task) {
     const response = await fetchJson(rootUrl(), {
       method: 'POST',
-      body: JSON.stringify({ description })
+      body: JSON.stringify(
+        {
+          title: task.title,
+          status: task.status,
+          todo: task.id,
+        }
+      )
     })
     if (!response.ok) {
-      if (response.status === 400) {
-        const body = await response.json()
-        throw new Error(body.error.message)
-      }
-      throw new Error('Failed to create task')
+      this.errors.push(body.error)
     }
-    await this.list()
   }
 
   async complete(id) {
@@ -56,7 +57,7 @@ async function fetchJson(url, options) {
 }
 
 function rootUrl() {
-  return new URL(TASKS_API_ROOT, window.location.origin)
+  return new URL(TASKS_API_ROOT, `${process.env.DOMAIN_URL}:${process.env.API_PORT}`)
 }
 
 function itemUrl(id) {

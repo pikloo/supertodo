@@ -1,7 +1,20 @@
 // Define the initial state
 let state = {
+  message: {
+    text: 'message',
+    type: 'success'
+  },
   userDatas: [],
   todos: [],
+  currentTodo:
+  {
+    tasks: {
+      done: [],
+      todo: [],
+      progress : [],
+    }
+  }
+
 };
 
 // Define a list of subscribers
