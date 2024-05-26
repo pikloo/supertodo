@@ -1,6 +1,7 @@
 export default function App() {
   const appEl = document.getElementById('app');
 
+
   return {
     render(component) {
       // iterate through the children of the root node and delete them all

@@ -1,5 +1,5 @@
 import { router } from "../router"
-import { setState, state } from "../store";
+import { setState, state, subscribe } from "../store";
 
 const LOGIN_API_ROOT = '/login';
 const ME_API_ROOT = '/me';
@@ -8,6 +8,7 @@ class AuthStore {
   constructor() {
     this.loginFormError = []
     this.listener = () => { }
+    this.userDatas = state.userDatas
   }
 
   listen(listener) {
@@ -46,10 +47,12 @@ class AuthStore {
         errorItem.textContent = error;
         errorList.appendChild(errorItem);
       });
-      const titleContainer = document.querySelector('.title-container');
+      const titleContainer = document.querySelector('#home__container__title');
       titleContainer.after(errorList);
     } else {
       const body = await response.json()
+      this.listener()
+
       // await this.me()
       // Redirection vers la page dashboard
       router.setRoute('/dashboard')
@@ -62,18 +65,31 @@ class AuthStore {
     if (!response.ok) throw new Error('Failed to fetch me')
     // Récupération de l'utilisateur connecté
     const body = await response.json()
-    setUserDatas(body.user)
-    return body.user
+    // On stocke l'id de l'utilisateur dans le localstorage
+    localStorage.setItem('user_id', body.id)
+
+    subscribe(function (newState) {
+      //On compare l'ancien et le nouveau state pour éviter les doublons de mis à jour du DOM
+      if (newState.userDatas !== this.userDatas){
+        document.querySelector('#dashboard__header__text').textContent += `${newState.userDatas.firstname} ${newState.userDatas.lastname} 👋🏿 !`;
+        const memberRowElement = document.querySelector('#dashboard__content__user__stats [data-stats-member]');
+        const celElement = document.createElement('td');
+        celElement.innerHTML = newState.userDatas.member_since;
+        memberRowElement.appendChild(celElement);
+        this.userDatas = newState.userDatas
+      }
+      
+    });
+
+    setUserDatas(body)
+    return body
   }
 
 
 }
 
 function setUserDatas(userDatas) {
-  setState({
-    userDatas
-  });
-
+  setState({...state, userDatas});
 }
 
 async function fetchJson(url, options) {

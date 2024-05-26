@@ -1,6 +1,7 @@
 // Define the initial state
 let state = {
-  userDatas: [] 
+  userDatas: [],
+  todos: [],
 };
 
 // Define a list of subscribers
@@ -8,6 +9,7 @@ let subscribers = [];
 
 // Define a function to update the state and notify subscribers
 function setState(newState) {
+  // console.log(newState, subscribers[0]);
   state = newState;
 
   // Notify subscribers
@@ -15,7 +17,6 @@ function setState(newState) {
     subscribers[i](newState);
   }
 
-  console.log(state)
 }
 
 // Define a function to subscribe to state changes

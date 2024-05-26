@@ -1,9 +1,17 @@
 const Button = ({
     type,
-    text
+    text,
+    centeredPosition,
+    href = null
 }) => {
     return (`
-            <button type="${type}">${text}</button>
+            <${type === 'link' ? 'a data-navigo' : 'button'}
+             class="button ${centeredPosition && 'button--centered'}"
+             ${type === 'button' ? 'type=' + type : ''}
+             ${type === 'link' ? 'href=' + href : ''}
+             >
+            ${text}
+            </${type === 'link' ? 'a' : 'button'}>
         `)
 }
 

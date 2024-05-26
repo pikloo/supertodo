@@ -1,8 +1,11 @@
+import Button from "../components/Button"
+import { setState, state, subscribe } from "../store"
+
 const USERS_API_ROOT = '/users'
 
 class UserStore {
   constructor() {
-    this.listener = () => {}
+    this.listener = () => { }
   }
 
   listen(listener) {
@@ -10,14 +13,60 @@ class UserStore {
   }
 
   unlisten() {
-    this.listener = () => {}
+    this.listener = () => { }
   }
-  
+
+  async allTodos(id) {
+    const response = await fetchJson(new URL(`${USERS_API_ROOT}/${id.toString()}/todos`, `${process.env.DOMAIN_URL}:${process.env.API_PORT}`))
+    if (!response.ok) throw new Error('Failed to fetch all todos')
+    const body = await response.json()
+    this.listener()
+
+    subscribe(function (newState) {
+      const todos = newState.todos;
+      const projectSection = document.querySelector('#dashboard__content__projects')
+      if (todos.length > 0) {
+        const projectsList = document.createElement('ul');
+        projectsList.setAttribute('id', 'dashboard__content__projects__container');
+
+        todos.forEach(todo => {
+          const projectElement = document.createElement('li');
+          projectElement.classList.add('dashboard__content__projects__container__item');
+          projectElement.innerHTML = `
+          <a href="project/${todo.id}" data-navigo class="dashboard__content__projects__container__item__card">
+            <h3>${todo.title}</h3>
+            <p>${todo.createdAt}</p>
+          </a>
+        `;
+          projectsList.appendChild(projectElement);
+        });
+        projectSection.innerHTML += `
+          ${Button({ type: 'link', text:'Nouveau projet ➕', centeredPosition: true, href: 'newproject'})}
+        `;
+        projectSection.appendChild(projectsList);
+      } else {
+        const projectEmptyDiv = document.createElement('div');
+        projectEmptyDiv.setAttribute('id', 'dashboard__content__projects__empty');
+        projectEmptyDiv.innerHTML = `
+          <p>Vous n'avez pas encore de projet</p>
+          ${Button({ type: 'button', text: 'Créer un nouveau projet 📋'})}
+        `;
+
+        projectSection.appendChild(projectEmptyDiv);
+      }
+
+    })
+    setUserTodos(body)
+
+    return body
+  }
+
 }
 
 
 async function fetchJson(url, options) {
   const response = await fetch(url, {
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json'
@@ -25,6 +74,10 @@ async function fetchJson(url, options) {
     ...options
   })
   return response
+}
+
+function setUserTodos(todos) {
+  setState({ ...state, todos });
 }
 
 function rootUrl() {
@@ -35,6 +88,7 @@ function itemUrl(id) {
   if (!id) throw new Error(`bad id: ${id}`)
   return new URL(id.toString(), rootUrl() + '/')
 }
+
 
 const userStore = new UserStore()
 

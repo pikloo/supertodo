@@ -30,12 +30,17 @@
   }
 
   input,
-  button {
+  button,
+  a.button {
     @apply rounded p-2;
   }
 
-  button {
-    @apply bg-text text-primary pt-4 px-8 shadow-xl border-b-8 border-text relative hover:border-primary/30 duration-300;
+  button.button, a.button {
+    @apply bg-text text-primary pt-4 px-8 shadow-xl border-b-8 border-text relative hover:bg-text/90 hover:border-primary/30 duration-300 mb-4;
+  }
+
+  .button--centered {
+    @apply w-fit mx-auto block;
   }
 
   .errors {
@@ -44,7 +49,16 @@
 
   .box {
     @apply rounded-xl bg-gray-300/30 backdrop-blur-sm shadow-xl;
+    /* transition: all 0.8s;
+    opacity: 0;
+    transform: translateY(40px); */
   }
+
+  /* .box.inview {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.3s;
+  } */
 
   /*---------------------Home-------------------------*/
 
@@ -83,7 +97,7 @@
   }
 
   #dashboard {
-    @apply container md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg mx-auto pt-20;
+    @apply container md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl 2xl:max-w-screen-2xl mx-auto px-4 pt-10 md:pt-20;
   }
 
   #dashboard h2 {
@@ -125,11 +139,52 @@
   }
 
   #dashboard__content__projects__container{
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4;
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-4;
   }
 
-  .dashboard__content__projects__container__item{
-    @apply bg-white/70 border-2 border-gray-500 rounded-xl backdrop-blur-sm p-4;
+  .dashboard__content__projects__container__item__card{
+    @apply bg-white/70 block border-2 border-gray-500 hover:border-gray-800 hover:shadow-lg rounded-xl backdrop-blur-sm p-4 duration-300;
   }
 
+  /*---------------------Todo-------------------------*/
+
+  #todo {
+    @apply container md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl 2xl:max-w-screen-2xl mx-auto pt-5 px-4;
+  }
+
+  #todo__container{
+    @apply grid grid-cols-1 lg:grid-cols-4 gap-4 items-start duration-300;
+  }
+
+  #todo__header,  #todo__container__sidebar,  #todo__container__tasks > * {
+    @apply p-6;
+  }
+
+  #todo__container__tasks > * {
+    @apply flex flex-col space-y-4;
+  }
+
+  #todo__header {
+    @apply mb-4;
+  }
+
+  #todo__header__title  {
+    @apply text-2xl block font-semibold mb-4 cursor-pointer;
+  }
+
+  #todo__header__description{
+    @apply italic block cursor-pointer;
+  }
+
+  #todo[data-new-todo] #todo__header__title {
+    @apply text-gray-500;
+  }
+
+  #todo__container__tasks {
+    @apply lg:col-span-3 w-full grid grid-cols-1 xl:grid-cols-3 gap-2 xl:min-h-96;
+  }
+
+  #todo__container__tasks h2 {
+    @apply text-xl border-b-2 block w-auto;
+  }
 }

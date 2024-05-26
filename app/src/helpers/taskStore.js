@@ -3,7 +3,6 @@ const TASKS_API_ROOT = '/api/tasks'
 class TaskStore {
   constructor() {
     this.tasks = []
-    this.listener = () => {}
   }
 
   listen(listener) {
