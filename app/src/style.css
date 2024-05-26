@@ -29,18 +29,30 @@
     @apply font-primary text-text;
   }
 
+  button {
+    @apply bg-transparent border-0 shadow-none;
+  }
+
   input,
-  button,
-  a.button {
+  .custom-button,
+  a.custom-button {
     @apply rounded p-2;
   }
 
-  button.button, a.button {
+  .custom-button, a.custom-button {
     @apply bg-text text-primary pt-4 px-8 shadow-xl border-b-8 border-text relative hover:bg-text/90 hover:border-primary/30 duration-300 mb-4;
+  }
+
+  .return{
+    @apply  mb-6 text-2xl hover:text-gray-500 duration-300
   }
 
   .button--centered {
     @apply w-fit mx-auto block;
+  }
+
+  .button--green {
+    @apply bg-green-500 border-green-500 hover:bg-green-500 hover:border-green-200/30;
   }
 
   .errors {
@@ -48,7 +60,7 @@
   }
 
   .box {
-    @apply rounded-xl bg-gray-300/30 backdrop-blur-sm shadow-xl;
+    @apply rounded-xl bg-gray-300/30 backdrop-blur-sm shadow-md;
     /* transition: all 0.8s;
     opacity: 0;
     transform: translateY(40px); */
@@ -165,18 +177,18 @@
   }
 
   #todo__header {
-    @apply mb-4;
+    @apply mb-4 flex flex-col md:flex-row justify-between items-start gap-4;
   }
 
-  #todo__header__title  {
+  #todo__header__meta__title  {
     @apply text-2xl block font-semibold mb-4 cursor-pointer;
   }
 
-  #todo__header__description{
+  #todo__header__meta__description{
     @apply italic block cursor-pointer;
   }
 
-  #todo[data-new-todo] #todo__header__title {
+  #todo[data-new-todo] #todo__header__meta__title {
     @apply text-gray-500;
   }
 
@@ -193,6 +205,25 @@
   }
 
   .todo__container__tasks__list__item {
-    @apply bg-gray-200 rounded p-4
+    @apply bg-gray-200 rounded w-full p-4 flex justify-between items-start cursor-pointer hover:shadow-sm gap-2;
+  }
+
+  .todo__container__tasks__list__item > p {
+    @apply w-[70%] break-words;
+  }
+
+  .todo__container__tasks__list__item__actions {
+    @apply opacity-0  duration-300 w-[20%] flex justify-end gap-1
+  }
+
+  .todo__container__tasks__list__item__actions > * {
+    @apply rounded p-2 bg-gray-100 shadow-sm
+  }
+
+  .todo__container__tasks__list__item__actions button[data-action="update"] {
+    @apply hover:text-blue-700 duration-150
+  }
+  .todo__container__tasks__list__item__actions button[data-action="delete"] {
+    @apply hover:text-red-700 duration-150
   }
 }

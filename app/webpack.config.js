@@ -8,6 +8,7 @@ module.exports = {
         compress: true,
         static: path.join(__dirname, 'dist'),
         port: 9000,
+        historyApiFallback: true,
         // Allow connections from outside the container (not much use otherwise).
         host: process.env.HOST || '0.0.0.0',
         // // Proxy api routes through to the todo backend.
@@ -22,6 +23,7 @@ module.exports = {
     output: {
         filename: 'main.js',
         path: path.resolve(__dirname, 'dist'),
+        publicPath: '/',
     },
     module: {
         rules: [

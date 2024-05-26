@@ -2,11 +2,19 @@ const Button = ({
     type,
     text,
     centeredPosition,
-    href = null
+    href = null,
+    color = null,
+    data = null,
+    dataValue = null,
 }) => {
+    const colorPalette = {
+        green: 'button--green',
+        red: 'button--red',
+        blue: 'button--blue',
+    }
     return (`
             <${type === 'link' ? 'a data-navigo' : 'button'}
-             class="button ${centeredPosition && 'button--centered'}"
+             class="custom-button ${centeredPosition ? ' button--centered' :  ''} ${color ? colorPalette[color] : ''}"
              ${type === 'button' ? 'type=' + type : ''}
              ${type === 'link' ? 'href=' + href : ''}
              >
