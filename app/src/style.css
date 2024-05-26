@@ -187,4 +187,12 @@
   #todo__container__tasks h2 {
     @apply text-xl border-b-2 block w-auto;
   }
+
+  .todo__container__tasks__list{
+    @apply flex flex-col gap-4;
+  }
+
+  .todo__container__tasks__list__item {
+    @apply bg-gray-200 rounded p-4
+  }
 }
