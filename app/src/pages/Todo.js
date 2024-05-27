@@ -66,6 +66,7 @@ const Todo = () => {
 
   const messageElement = document.querySelector('.flash-message');
   if (messageElement) {
+    //A la fin de l'animation supprimer le state
     messageElement.animate([
       { opacity: 1, transform: 'translateY(0)' },
       { opacity: 0, transform: 'translateY(-200%)' }
@@ -75,7 +76,12 @@ const Todo = () => {
         delay: 2000,
         fill: "both",
       },
-    );
+    )
+    messageElement.addEventListener('animationend', () => {
+      setState({...state, message: { text: null, type: null } })
+      messageElement.remove();
+    })
+
   }
 
   //Transformer le titre et la description au clic en input

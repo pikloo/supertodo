@@ -1,8 +1,8 @@
 // Define the initial state
 let state = {
   message: {
-    text: 'message',
-    type: 'success'
+    text: null,
+    type: null
   },
   userDatas: [],
   todos: [],
