@@ -183,6 +183,21 @@ $router->map(
 
 
 /************************************* 
+    COLLECTIONS TASKS OF TODO
+/************************************/
+
+$router->map(
+    'GET',
+    '/todos/[i:id]/tasks',
+    [
+        'action' => 'getTasks',
+        'controller' => 'TodoController',
+    ],
+    'readTasksByStatus'
+);
+
+
+/************************************* 
     USER HAS TODO (COLLABORATION)
 /************************************/
 

@@ -17,7 +17,7 @@ const Button = ({
              class="custom-button ${centeredPosition ? ' button--centered' :  ''} ${color ? colorPalette[color] : ''}"
              ${type === 'button' ? 'type=' + type : ''}
              ${type === 'link' ? 'href=' + href : ''}
-             ${data ? `data-${data}` : ''}
+             ${data ? `data-${data}` : ''}${dataValue ? `=${dataValue}` : ''}
              >
             ${text}
             </${type === 'link' ? 'a' : 'button'}>

@@ -91,7 +91,6 @@ class Router {
      * @param {String} path 
      */
     setRoute(path) {
-        console.log(path)
         if (!this._findRoute(path))
             throw TypeError("Invalid route");
 

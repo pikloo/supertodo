@@ -91,15 +91,14 @@ class Task extends CoreModel
 
     public static function findAllByTodoAndStatus($todoId, $status){
         $pdo = Database::getPDO();
-        $sql =  `
-        SELECT t.*, GROUP_CONCAT(CONCAT(u.firstname, ' ', u.lastname)) AS workers, FROM st_task t
-        INNER JOIN st_todo to on t.todo_id = to.id
-        INNER JOIN st_user_task ut ON ut.task_id = t.id
-        INNER JOIN st_user u on ut.user_id = u.id
-        WHERE to.id = :id
-        AND t.status = :status
-        GROUP BY u.id
-        ORDER BY t.created_at DESC`;
+        $sql =  '
+        SELECT t.* FROM `st_task` AS t
+        INNER JOIN `st_todo` AS td on t.`todo_id` = td.`id`
+        INNER JOIN `st_user_task` AS ut ON ut.`task_id` = t.`id`
+        INNER JOIN `st_user` AS u on ut.`user_id` = u.`id`
+        WHERE td.`id` = :id
+        AND t.`status` = :status
+        ORDER BY t.`created_at` DESC';
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':id', $todoId, PDO::PARAM_INT);
         $pdoStatement->bindParam(':status', $status, PDO::PARAM_STR);

@@ -163,7 +163,22 @@
   }
 
   .dashboard__content__projects__container__item__card{
-    @apply bg-white/70 block border-2 border-gray-500 hover:border-gray-800 hover:shadow-lg rounded-xl backdrop-blur-sm p-4 duration-300;
+    @apply flex justify-between items-start bg-white/70 block border-2 border-gray-500 hover:border-gray-800 hover:shadow-lg rounded-xl backdrop-blur-sm p-4 duration-300;
+  }
+
+  .dashboard__content__projects__container__item__card__actions {
+    @apply opacity-0 w-[20%] flex justify-end gap-1
+  }
+
+  .dashboard__content__projects__container__item__card__actions > * {
+    @apply rounded p-2 bg-gray-100 shadow-sm
+  }
+
+  .dashboard__content__projects__container__item__card__actions button[data-action="update"] {
+    @apply hover:text-blue-700 duration-150
+  }
+  .dashboard__content__projects__container__item__card__actions button[data-action="delete"] {
+    @apply hover:text-red-700 duration-150 z-50
   }
 
   /*---------------------Todo-------------------------*/

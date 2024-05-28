@@ -10,7 +10,7 @@ header("Access-Control-Allow-Origin: http://localhost:9000");
 header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
 header('Content-Type: application/json');
 header('Access-Control-Allow-Headers: Content-Type, Accept, X-Requested-With');
-header('Access-Control-Allow-Methods: POST, GET, DELETE, PUT');
+header('Access-Control-Allow-Methods: POST, GET, DELETE, PATCH');
 header('Access-Control-Allow-Credentials: true');
 
 if (array_key_exists('BASE_URI', $_SERVER)) {
@@ -25,7 +25,6 @@ require __DIR__ . '/router.php';
 $match = $router->match();
 
 if ($match) {
-
     $controllerToUse = '\SuperTodo\Controllers\\' . $match['target']['controller'];
     $methodToUse = $match['target']['action'];
     $controller = new $controllerToUse();

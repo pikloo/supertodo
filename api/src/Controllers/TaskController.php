@@ -113,7 +113,7 @@ class TaskController extends CoreController
             'title' => $task->getTitle(),
             'status' => $task->getStatus(),
             'todo' => $task->getTodoId()
-        ], 'task');
+        ]);
     }
 
     public function delete($taskId)

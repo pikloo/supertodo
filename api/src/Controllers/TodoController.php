@@ -45,7 +45,7 @@ class TodoController extends CoreController
                     $data = [
                         'id' => $todo->getId(),
                         'title' => $todo->getTitle(),
-                        'desc' => $todo->getDesc(),
+                        'description' => $todo->getDesc(),
                         'user' => [
                             'firstname' => $user->getFirstname(),
                             'lastname' => $user->getLastname(),
@@ -93,7 +93,7 @@ class TodoController extends CoreController
                 foreach ($data as $key => $value) {
                     match (true) {
                         $key === 'title' => $todo->setTitle($value),
-                        $key === 'desc' => $todo->setDesc($value),
+                        $key === 'description' => $todo->setDesc($value),
                         $key === 'user' => $todo->setUserId($value),
                     };
                 }
@@ -103,7 +103,7 @@ class TodoController extends CoreController
                     $data = [
                         'id' => $todo->getId(),
                         'title' => $todo->getTitle(),
-                        'desc' => $todo->getDesc(),
+                        'description' => $todo->getDesc(),
                         'user' => [
                             'firstname' => $user->getFirstname(),
                             'lastname' => $user->getLastname(),
@@ -132,7 +132,7 @@ class TodoController extends CoreController
         $this->json_response(200,  [
             'id' => $todo->getId(),
             'title' => $todo->getTitle(),
-            'desc' => $todo->getDesc(),
+            'description' => $todo->getDesc(),
             'owner' => [
                 'firstname' => $todo->getOwner()->getFirstname(),
                 'lastname' => $todo->getOwner()->getLastname(),
@@ -142,13 +142,15 @@ class TodoController extends CoreController
     }
 
 
-    public function getTasks($todoId, $status)
+    public function getTasks($todoId)
     {
+        $status = $_GET['status'];        
         $todo = Todo::find($todoId);
-        $todo === null && $this->json_response(404,['error' =>'Ressource non trouvé ']);;
+        $todo === null && $this->json_response(404,['error' =>'Ressource non trouvé ']);
         $this->security->checkTodoAuthorization($todo, 'getTasks');
 
         $tasks = Task::findAllByTodoAndStatus($todoId, $status);
+        // var_dump($tasks);
         $this->json_response(200,  $tasks);
     }
 

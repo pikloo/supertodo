@@ -1,12 +1,13 @@
+import { setMessage, setTodoInformations } from "../actions"
 import { router } from "../router"
 import { setState, state, subscribe } from "../store"
+import { inputHandlerLogic } from "./inputHandler"
 import taskStore from "./taskStore"
 
 const TODOS_API_ROOT = "/todos"
 
 class TodoStore {
     constructor() {
-        this.todos = []
         this.currentTodo = {
             id: null,
             title: "",
@@ -29,27 +30,34 @@ class TodoStore {
         this.listener = () => { }
     }
 
-    // async getTodo(id) {
-    //     const response = await fetchJson(itemUrl(id))
-    //     if (!response.ok) throw new Error('Failed to fetch todo')
-    //     const body = await response.json()
-    //     this.todos = body
-    //     this.listener()
-    //     setTodo(body)
+    async getTodo(id) {
+        const response = await fetchJson(itemUrl(id))
+        if (!response.ok) throw new Error('Failed to fetch todo')
+        const body = await response.json()
+        this.currentTodo = body
+        this.listener()
 
-    //     subscribe(function (newState) {
-    //         //Afficher le titre dans le header
-    //         const header = document.querySelector('#todo-container__header');
-    //         const title = document.querySelector('#todo-container__header__title')
-    //         title.textContent = body.title
-    //         header.innerHTML += `
-    //         <p id="todo-container__header__description">${body.description}</p>
-    //         <p id="todo-container__header__infos">Créé par ${body.owner.firstname} ${body.owner.lastname} le ${body.createdAt}. <span>Dernière modification le ${body.updatedAt}</span></p>
-    //         `
-    //     });
+        const description = document.querySelector('#todo__header__meta__description');
+                const title = document.querySelector('#todo__header__meta__title')
 
-    //     return body
-    // }
+        subscribe(function (newState) {
+            //Afficher le titre dans le header
+            // if (newState.currentTodo != this.currentTodo) {
+                
+                const newTodoContainer = document.querySelector('[data-new-todo]')
+                if (newTodoContainer) newTodoContainer.removeAttribute('data-new-todo')
+                title.textContent = newState.currentTodo.title
+                description.textContent = newState.currentTodo.description ? newState.currentTodo.description : 'Description du projet'
+                this.currentTodo = newState.currentTodo
+            // }
+
+        });
+        setTodo(body)
+        
+        const submitButton = document.querySelector('button[data-todo-submit]');
+        submitButton.dataset.todoSubmit = 'update'
+        return body
+    }
 
 
     async createTodo() {
@@ -69,24 +77,23 @@ class TodoStore {
                 this.errors.push(body.error)
             }
             else {
-                console.log(body.id)
                 //Ajouter les tâches
                 if (state.currentTodo.tasks) {
                     const statusList = Object.keys(state.currentTodo.tasks)
                     statusList.forEach(status => {
 
-                    const newStatus = {
-                        todo: 'todo',
-                        progress: 'doing',
-                        done: 'done'
-                    }
-                        state.currentTodo.tasks[status].forEach(task => {
-                            taskStore.create({
+                        const newStatus = {
+                            todo: 'todo',
+                            progress: 'doing',
+                            done: 'done'
+                        }
+                        state.newTodo.tasks[status].forEach(async task => {
+                            await taskStore.create({
                                 title: task,
                                 id: body.id,
                                 status: newStatus[status]
-                                    
-                            
+
+
                             })
 
                         });
@@ -95,22 +102,11 @@ class TodoStore {
                 }
 
                 //Rediriger vers la page
+                localStorage.setItem('currentProject', body.id);
+                setMessage({ text: "Les modifications ont bien été sauvegardées", type: 'success' })
                 router.setRoute(`/project/${body.id}`)
                 //Mettre un message dans le state
-                setMessage({text: "Les modifications ont bien été sauvegardées", type: 'success'})
-                // //Vider le state
-                // setState({...state, currentTodo: {
-                //     id: null,
-                //     title: "",
-                //     description: "",
-                //     tasks: {
-                //         done: [],
-                //         todo: [],
-                //         progress: [],
-                //     }
-                // }
-                // })
-                
+
                 this.listener()
                 // setTodo(body)
             }
@@ -118,13 +114,78 @@ class TodoStore {
     }
 
 
+    async updateTodo(todo) {
+        if (state.currentTodo.title) {
+            const response = await fetchJson(itemUrl(state.currentTodo.id), {
+                method: 'POST',
+                body: JSON.stringify(
+                    {
+                        title: state.currentTodo.title,
+                        desc: state.newTodo.description,
+                    }
+                )
+            })
+            const body = await response.json()
+            if (!response.ok) {
+                this.errors.push(body.error)
+            }
+            else {
+                //Ajouter les tâches
+                // if (state.newTodo.tasks) {
+                //     const statusList = Object.keys(state.newTodo.tasks)
+                //     statusList.forEach(status => {
+
+                //         const newStatus = {
+                //             todo: 'todo',
+                //             progress: 'doing',
+                //             done: 'done'
+                //         }
+                //         state.newTodo.tasks[status].forEach(async task => {
+                //             await taskStore.create({
+                //                 title: task,
+                //                 id: body.id,
+                //                 status: newStatus[status]
+
+
+                //             })
+
+                //         });
+                //     })
+
+                // }
+
+                //Rediriger vers la page
+                // localStorage.setItem('currentProject', body.id);
+                setMessage({ text: "Les modifications ont bien été sauvegardées", type: 'success' })
+                // router.setRoute(`/project/${body.id}`)
+                //Mettre un message dans le state
+
+                this.listener()
+                // setTodo(body)
+            }
+        }
+        
+    }
+
+
 
 
 }
 
-function setMessage(message) {
-    setState({...state, message })
+
+function setTodo(todo) {
+    setState({
+        ...state,
+        currentTodo: {
+            ...state.currentTodo,
+            id: todo.id,
+            title: todo.title,
+            description: todo.desc,
+        }
+    })
 }
+
+
 
 async function fetchJson(url, options) {
     const response = await fetch(url, {
@@ -138,9 +199,6 @@ async function fetchJson(url, options) {
     return response
 }
 
-function setTodo(todo) {
-    setState({ ...state, currentTodo: todo });
-}
 
 function rootUrl() {
     return new URL(TODOS_API_ROOT, `${process.env.DOMAIN_URL}:${process.env.API_PORT}`)

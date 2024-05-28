@@ -1,8 +1,9 @@
-const TASKS_API_ROOT = '/api/tasks'
+const TASKS_API_ROOT = '/tasks'
 
 class TaskStore {
   constructor() {
     this.tasks = []
+    this.errors = []
   }
 
   listen(listener) {
@@ -47,6 +48,7 @@ class TaskStore {
 
 async function fetchJson(url, options) {
   const response = await fetch(url, {
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json'

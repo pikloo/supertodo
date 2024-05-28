@@ -36,15 +36,40 @@ class UserStore {
             const projectElement = document.createElement('li');
             projectElement.classList.add('dashboard__content__projects__container__item');
             projectElement.innerHTML = `
-          <a href="project/${todo.id}" data-navigo class="dashboard__content__projects__container__item__card">
+          <a href="project/${todo.id}" data-navigo data-project-id="${todo.id}" class="dashboard__content__projects__container__item__card">
+            <div>
             <h3>${todo.title}</h3>
             <p>${todo.createdAt}</p>
+            </div>
+            <div class="dashboard__content__projects__container__item__card__actions">
+                <button data-action="delete"><i class="fa-solid fa-trash-can"></i></button>
+              </div>
           </a>
         `;
             projectsList.appendChild(projectElement);
+
+            projectElement.addEventListener('mouseover', () => {
+              const actions = projectElement.querySelector('.dashboard__content__projects__container__item__card__actions')
+              actions.style.opacity = 1;
+            })
+
+            projectElement.addEventListener('mouseleave', () => {
+              const actions = projectElement.querySelector('.dashboard__content__projects__container__item__card__actions')
+              actions.style.opacity = 0;
+            })
+
+
+            //Supprimer une todo au clic sur le bouton delete
+            const deleteButtons = document.querySelectorAll('[data-action="delete"]');
+            deleteButtons.forEach(button => {
+              button.addEventListener('mouseover', () => {
+                e.preventDefault();
+                console.log('Deleting')
+              })
+            })
           });
           projectSection.innerHTML += `
-          ${Button({ type: 'link', text: 'Nouveau projet ➕', centeredPosition: true, href: 'newproject' })}
+          ${Button({ type: 'link', text: 'Nouveau projet ➕', centeredPosition: true, href: 'newproject', data : 'new-project' })}
         `;
           projectSection.appendChild(projectsList);
         } else {
@@ -52,24 +77,35 @@ class UserStore {
           projectEmptyDiv.setAttribute('id', 'dashboard__content__projects__empty');
           projectEmptyDiv.innerHTML = `
           <p>Vous n'avez pas encore de projet</p>
-          ${Button({ type: 'link', text: 'Créer un nouveau projet 📋',  href: 'newproject' })}
+          ${Button({ type: 'link', text: 'Créer un nouveau projet 📋', href: 'newproject', data : 'new-project' })}
         `;
 
           projectSection.appendChild(projectEmptyDiv);
         }
         this.todos = newState.todos
 
+        const newProjectLinks = document.querySelectorAll('a[data-new-project]');
+        newProjectLinks.forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('currentProject');
+          });
+        });
+
+
+        const links = document.querySelectorAll('a[data-project-id]')
+        links.forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.setItem('currentProject', link.getAttribute('data-project-id'));
+          });
+        });
+
       }
     })
     setUserTodos(body)
 
-    // const links = document.querySelectorAll('a[data-navigo]')
-    // links.forEach(link => {
-    //   link.addEventListener('click', (e) => {
-    //     e.preventDefault();
-    //     router.setRoute(`/${link.href.split('/')[3]}`)
-    //   });
-    // });
+
 
     return body
   }

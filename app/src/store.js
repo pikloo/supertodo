@@ -8,12 +8,16 @@ let state = {
   todos: [],
   currentTodo:
   {
+    id: null,
+    title: "",
+    description: "",
     tasks: {
       done: [],
       todo: [],
       progress : [],
     }
-  }
+  },
+
 
 };
 
@@ -22,7 +26,6 @@ let subscribers = [];
 
 // Define a function to update the state and notify subscribers
 function setState(newState) {
-  // console.log(newState, subscribers[0]);
   state = newState;
 
   // Notify subscribers
