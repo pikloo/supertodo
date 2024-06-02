@@ -129,7 +129,7 @@
   }
 
   #dashboard__content {
-    @apply grid grid-cols-1 lg:grid-cols-3 gap-4 duration-300;
+    @apply grid grid-cols-1 lg:grid-cols-3 gap-4 duration-300 items-start;
   }
 
   #dashboard__content__user,

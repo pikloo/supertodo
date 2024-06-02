@@ -2,7 +2,7 @@ const TASKS_API_ROOT = '/tasks'
 
 class TaskStore {
   constructor() {
-    this.tasks = []
+    this.tasks = {}
     this.errors = []
   }
 
@@ -13,6 +13,51 @@ class TaskStore {
   unlisten() {
     this.listener = () => { }
   }
+
+   //Appel à l'API pour récupération des tâche en fonction du status
+   async getTasksByStatus(status, currentTodo) {
+    const statusLink = {
+        todo: 'todo',
+        doing: 'progress',
+        done: 'done'
+    }
+    const response = await fetchJson(itemUrl(state.currentTodo.id) + `/tasks?status=${status}`)
+    if (!response.ok) throw new Error('Failed to fetch todo')
+    const body = await response.json()
+    // console.log(body)
+    
+    this.listener()
+
+    subscribe(function (newState) {
+        
+        console.log(newState.currentTodo.tasks[statusLink[status]], currentTodo.tasks[statusLink[status]])
+        if (newState.currentTodo.tasks[statusLink[status]] !== currentTodo.tasks[statusLink[status]]) {
+            // if (newState.currentTodo!= this.currentTodo) {
+            const allContainers = document.querySelectorAll('[data-tasks-status]')
+            const container = [...allContainers].filter(container => container.getAttribute('data-tasks-status') === statusLink[status])
+            if (container.length > 0) {
+                const container = document.querySelector(`[data-tasks-status="${statusLink[status]}"]`)
+                const listItem = document.createElement('ul');
+                listItem.setAttribute('class', `todo__container__tasks__list`);
+
+                // console.log(newState.currentTodo.tasks[statusLink[status]])
+
+                newState.currentTodo.tasks[statusLink[status]].forEach(task => {
+                    taskCreator(task.title, listItem)
+                });
+                container.appendChild(listItem);
+            }
+            console.log(this)
+            // this.currentTodo.tasks[statusLink[status]] = newState.currentTodo.tasks[statusLink[status]]
+        }
+
+
+        // inputHandlerLogic()
+    });
+
+    setTasksCollection(status, body);
+    return body
+}
 
   async list() {
     const response = await fetchJson(rootUrl())

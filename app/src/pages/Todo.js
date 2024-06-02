@@ -1,7 +1,8 @@
 import { setNewTasks, setNewTodoInformations, setTasks, setTodoInformations } from "../actions";
 import Button from "../components/Button";
 import FlashMessage from "../components/FlashMessage";
-import { inputHandlerLogic } from "../helpers/inputHandler";
+import { inputHandlerLogic, tasksHandlerLogic, todoInformationsHandlerLogic } from "../helpers/inputHandler";
+import { messageHandle, messageHandler } from "../helpers/messageHandler";
 import todoStore from "../helpers/todoStore";
 import { setState, state, subscribe } from "../store";
 
@@ -13,8 +14,11 @@ const Todo = () => {
   const todoId = localStorage.getItem('currentProject');
   // todoId && todoStore.getTodo(todoId);
   if (todoId) {
-    todoStore.getTodo(todoId)// const todo = new todoStore({});
-    
+    const todo = todoStore
+    todo.getTodo(todoId)
+    todo.getTasksByStatus(todoId, 'todo')
+    todo.getTasksByStatus(todoId, 'doing')
+    todo.getTasksByStatus(todoId, 'done')
   }
 
 
@@ -45,14 +49,17 @@ const Todo = () => {
         <div id="todo__container__tasks__todo" data-tasks-status="todo" class="box">
             <h2>A faire</h2>
             <input type="text" name="newTaskTodo" placeholder="Mettre en place un certificat SSL..." />
+            <ul class="todo__container__tasks__list"></ul>
         </div>
         <div id="todo__container__tasks__in-progress" data-tasks-status="progress" class="box">
             <h2>En cours</h2>
             <input type="text" name="newTaskInProgress" placeholder="Tester la connexion..." />
+            <ul class="todo__container__tasks__list"></ul>
         </div>
         <div id="todo__container__tasks__done" data-tasks-status="done" class="box">
             <h2>Terminées</h2>
             <input type="text" name="newTaskDone" placeholder="Créer la base de données..." />
+            <ul class="todo__container__tasks__list"></ul>
         </div>
       </main>
       
@@ -63,7 +70,7 @@ const Todo = () => {
 
 
 
-  const todoContainer = document.querySelector('#todo');
+    const todoContainer = document.querySelector('#todo');
 
 
   //Enregistrement du projet
@@ -74,35 +81,14 @@ const Todo = () => {
     submitButton.getAttribute('data-todo-submit') === 'new' ? todoStore.createTodo() : todoStore.updateTodo();
   })
 
-  if (state.message.text) {
-    todoContainer.insertAdjacentHTML('afterbegin', FlashMessage({ message: state.message.text, type: state.message.type }));
-  }
-
-  const messageElement = document.querySelector('.flash-message');
-  if (messageElement) {
-    //A la fin de l'animation supprimer le state
-    const anim = messageElement.animate([
-      { opacity: 1, transform: 'translateY(0)' },
-      { opacity: 0, transform: 'translateY(-200%)' }
-    ],
-      {
-        duration: 1000,
-        delay: 2000,
-        fill: "both",
-      },
-    )
-    anim.onfinish = () => {
-      setState({ ...state, message: { text: null, type: null } })
-      messageElement.remove();
-    }
-
-  }
+  messageHandler(state, todoContainer)
 
   //Transformer le titre et la description au clic en input
-  const title = document.querySelector('#todo__header__meta__title');
-  const description = document.querySelector('#todo__header__meta__description');
+  
   const isNewTodo = url.href.split('/')[3] ==! 'project' ;
-  inputHandlerLogic([title, description])
+  todoInformationsHandlerLogic()
+  tasksHandlerLogic()
+
 
   
 

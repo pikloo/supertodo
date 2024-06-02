@@ -1,7 +1,11 @@
 import { setTasks, setTodoInformations } from "../actions";
+import { setState, state } from "../store";
 
-export function inputHandlerLogic(elements) {
+export function todoInformationsHandlerLogic() {
   const todoContainer = document.querySelector('#todo');
+  const title = document.querySelector('#todo__header__meta__title');
+  const description = document.querySelector('#todo__header__meta__description');
+  const elements = [title, description];
   elements.forEach(element => {
     element.addEventListener('click', () => {
       const input = document.createElement('input');
@@ -36,10 +40,19 @@ export function inputHandlerLogic(elements) {
       });
     });
   });
+}
 
+
+
+
+
+
+
+export function tasksHandlerLogic() {
   //Ajouter la tâche au clic en créant un list sous l'input
   const inputs = document.querySelectorAll('#todo__container__tasks input')
   inputs.forEach(input => {
+
     input.addEventListener('keyup', (e) => {
       if (e.key === 'Enter') {
         input.blur();
@@ -49,32 +62,14 @@ export function inputHandlerLogic(elements) {
       if (input.value.length > 0) {
         //Créer la liste de tâche si elle n'existe pas
         const container = input.parentElement;
-        let list = container.querySelector('.todo__container__tasks__list')
-        if (!list) {
-          list = document.createElement('ul');
-          list.setAttribute('class', `todo__container__tasks__list`);
-        }
+        const list = container.querySelector('.todo__container__tasks__list')
 
-        const task = document.createElement('li');
-        task.setAttribute('class', `todo__container__tasks__list__item`);
-        task.addEventListener('mouseover', () => {
-          const actions = task.querySelector('.todo__container__tasks__list__item__actions')
-          actions.style.opacity = 1;
-        })
-
-        task.addEventListener('mouseleave', () => {
-          const actions = task.querySelector('.todo__container__tasks__list__item__actions')
-          actions.style.opacity = 0;
-        })
-
-        //Création de la tâche
-        task.innerHTML = `
-              <p>${input.value}</p>
-              <div class="todo__container__tasks__list__item__actions">
-                <button data-action="update"><i class="fa-solid fa-pencil"></i></button>
-                <button data-action="delete"><i class="fa-solid fa-trash-can"></i></button>
-              </div>
-            `;
+        // Si l'url est new project
+        const url = new URL(window.location.href);
+        const isNewTodo = url.href.split('/')[3] == 'newproject';
+        isNewTodo && taskCreator({
+          title: input.value
+        }, list)
 
         //Récupérer le status de la liste de tâche
         const status = container.getAttribute('data-tasks-status');
@@ -84,7 +79,7 @@ export function inputHandlerLogic(elements) {
           value: input.value
         })
 
-        list.prepend(task);
+
         container.appendChild(list);
 
 
@@ -127,19 +122,46 @@ export function inputHandlerLogic(elements) {
     })
   })
 
-  // //Vider le state de currentTodo au clic sur le bouton retour
-  // const backButton = document.querySelector('.return');
-  // backButton.addEventListener('click', (e) => {
-  //   e.preventDefault();
-  //   setState({...state, currentTodo: {
-  //     ...state.currentTodo,
-  //      title: '',
-  //      description: '',
-  //   } });
-  // })
+  //Vider le state de currentTodo au clic sur le bouton retour
+  const backButton = document.querySelector('.return');
+  backButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    setState({...state, currentTodo: {
+      ...state.currentTodo,
+       title: '',
+       description: '',
+       id: null,
+       tasks: {
+         done: [],
+         todo: [],
+         progress: [],
+       }
+    } });
+  })
+}
 
 
+export function taskCreator(task, listItem) {
+  const taskElement = document.createElement('li');
+  task.id && taskElement.setAttribute('data-task-id', task.id);
+  taskElement.setAttribute('class', `todo__container__tasks__list__item`);
+  taskElement.addEventListener('mouseover', () => {
+    const actions = taskElement.querySelector('.todo__container__tasks__list__item__actions')
+    actions.style.opacity = 1;
+  })
 
+  taskElement.addEventListener('mouseleave', () => {
+    const actions = taskElement.querySelector('.todo__container__tasks__list__item__actions')
+    actions.style.opacity = 0;
+  })
 
+  taskElement.innerHTML = `
+      <p>${task.title}</p>
+      <div class="todo__container__tasks__list__item__actions">
+          <button data-action="update"><i class="fa-solid fa-pencil"></i></button>
+          <button data-action="delete"><i class="fa-solid fa-trash-can"></i></button>
+      </div>
+      `;
 
+  listItem.prepend(taskElement)
 }

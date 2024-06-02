@@ -94,8 +94,7 @@ class Task extends CoreModel
         $sql =  '
         SELECT t.* FROM `st_task` AS t
         INNER JOIN `st_todo` AS td on t.`todo_id` = td.`id`
-        INNER JOIN `st_user_task` AS ut ON ut.`task_id` = t.`id`
-        INNER JOIN `st_user` AS u on ut.`user_id` = u.`id`
+        LEFT JOIN `st_user_task` AS ut ON ut.`task_id` = t.`id`
         WHERE td.`id` = :id
         AND t.`status` = :status
         ORDER BY t.`created_at` DESC';

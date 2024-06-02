@@ -150,8 +150,20 @@ class TodoController extends CoreController
         $this->security->checkTodoAuthorization($todo, 'getTasks');
 
         $tasks = Task::findAllByTodoAndStatus($todoId, $status);
-        // var_dump($tasks);
-        $this->json_response(200,  $tasks);
+        
+        $datas = [];
+
+        foreach($tasks as $task){
+            $datas[] = [
+                'id' => $task->getId(),
+                'title' => $task->getTitle(),
+                'status' => $task->getStatus(),
+                'created_at' => $task->getCreatedAt(),
+                'updated_at' => $task->getUpdatedAt()
+            ];
+        }
+        
+        $this->json_response(200,  $datas);
     }
 
     public function delete($todoId)
