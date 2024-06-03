@@ -82,8 +82,8 @@ class TaskStore {
       method: 'PATCH',
       body: JSON.stringify(
         {
-          title: task.title
-          // status: task.status,
+          title: task.title,
+          status: task.status,
         }
       )
     })

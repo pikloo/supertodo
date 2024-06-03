@@ -47,7 +47,7 @@ class TodoStore {
                     const listItem = container.querySelector('.todo__container__tasks__list');
                     listItem.innerHTML = '';
                     newState.currentTodo.tasks[statusLink[status]].forEach(task => {
-                        taskCreator(task, listItem)
+                        taskCreator(task, listItem, statusLink[status])
                     });
                     tasksHandlerLogic()
                     taskActionHandler(container);
@@ -57,6 +57,8 @@ class TodoStore {
             }
 
         });
+
+        
         setTasksCollection(status, body);
         return body
     }

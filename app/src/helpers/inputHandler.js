@@ -1,4 +1,5 @@
-import { deleteTasks, setTasks, setTodoInformations, updateTasks } from "../actions";
+import { deleteTasks, setTasks, setTodoInformations, updateTasks, updateTasksStatus } from "../actions";
+import Todo, { increment } from "../pages/Todo";
 
 export function todoInformationsHandlerLogic() {
   const todoContainer = document.querySelector('#todo');
@@ -58,15 +59,17 @@ export function tasksHandlerLogic() {
         const container = input.parentElement;
         const list = container.querySelector('.todo__container__tasks__list')
 
+        //Récupérer le status de la liste de tâche
+        const status = container.getAttribute('data-tasks-status');
+
         // Si l'url est new project
         const url = new URL(window.location.href);
         const isNewTodo = url.href.split('/')[3] == 'newproject';
         isNewTodo && taskCreator({
           title: input.value
-        }, list)
+        }, list, status)
 
-        //Récupérer le status de la liste de tâche
-        const status = container.getAttribute('data-tasks-status');
+
         //Ajout de la tâche dans le state
         setTasks({
           field: status,
@@ -149,27 +152,90 @@ export function taskActionHandler(container = null) {
 }
 
 
-export function taskCreator(task, listItem) {
-  const taskElement = document.createElement('li');
-  task.id && taskElement.setAttribute('data-task-id', task.id);
-  taskElement.setAttribute('class', `todo__container__tasks__list__item`);
-  taskElement.addEventListener('mouseover', () => {
-    const actions = taskElement.querySelector('.todo__container__tasks__list__item__actions')
-    actions.style.opacity = 1;
+export function taskCreator(task, listItem, status) {
+  if (task) {
+    const taskElement = document.createElement('li');
+
+    taskElement.setAttribute('class', `todo__container__tasks__list__item`);
+    if (task.id) { taskElement.setAttribute('data-task-id', task.id) }
+    else {
+      const newTasks = document.querySelectorAll('[data-new-task-id]')
+      taskElement.setAttribute('data-new-task-id', newTasks.length + 1);
+    }
+    taskElement.setAttribute('draggable', true);
+    // const status =  taskElement.parentElement.parentElement.getAttribute('data-task-status');
+    taskDragHandler(taskElement, status);
+    taskElement.addEventListener('mouseover', () => {
+      const actions = taskElement.querySelector('.todo__container__tasks__list__item__actions')
+      actions.style.opacity = 1;
+    })
+
+    taskElement.addEventListener('mouseleave', () => {
+      const actions = taskElement.querySelector('.todo__container__tasks__list__item__actions')
+      actions.style.opacity = 0;
+    })
+
+
+
+
+    taskElement.innerHTML = `
+        <p>${task.title}</p>
+        <div class="todo__container__tasks__list__item__actions">
+            <button data-action="update"><i class="fa-solid fa-pencil"></i></button>
+            <button data-action="delete"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+        `;
+
+    listItem.prepend(taskElement)
+  }
+
+}
+
+export function taskDragHandler(task, oldStatus) {
+  task.addEventListener('dragstart', (e) => {
+    const data = task.hasAttribute('data-task-id') ? { id: task.getAttribute('data-task-id') } : {
+      id: task.getAttribute('data-new-task-id'),
+      isNewTask: true
+    }
+    e.dataTransfer.setData('data', JSON.stringify(data))
+
+
   })
 
-  taskElement.addEventListener('mouseleave', () => {
-    const actions = taskElement.querySelector('.todo__container__tasks__list__item__actions')
-    actions.style.opacity = 0;
-  })
+  const todoContainer = document.querySelector('#todo__container__tasks__todo')
+  dropZoneLogic(todoContainer)
+  const doingContainer = document.querySelector('#todo__container__tasks__in-progress')
+  dropZoneLogic(doingContainer)
+  const doneContainer = document.querySelector('#todo__container__tasks__done')
+  dropZoneLogic(doneContainer)
 
-  taskElement.innerHTML = `
-      <p>${task.title}</p>
-      <div class="todo__container__tasks__list__item__actions">
-          <button data-action="update"><i class="fa-solid fa-pencil"></i></button>
-          <button data-action="delete"><i class="fa-solid fa-trash-can"></i></button>
-      </div>
-      `;
+  function dropZoneLogic(container) {
+    container.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const data = JSON.parse(e.dataTransfer.getData('data'));
+      const task = !Object.hasOwn(data, 'isNewTask') ? document.querySelector(`[data-task-id="${data.id}"]`) : document.querySelector(`[data-new-task-id="${data.id}"]`)
 
-  listItem.prepend(taskElement)
+      updateTasksStatus({
+        oldStatus,
+        newStatus: container.getAttribute('data-tasks-status'),
+        task: {
+          id: task.getAttribute('data-task-id') ? task.getAttribute('data-task-id') : null,
+          value: task.querySelector('p').textContent,
+        }
+      })
+
+      if (Object.hasOwn(data, 'isNewTask')) {
+        task.remove();
+        container.querySelector('.todo__container__tasks__list').prepend(task);
+      }
+
+    })
+
+    container.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    })
+
+  }
+
+
 }

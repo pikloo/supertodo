@@ -4,8 +4,8 @@ import { messageHandler } from "../helpers/messageHandler";
 import todoStore from "../helpers/todoStore";
 import { setState, state } from "../store";
 
-const Todo = () => {
 
+const Todo = () => {
   const todoId = localStorage.getItem('currentProject');
   // todoId && todoStore.getTodo(todoId);
   if (todoId) {
@@ -81,6 +81,8 @@ const Todo = () => {
   //Ecoute des taches
   tasksHandlerLogic()
 
+
+
   //Vider le state de currentTodo au clic sur le bouton retour
   const backButton = document.querySelector('.return');
   backButton.addEventListener('click', (e) => {
@@ -98,6 +100,8 @@ const Todo = () => {
        tasksToDelete: [],
     } });
   })
+
+
 
 
   
