@@ -143,10 +143,6 @@ class TodoStore {
     }
 
 
-
-
-
-
     async updateTodo() {
         if (state.currentTodo.title) {
             const response = await fetchJson(itemUrl(state.currentTodo.id), {
@@ -201,29 +197,13 @@ class TodoStore {
                     }
                 }
 
-                //Rediriger vers la page
-                // localStorage.setItem('currentProject', body.id);
-                subscribe(function (newState) {
-                    const todoContainer = document.querySelector('#todo');
-                    messageHandler(newState, todoContainer)
-
-                });
                 setMessage({ text: "Les modifications ont bien été sauvegardées", type: 'success' })
                 router.setRoute(`/project/${body.id}`)
-                //Mettre un message dans le state
 
                 this.listener()
-                // setTodo(body)
             }
         }
-
     }
-
-
-
-
-
-
 }
 
 

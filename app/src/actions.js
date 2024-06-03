@@ -37,7 +37,6 @@ export function setTasks({ field, value }) {
 
 
 export function updateTasks({ field, value, id }) {
-    console.log(state.currentTodo.tasks[field], value, id)
     setState({
         ...state, currentTodo: {
             ...state.currentTodo,
@@ -68,7 +67,6 @@ export function deleteTasks({ field, id }) {
         }
     })
 
-    console.log(state.currentTodo.tasks)
 }
 
 export function setTasksCollection(status, collection) {
