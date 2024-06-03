@@ -1,6 +1,7 @@
 import Button from "../components/Button"
 import { router } from "../router"
 import { setState, state, subscribe } from "../store"
+import todoStore from "./todoStore"
 
 const USERS_API_ROOT = '/users'
 
@@ -46,15 +47,15 @@ class UserStore {
             const projectElement = document.createElement('li');
             projectElement.classList.add('dashboard__content__projects__container__item');
             projectElement.innerHTML = `
-          <a href="project/${todo.id}" data-navigo data-project-id="${todo.id}" class="dashboard__content__projects__container__item__card">
-            <div>
+          <div data-project-id="${todo.id}" class="dashboard__content__projects__container__item__card">
+            <a href="project/${todo.id}" data-navigo>
             <h3>${todo.title}</h3>
             <p>${todo.createdAt}</p>
-            </div>
+            </a>
             <div class="dashboard__content__projects__container__item__card__actions">
                 <button data-action="delete"><i class="fa-solid fa-trash-can"></i></button>
               </div>
-          </a>
+          </div>
         `;
             projectsList.appendChild(projectElement);
 
@@ -69,17 +70,10 @@ class UserStore {
             })
 
 
-            //Supprimer une todo au clic sur le bouton delete
-            const deleteButtons = document.querySelectorAll('[data-action="delete"]');
-            deleteButtons.forEach(button => {
-              button.addEventListener('mouseover', () => {
-                e.preventDefault();
-                console.log('Deleting')
-              })
-            })
+
           });
           projectSection.innerHTML += `
-          ${Button({ type: 'link', text: 'Nouveau projet ➕', centeredPosition: true, href: 'newproject', data : 'new-project' })}
+          ${Button({ type: 'link', text: 'Nouveau projet ➕', centeredPosition: true, href: 'newproject', data: 'new-project' })}
         `;
           projectSection.appendChild(projectsList);
         } else {
@@ -87,7 +81,7 @@ class UserStore {
           projectEmptyDiv.setAttribute('id', 'dashboard__content__projects__empty');
           projectEmptyDiv.innerHTML = `
           <p>Vous n'avez pas encore de projet</p>
-          ${Button({ type: 'link', text: 'Créer un nouveau projet 📋', href: 'newproject', data : 'new-project' })}
+          ${Button({ type: 'link', text: 'Créer un nouveau projet 📋', href: 'newproject', data: 'new-project' })}
         `;
 
           projectSection.appendChild(projectEmptyDiv);
@@ -110,6 +104,40 @@ class UserStore {
             localStorage.setItem('currentProject', link.getAttribute('data-project-id'));
           });
         });
+
+        //Supprimer une todo au clic sur le bouton delete
+        const deleteButtons = document.querySelectorAll('[data-action="delete"]');
+        deleteButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            const buttonContent = button.innerHTML;
+            //remplacer l'îcone poubelle par le cercle d'exclamation pendant 3 secondes puis remettre la poubelle
+            button.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i>
+            <div class="tooltip">Cliquez pour confirmer</div>
+            `
+            button.setAttribute('data-delete-confirm', null)
+            button.classList.add('group')
+            setTimeout(() => {
+              button.innerHTML = buttonContent
+              button.removeAttribute('data-delete-confirm')
+            }, 5000);
+
+            if (button.hasAttribute('data-delete-confirm')) {
+              button.addEventListener('click', () => {
+                const todoElement = button.parentElement.parentElement
+                const todoId = todoElement.getAttribute('data-project-id')
+                todoElement.parentElement.remove();
+                todoStore.deleteTodo(todoId)
+                
+              }
+
+
+              )
+            }
+
+
+
+          })
+        })
 
       }
     })

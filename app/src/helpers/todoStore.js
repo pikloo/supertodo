@@ -204,6 +204,14 @@ class TodoStore {
             }
         }
     }
+
+
+    async deleteTodo(id) {
+        const response = await fetchJson(itemUrl(id), {
+            method: 'DELETE'
+        })
+        if (!response.ok) throw new Error('Failed to delete todo')
+    }
 }
 
 
