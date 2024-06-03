@@ -8,6 +8,7 @@ class UserStore {
   constructor() {
     this.listener = () => { }
     this.todos = state.todos
+    this.nb
   }
 
   listen(listener) {
@@ -27,6 +28,15 @@ class UserStore {
     subscribe(function (newState) {
       if (newState.todos !== this.todos) {
         const todos = newState.todos;
+
+        // TODO: je n'arrive pas à récupérer le X-total-Count de l'entête de réponse
+        const projectsNbRowElement = document.querySelector('#dashboard__content__user__stats [data-stats-nb-projects]');
+        const celElement = document.createElement('td');
+        celElement.innerHTML = `${todos.length}`;
+        projectsNbRowElement.appendChild(celElement);
+
+
+
         const projectSection = document.querySelector('#dashboard__content__projects')
         if (todos.length > 0) {
           const projectsList = document.createElement('ul');

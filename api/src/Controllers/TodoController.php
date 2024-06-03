@@ -35,7 +35,7 @@ class TodoController extends CoreController
             } else {
                 $todo = new Todo();
                 $todo->setTitle($data['title']);
-                isset($data['desc']) && $todo->setDesc($data['desc']);
+                isset($data['description']) && $todo->setDesc($data['description']);
                 $todo->setUserId($data['user']);
 
                 $this->security->checkTodoAuthorization($todo, 'create');

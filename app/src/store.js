@@ -15,7 +15,8 @@ let state = {
       done: [],
       todo: [],
       progress : [],
-    }
+    },
+    tasksToDelete: [],
   },
 
 

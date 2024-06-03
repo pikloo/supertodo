@@ -1,8 +1,7 @@
-import { setMessage, setTasksCollection, setTodoInformations } from "../actions"
-import FlashMessage from "../components/FlashMessage"
+import { setMessage, setTasksCollection } from "../actions"
 import { router } from "../router"
 import { setState, state, subscribe } from "../store"
-import { inputHandlerLogic, taskCreator } from "./inputHandler"
+import { taskActionHandler, taskCreator, tasksHandlerLogic } from "./inputHandler"
 import { messageHandler } from "./messageHandler"
 import taskStore from "./taskStore"
 
@@ -34,37 +33,31 @@ class TodoStore {
         if (!response.ok) throw new Error('Failed to fetch todo')
         const body = await response.json()
         const obj = this
-        
+
         this.listener()
 
-        
 
-        subscribe(function (newState) {       
-            console.log(obj.currentTodo.tasks[statusLink[status]], newState.currentTodo.tasks[statusLink[status]])     
+        subscribe(function (newState) {
             if (newState.currentTodo.tasks[statusLink[status]] !== obj.currentTodo.tasks[statusLink[status]]) {
-                // if (newState.currentTodo!= this.currentTodo) {
                 const allContainers = document.querySelectorAll('[data-tasks-status]')
                 const container = [...allContainers].filter(container => container.getAttribute('data-tasks-status') === statusLink[status])
                 if (container.length > 0) {
                     const container = document.querySelector(`[data-tasks-status="${statusLink[status]}"]`)
                     const listItem = container.querySelector('.todo__container__tasks__list');
                     listItem.innerHTML = '';
-                    // listItem.setAttribute('class', `todo__container__tasks__list`);
                     newState.currentTodo.tasks[statusLink[status]].forEach(task => {
                         taskCreator(task, listItem)
                     });
-                    // container.appendChild(listItem);
+                    tasksHandlerLogic()
+                    taskActionHandler(container);
                 }
                 obj.currentTodo.tasks[statusLink[status]] = newState.currentTodo.tasks[statusLink[status]]
+                
             }
 
-
-            // inputHandlerLogic()
         });
 
         setTasksCollection(status, body);
-
-        
         return body
     }
 
@@ -82,31 +75,23 @@ class TodoStore {
 
 
         subscribe(function (newState) {
-            //Afficher le titre dans le header
+            //Afficher le titre et la desc dans le header
             const todo = newState.currentTodo
             if (todo.title != body.title || todo.description != body.description) {
                 const newTodoContainer = document.querySelector('[data-new-todo]')
                 if (newTodoContainer) newTodoContainer.removeAttribute('data-new-todo')
                 title.textContent = newState.currentTodo.title
                 description.textContent = newState.currentTodo.description ? newState.currentTodo.description : 'Description du projet'
-                // this.currentTodo.title = todo.title
-                // this.currentTodo.description = todo.description
+
             }
 
         });
         setTodo(body)
 
-        // await this.getTasksByStatus('todo', this.currentTodo)
-        // await this.getTasksByStatus('doing', this.currentTodo)
-        // await this.getTasksByStatus('done', this.currentTodo)
-
-
         const submitButton = document.querySelector('button[data-todo-submit]');
         submitButton.dataset.todoSubmit = 'update'
         return body
     }
-
-
 
 
     async createTodo() {
@@ -116,7 +101,7 @@ class TodoStore {
                 body: JSON.stringify(
                     {
                         title: state.currentTodo.title,
-                        desc: state.currentTodo.description,
+                        description: state.currentTodo.description,
                         user: localStorage.getItem("user_id")
                     }
                 )
@@ -138,26 +123,21 @@ class TodoStore {
                         }
                         state.currentTodo.tasks[status].forEach(async task => {
                             await taskStore.create({
-                                title: task,
+                                title: task.title,
                                 id: body.id,
                                 status: newStatus[status]
-
-
                             })
-
                         });
                     })
-
                 }
 
                 //Rediriger vers la page
                 localStorage.setItem('currentProject', body.id);
+                //Mettre un message dans le state et rediriger vers la page de la todo créée
                 setMessage({ text: "Les modifications ont bien été sauvegardées", type: 'success' })
                 router.setRoute(`/project/${body.id}`)
-                //Mettre un message dans le state
 
                 this.listener()
-                // setTodo(body)
             }
         }
     }
@@ -167,14 +147,14 @@ class TodoStore {
 
 
 
-    async updateTodo(todo) {
+    async updateTodo() {
         if (state.currentTodo.title) {
             const response = await fetchJson(itemUrl(state.currentTodo.id), {
                 method: 'PATCH',
                 body: JSON.stringify(
                     {
                         title: state.currentTodo.title,
-                        desc: state.currentTodo.description,
+                        description: state.currentTodo.description,
                     }
                 )
             })
@@ -183,29 +163,43 @@ class TodoStore {
                 this.errors.push(body.error)
             }
             else {
-                //Ajouter les tâches
-                // if (state.newTodo.tasks) {
-                //     const statusList = Object.keys(state.newTodo.tasks)
-                //     statusList.forEach(status => {
+                // Ajouter ou modifier les tâches
+                if (state.currentTodo.tasks) {
+                    const statusList = Object.keys(state.currentTodo.tasks)
+                    statusList.forEach(status => {
+                        const newStatus = {
+                            todo: 'todo',
+                            progress: 'doing',
+                            done: 'done'
+                        }
+                        state.currentTodo.tasks[status].forEach(async task => {
+                            if(!task.id) {
+                                await taskStore.create({
+                                    title: task.title,
+                                    id: state.currentTodo.id,
+                                    status: newStatus[status]
+                                })
+                            }else {
+                                await taskStore.update({
+                                    title: task.title,
+                                    id: task.id,
+                                    status: newStatus[status]
+                                })
+                            }
 
-                //         const newStatus = {
-                //             todo: 'todo',
-                //             progress: 'doing',
-                //             done: 'done'
-                //         }
-                //         state.newTodo.tasks[status].forEach(async task => {
-                //             await taskStore.create({
-                //                 title: task,
-                //                 id: body.id,
-                //                 status: newStatus[status]
-
-
-                //             })
-
-                //         });
-                //     })
-
-                // }
+                        });
+                    })
+                    //Supprimer des tâches
+                    if(state.currentTodo.tasksToDelete){
+                        //TODO: provisoire supprime les doublons générer par le state
+                        const newToDelete = state.currentTodo.tasksToDelete.filter((task,index)=>{
+                            return state.currentTodo.tasksToDelete.indexOf(task) === index;
+                          })
+                          newToDelete.forEach(async id => {
+                            await taskStore.delete(id)
+                        });
+                    }
+                }
 
                 //Rediriger vers la page
                 // localStorage.setItem('currentProject', body.id);
@@ -215,7 +209,7 @@ class TodoStore {
 
                 });
                 setMessage({ text: "Les modifications ont bien été sauvegardées", type: 'success' })
-                // router.setRoute(`/project/${body.id}`)
+                router.setRoute(`/project/${body.id}`)
                 //Mettre un message dans le state
 
                 this.listener()

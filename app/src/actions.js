@@ -32,7 +32,43 @@ export function setTasks({ field, value }) {
         }
     })
 
-    console.log(state)
+    
+}
+
+
+export function updateTasks({ field, value, id }) {
+    console.log(state.currentTodo.tasks[field], value, id)
+    setState({
+        ...state, currentTodo: {
+            ...state.currentTodo,
+            tasks: {
+                ...state.currentTodo.tasks,
+                [field]: 
+                    state.currentTodo.tasks[field].map(task => {
+                        if (task.id == id) {
+                            task.title = value
+                        }
+                        return task
+                    })
+            }
+        }
+    })
+}
+
+export function deleteTasks({ field, id }) {
+    setState({
+        ...state, currentTodo: {
+           ...state.currentTodo,
+           tasksToDelete: [...state.currentTodo.tasksToDelete, id],
+            tasks: {
+               ...state.currentTodo.tasks,
+                [field]: state.currentTodo.tasks[field].filter(task => task.id!= id),
+                
+            }
+        }
+    })
+
+    console.log(state.currentTodo.tasks)
 }
 
 export function setTasksCollection(status, collection) {

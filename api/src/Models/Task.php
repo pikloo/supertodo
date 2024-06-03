@@ -97,7 +97,7 @@ class Task extends CoreModel
         LEFT JOIN `st_user_task` AS ut ON ut.`task_id` = t.`id`
         WHERE td.`id` = :id
         AND t.`status` = :status
-        ORDER BY t.`created_at` DESC';
+        ORDER BY t.`created_at` ASC';
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':id', $todoId, PDO::PARAM_INT);
         $pdoStatement->bindParam(':status', $status, PDO::PARAM_STR);

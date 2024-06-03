@@ -1,15 +1,10 @@
-import { setNewTasks, setNewTodoInformations, setTasks, setTodoInformations } from "../actions";
 import Button from "../components/Button";
-import FlashMessage from "../components/FlashMessage";
-import { inputHandlerLogic, tasksHandlerLogic, todoInformationsHandlerLogic } from "../helpers/inputHandler";
-import { messageHandle, messageHandler } from "../helpers/messageHandler";
+import {  tasksHandlerLogic, todoInformationsHandlerLogic } from "../helpers/inputHandler";
+import { messageHandler } from "../helpers/messageHandler";
 import todoStore from "../helpers/todoStore";
-import { setState, state, subscribe } from "../store";
+import { setState, state } from "../store";
 
 const Todo = () => {
-
-  //Récupérer le dernier morceau de l'url et appeler la todo avec l'id récupéré
-  const url = new URL(window.location.href);
 
   const todoId = localStorage.getItem('currentProject');
   // todoId && todoStore.getTodo(todoId);
@@ -70,9 +65,7 @@ const Todo = () => {
 
 
 
-    const todoContainer = document.querySelector('#todo');
-
-
+  const todoContainer = document.querySelector('#todo');
   //Enregistrement du projet
   const submitButton = document.querySelector('button[data-todo-submit]');
   
@@ -81,13 +74,30 @@ const Todo = () => {
     submitButton.getAttribute('data-todo-submit') === 'new' ? todoStore.createTodo() : todoStore.updateTodo();
   })
 
+  //Ecoute des flash messages si il y'en a
   messageHandler(state, todoContainer)
-
-  //Transformer le titre et la description au clic en input
-  
-  const isNewTodo = url.href.split('/')[3] ==! 'project' ;
+  //Ecoute des inputs description et title
   todoInformationsHandlerLogic()
+  //Ecoute des taches
   tasksHandlerLogic()
+
+  //Vider le state de currentTodo au clic sur le bouton retour
+  const backButton = document.querySelector('.return');
+  backButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    setState({...state, currentTodo: {
+      ...state.currentTodo,
+       title: '',
+       description: '',
+       id: null,
+       tasks: {
+         done: [],
+         todo: [],
+         progress: [],
+       },
+       tasksToDelete: [],
+    } });
+  })
 
 
   

@@ -1,5 +1,4 @@
-import { setTasks, setTodoInformations } from "../actions";
-import { setState, state } from "../store";
+import { deleteTasks, setTasks, setTodoInformations, updateTasks } from "../actions";
 
 export function todoInformationsHandlerLogic() {
   const todoContainer = document.querySelector('#todo');
@@ -15,7 +14,7 @@ export function todoInformationsHandlerLogic() {
       input.setAttribute('id', element.id.split('__')[3]);
       element.replaceWith(input);
       input.focus();
-      input.value = '';
+      input.setSelectionRange(input.value.length, input.value.length)
       input.addEventListener('keyup', (e) => {
         if (e.key === 'Enter') {
           input.blur();
@@ -41,11 +40,6 @@ export function todoInformationsHandlerLogic() {
     });
   });
 }
-
-
-
-
-
 
 
 export function tasksHandlerLogic() {
@@ -79,64 +73,78 @@ export function tasksHandlerLogic() {
           value: input.value
         })
 
-
         container.appendChild(list);
-
 
         input.value = '';
         input.setAttribute('placeholder', 'Nouvelle tâche...')
 
-        //Modifier une tâche au clic sur le bouton update
-        const updateButtons = document.querySelectorAll('[data-action="update"]');
-        updateButtons.forEach(button => {
-          button.addEventListener('click', () => {
-            const task = button.parentElement.parentElement;
-            const input = document.createElement('input');
-            input.setAttribute('type', 'text');
-            input.setAttribute('value', task.querySelector('p').textContent);
-            // input.setAttribute('id', task.id);
-            task.replaceWith(input);
-            input.focus();
-            input.addEventListener('keyup', (e) => {
-              if (e.key === 'Enter') {
-                input.blur();
-              }
-            });
-            //Au blur rendre à l'élément son état précédent
-            input.addEventListener('blur', () => {
-              input.replaceWith(task);
-              task.querySelector('p').textContent = input.value.length > 0 ? input.value : task.querySelector('p').textContent;
-            });
-          });
-        })
+        taskActionHandler();
 
-        //Supprimer une tâche au clic sur le bouton delete
-        const deleteButtons = document.querySelectorAll('[data-action="delete"]');
-        deleteButtons.forEach(button => {
-          button.addEventListener('click', () => {
-            const task = button.parentElement.parentElement;
-            task.remove();
-          })
-        })
       }
     })
   })
 
-  //Vider le state de currentTodo au clic sur le bouton retour
-  const backButton = document.querySelector('.return');
-  backButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    setState({...state, currentTodo: {
-      ...state.currentTodo,
-       title: '',
-       description: '',
-       id: null,
-       tasks: {
-         done: [],
-         todo: [],
-         progress: [],
-       }
-    } });
+
+
+}
+
+
+export function taskActionHandler(container = null) {
+  //Modifier une tâche au clic sur le bouton update
+  const updateButtons = document.querySelectorAll('[data-action="update"]');
+
+  updateButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const task = button.parentElement.parentElement;
+      const input = document.createElement('input');
+      input.setAttribute('type', 'text');
+      input.setAttribute('value', task.querySelector('p').textContent);
+      // input.setAttribute('id', task.id);
+      task.replaceWith(input);
+      input.focus();
+      input.setSelectionRange(input.value.length, input.value.length)
+      input.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+          input.blur();
+        }
+      });
+      //Au blur rendre à l'élément son état précédent
+      input.addEventListener('blur', () => {
+        input.replaceWith(task);
+        console.log(input.value)
+        task.querySelector('p').textContent = input.value.length > 0 ? input.value : task.querySelector('p').textContent;
+        // Modifier la tâche dans le state
+        if (container) {
+          const status = container.getAttribute('data-tasks-status');
+          // const status = input.parentElement.parentElement.getAttribute('data-tasks-status')
+          updateTasks({
+            field: status,
+            value: input.value,
+            id: task.getAttribute('data-task-id')
+          })
+        }
+
+      });
+    });
+  })
+
+  //Supprimer une tâche au clic sur le bouton delete
+  const deleteButtons = document.querySelectorAll('[data-action="delete"]');
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const task = button.parentElement.parentElement;
+      task.remove();
+      //Supprimer la tâche dans le state
+      if (container) {
+        const status = container.getAttribute('data-tasks-status');
+        // const status = input.parentElement.parentElement.getAttribute('data-tasks-status')
+        deleteTasks({
+          field: status,
+          id: task.getAttribute('data-task-id')
+        })
+      }
+
+    })
   })
 }
 
