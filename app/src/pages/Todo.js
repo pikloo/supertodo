@@ -13,7 +13,7 @@ const Todo = () => {
     todo.getTodo(todoId)
     todo.getTasksByStatus(todoId, 'todo')
     todo.getTasksByStatus(todoId, 'doing')
-    todo.getTasksByStatus(todoId, 'done')
+    todo.getTasksByStatus(todoId, 'complete')
   }
 
 

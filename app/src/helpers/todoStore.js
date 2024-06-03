@@ -27,8 +27,9 @@ class TodoStore {
         const statusLink = {
             todo: 'todo',
             doing: 'progress',
-            done: 'done'
+            complete: 'done'
         }
+ 
         const response = await fetchJson(itemUrl(todoId) + `/tasks?status=${status}`)
         if (!response.ok) throw new Error('Failed to fetch todo')
         const body = await response.json()
@@ -56,7 +57,6 @@ class TodoStore {
             }
 
         });
-
         setTasksCollection(status, body);
         return body
     }
@@ -119,7 +119,7 @@ class TodoStore {
                         const newStatus = {
                             todo: 'todo',
                             progress: 'doing',
-                            done: 'done'
+                            done: 'complete'
                         }
                         state.currentTodo.tasks[status].forEach(async task => {
                             await taskStore.create({
@@ -166,7 +166,7 @@ class TodoStore {
                         const newStatus = {
                             todo: 'todo',
                             progress: 'doing',
-                            done: 'done'
+                            done: 'complete'
                         }
                         state.currentTodo.tasks[status].forEach(async task => {
                             if(!task.id) {

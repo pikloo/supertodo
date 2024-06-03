@@ -73,7 +73,7 @@ export function setTasksCollection(status, collection) {
     const statusLink = {
         todo: 'todo',
         doing: 'progress',
-        done: 'done'
+        complete: 'done'
     }
     setState({
         ...state, currentTodo: {

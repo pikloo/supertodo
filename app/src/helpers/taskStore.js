@@ -19,7 +19,7 @@ class TaskStore {
     const statusLink = {
       todo: 'todo',
       doing: 'progress',
-      done: 'done'
+      complete: 'done'
     }
     const response = await fetchJson(itemUrl(state.currentTodo.id) + `/tasks?status=${status}`)
     if (!response.ok) throw new Error('Failed to fetch todo')

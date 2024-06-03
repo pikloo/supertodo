@@ -47,8 +47,8 @@ class UserStore {
             const projectElement = document.createElement('li');
             projectElement.classList.add('dashboard__content__projects__container__item');
             projectElement.innerHTML = `
-          <div data-project-id="${todo.id}" class="dashboard__content__projects__container__item__card">
-            <a href="project/${todo.id}" data-navigo>
+          <div class="dashboard__content__projects__container__item__card">
+            <a href="project/${todo.id}" data-project-id="${todo.id}" data-navigo>
             <h3>${todo.title}</h3>
             <p>${todo.createdAt}</p>
             </a>
@@ -59,6 +59,7 @@ class UserStore {
         `;
             projectsList.appendChild(projectElement);
 
+            
             projectElement.addEventListener('mouseover', () => {
               const actions = projectElement.querySelector('.dashboard__content__projects__container__item__card__actions')
               actions.style.opacity = 1;
@@ -121,21 +122,24 @@ class UserStore {
               button.removeAttribute('data-delete-confirm')
             }, 5000);
 
+            // !KO
+            // Promise.resolve().then(() => {button.addEventListener('click', () => {
+            //   const todoElement = button.parentElement.parentElement
+            //   const todoId = todoElement.getAttribute('data-project-id')
+            //   todoElement.parentElement.remove();
+            //   todoStore.deleteTodo(todoId)
+            //   }
+            // )});
+
             if (button.hasAttribute('data-delete-confirm')) {
               button.addEventListener('click', () => {
-                const todoElement = button.parentElement.parentElement
+                const todoElement = button.parentElement.previousElementSibling
                 const todoId = todoElement.getAttribute('data-project-id')
-                todoElement.parentElement.remove();
+                console.log(todoElement.parentElement)
                 todoStore.deleteTodo(todoId)
+                todoElement.parentElement.remove();
                 
-              }
-
-
-              )
-            }
-
-
-
+              })}
           })
         })
 
