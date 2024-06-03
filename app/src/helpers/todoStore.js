@@ -79,13 +79,13 @@ class TodoStore {
         subscribe(function (newState) {
             //Afficher le titre et la desc dans le header
             const todo = newState.currentTodo
-            if (todo.title != body.title || todo.description != body.description) {
+            // if (todo.title != body.title || todo.description != body.description) {
                 const newTodoContainer = document.querySelector('[data-new-todo]')
                 if (newTodoContainer) newTodoContainer.removeAttribute('data-new-todo')
                 title.textContent = newState.currentTodo.title
                 description.textContent = newState.currentTodo.description ? newState.currentTodo.description : 'Description du projet'
 
-            }
+            // }
 
         });
         setTodo(body)
@@ -226,7 +226,7 @@ function setTodo(todo) {
             ...state.currentTodo,
             id: todo.id,
             title: todo.title,
-            description: todo.desc,
+            description: todo.description,
         }
     })
 }

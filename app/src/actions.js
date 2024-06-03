@@ -1,13 +1,14 @@
 import { setState, state } from "./store"
 
 export function setTodoInformations({ field, value }) {
-    console.log(field, value)
     setState({
         ...state, currentTodo: {
             ...state.currentTodo,
             [field]: value,
         }
     })
+
+    console.log(state.currentTodo)
 }
 
 export function setMessage(message) {
