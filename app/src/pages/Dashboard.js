@@ -1,18 +1,19 @@
-import Button from "../components/Button";
+import AppAction from "../components/AppActions";
 import AuthStore from "../helpers/authStore"
 import userStore from "../helpers/userStore";
 import { router } from "../router";
-import { state, subscribe } from "../store";
 
 const Dashboard = (() => {
 
   AuthStore.me();
   const userId = localStorage.getItem("user_id");
+  
   userId ? userStore.allTodos(userId) : router.setRoute(`/`);
   const shell = document.querySelector('#app');
   // notice the data-navigo attribute in the anchor tag.  this is used by navigo to bind event handlers to the element
   // innerHTML formulaire de connexion
   shell.innerHTML = `
+    ${AppAction()}
     <div id="dashboard">
       <h1 class="page-title">Tableau de bord</h1>
       <header>

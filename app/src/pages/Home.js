@@ -4,6 +4,7 @@ import AuthStore from "../helpers/authStore";
 const Home = (() => {
 
   const shell = document.querySelector('#app');
+
   shell.innerHTML = `
     <div id="home">
       <div id="home__container" class="box">

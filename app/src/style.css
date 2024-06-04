@@ -7,6 +7,7 @@
     --color-primary: 250 255 253;
     --color-text: 45 39 47;
     --color-success: 66 167 20;
+    --color-card: 190 190 193;
     --color-info: 60 145 230;
     --color-warn: 251 133 0;
     --color-error: 214 40 40;
@@ -16,9 +17,14 @@
     --color-primary: 45 39 47;
     --color-text: 250 255 253;
     --color-success: 66 167 20;
+    --color-card: 50 50 54;
     --color-info: 60 145 230;
     --color-warn: 251 133 0;
     --color-error: 214 40 40;
+  }
+
+  #app {
+    @apply min-h-screen;
   }
 
   h1 {
@@ -80,6 +86,19 @@
     @apply bg-success border-green-500 text-primary px-4 py-3 rounded relative;
   }
 
+
+  #app-actions {
+    @apply absolute right-6 top-6
+  }
+
+  #app-actions__theme {
+    @apply w-10 h-5 rounded-full bg-text outline outline-1 outline-text outline-offset-4 flex relative flex-col
+  }
+  
+  #app-actions__theme__cursor {
+    @apply w-5 h-5 rounded-full static flex bg-primary outline outline-1 outline-primary text-text justify-center items-center
+  }
+
   /*---------------------Home-------------------------*/
 
   #home {
@@ -103,12 +122,13 @@
   }
 
   #home__container__form-login {
-    @apply flex flex-col gap-y-4 items-center;
+    @apply flex flex-col gap-y-4 items-center text-inputText;
   }
 
   #home__container__form-login fieldset {
     @apply flex flex-col gap-y-2;
   }
+  
 
   /*---------------------Dashboard-------------------------*/
 
@@ -163,7 +183,7 @@
   }
 
   .dashboard__content__projects__container__item__card{
-    @apply flex justify-between items-start bg-white/70 block border-2 border-gray-500 hover:border-gray-800 hover:shadow-lg rounded-xl backdrop-blur-sm p-4 duration-300;
+    @apply flex justify-between items-start bg-card/70 block border-2 border-gray-500 hover:border-gray-800 hover:shadow-lg rounded-xl backdrop-blur-sm p-4 duration-300;
   }
 
   .dashboard__content__projects__container__item__card > a{
@@ -175,7 +195,7 @@
   }
 
   .dashboard__content__projects__container__item__card__actions > * {
-    @apply rounded p-2 bg-gray-100 shadow-sm
+    @apply rounded p-2 bg-primary shadow-sm
   }
 
   .dashboard__content__projects__container__item__card__actions button[data-action="update"] {
@@ -190,13 +210,17 @@
   }
 
   button[data-delete-confirm] .tooltip {
-    @apply  bg-text px-1 text-sm text-gray-100 rounded-md absolute -top-4 right-0 right-0 w-max
+    @apply  bg-black px-1 text-sm text-gray-100 rounded-md absolute -top-4 right-0 right-0 w-max
   }
 
   /*---------------------Todo-------------------------*/
 
   #todo {
     @apply container md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl 2xl:max-w-screen-2xl mx-auto pt-5 px-4;
+  }
+
+  #todo input {
+    @apply text-inputText;
   }
 
   #todo__container{
@@ -240,7 +264,7 @@
   }
 
   .todo__container__tasks__list__item {
-    @apply bg-gray-200 rounded w-full p-4 flex justify-between items-start cursor-move hover:shadow-sm gap-2;
+    @apply bg-card/70 rounded w-full p-4 flex justify-between items-start cursor-move hover:shadow-sm gap-2;
   }
 
   .todo__container__tasks__list__item > p {
@@ -252,7 +276,7 @@
   }
 
   .todo__container__tasks__list__item__actions > * {
-    @apply rounded p-2 bg-gray-100 shadow-sm
+    @apply rounded p-2 bg-primary shadow-sm
   }
 
   .todo__container__tasks__list__item__actions button[data-action="update"] {

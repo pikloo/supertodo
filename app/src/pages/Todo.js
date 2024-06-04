@@ -1,3 +1,4 @@
+import AppAction from "../components/AppActions";
 import Button from "../components/Button";
 import {  tasksHandlerLogic, todoInformationsHandlerLogic } from "../helpers/inputHandler";
 import { messageHandler } from "../helpers/messageHandler";
@@ -20,6 +21,7 @@ const Todo = () => {
 
   const shell = document.querySelector('#app');
   shell.innerHTML = `
+  ${AppAction()}
     <div id="todo" data-new-todo>
       <button class="return" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i></button>
       <header id="todo__header" class="box">
