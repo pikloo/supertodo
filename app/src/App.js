@@ -43,6 +43,17 @@ export default function App() {
           currentTheme = newTheme;
         });
 
+        let logoutButton = document.querySelector("button#app-actions__logout")
+        logoutButton.addEventListener("click", (e) => {
+          e.preventDefault();
+          localStorage.clear();
+        //Supprimer le cookie jwt
+        // document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = 'jwt=; Max-Age=0; path=/; domain=localhost';
+        //Redirection vers la page d'accueil
+        window.location.href = "/";
+        });
+
 
       }
     }

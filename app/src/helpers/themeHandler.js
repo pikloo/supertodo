@@ -24,9 +24,7 @@ export const updateThemeButton = ({themeButton, isDark, icon}) =>{
         duration: 300,
         iterations: 1,
         fill: "forwards",
-        easing: "ease-in-out",
-        delay: 50
-      }
+        easing: "ease-in-out"      }
     ).onfinish = () => {
       themeButtonCursor.innerHTML = icon;
       themeButton.setAttribute("aria-label", label);

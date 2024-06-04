@@ -24,7 +24,7 @@
   }
 
   #app {
-    @apply min-h-screen;
+    @apply min-h-screen duration-300;
   }
 
   h1 {
@@ -32,7 +32,7 @@
   }
 
   body {
-    @apply font-primary text-text;
+    @apply font-primary text-text duration-300;
   }
 
   button {
@@ -88,15 +88,19 @@
 
 
   #app-actions {
-    @apply absolute right-6 top-6
+    @apply absolute right-6 top-6 flex items-center justify-between gap-6 text-xl
   }
 
   #app-actions__theme {
-    @apply w-10 h-5 rounded-full bg-text outline outline-1 outline-text outline-offset-4 flex relative flex-col
+    @apply w-20 h-10 rounded-full bg-text outline outline-1 outline-text outline-offset-4 flex relative flex-col duration-300 justify-center
   }
   
   #app-actions__theme__cursor {
-    @apply w-5 h-5 rounded-full static flex bg-primary outline outline-1 outline-primary text-text justify-center items-center
+    @apply w-9 h-9 rounded-full static flex bg-primary outline outline-1 outline-text text-text justify-center items-center
+  }
+
+  #app-actions__logout {
+    @apply text-3xl hover:text-error
   }
 
   /*---------------------Home-------------------------*/
