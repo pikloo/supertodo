@@ -1,4 +1,4 @@
-const FlashMessage = ({ message, type }) => {
+const FlashMessage = ({ message, type, animation = true }) => {
     const color = {
         success: 'flash-message--success',
         error: 'flash-message--error',
@@ -7,10 +7,10 @@ const FlashMessage = ({ message, type }) => {
     }
 
     //Animer le message de bas en haut pendant 3 secondes, puis supprimer le message du state à la fin de l'animation
-
     return (
         `
-        <div class="flash-message ${color[type]}">
+        <div class="flash-message ${color[type]}" data-animate="${animation ? 'true' : 'false'}">
+            ${!animation ? '<span id="flash-message__close"><i class="fa-solid fa-xmark"></i></span>': ''}
             <p>${message}</p>
         </div>
     `

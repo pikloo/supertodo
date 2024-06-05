@@ -1,5 +1,6 @@
 import Button from "../components/Button";
 import AuthStore from "../helpers/authStore";
+import { messageHandler } from "../helpers/messageHandler";
 
 const Home = (() => {
 
@@ -20,6 +21,10 @@ const Home = (() => {
           ${Button({type: "submit", text: "Se connecter"})}
         </form>
       </div>
+      <div id="home__links">
+        <a href="/reset-password" data-navigo>Mot de passe oublié ?</a>
+        <p>Pas encore de compte? <a href="/register" data-navigo>Inscrivez-vous</a></p>
+      </div>
     </div>
   `;
 
@@ -30,6 +35,10 @@ const Home = (() => {
     AuthStore.login(e.target.elements.email.value, e.target.elements.password.value);
 
   });
+
+  const home = document.querySelector('#home');
+
+  messageHandler(home)
 
   // each component from this example has this API returned
   return {

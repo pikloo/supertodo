@@ -62,7 +62,7 @@
   }
 
   .errors {
-    @apply text-error text-xs mt-2 max-w-64 mx-auto text-center;
+    @apply text-error text-base font-semibold mt-2 max-w-64 mx-auto text-center;
   }
 
   .box {
@@ -82,10 +82,18 @@
     @apply px-4 py-3 rounded relative;
   }
 
+  .flash-message[data-animate]{
+    @apply p-8;
+  }
+
   .flash-message--success {
     @apply bg-success border-green-500 text-primary px-4 py-3 rounded relative;
   }
 
+
+  #flash-message__close {
+    @apply absolute top-2 right-2 cursor-pointer;
+  }
 
   #app-actions {
     @apply absolute right-6 top-6 flex items-center justify-between gap-6 text-xl
@@ -103,25 +111,37 @@
     @apply text-3xl hover:text-error
   }
 
-  /*---------------------Home-------------------------*/
+  input.error {
+    @apply border-2 border-error;
+  }
 
-  #home {
+  .input-error-message {
+    @apply text-error text-sm max-w-64 font-semibold;
+  }
+
+  /*---------------------Home & Register -------------------------*/
+
+  #home, #register {
     @apply h-screen flex flex-col justify-center items-center;
   }
 
-  #home__container {
-    @apply w-fit py-10 px-20 flex flex-col gap-y-10;
+  #home__container, #register__container {
+    @apply w-fit py-10 px-20 flex flex-col gap-y-10 mb-6;
   }
 
-  #home__container__title {
+  #register__container {
+    @apply px-24;
+  }
+
+  #home__container__title, #register__container__title {
     @apply flex flex-col items-center;
   }
 
-  #home__container__title h1 {
+  #home__container__title h1, #register__container__title h1{
     @apply text-5xl font-bold;
   }
 
-  #home__container__title h2 {
+  #home__container__title h2, #register__container__title h2 {
     @apply text-3xl;
   }
 
@@ -132,7 +152,35 @@
   #home__container__form-login fieldset {
     @apply flex flex-col gap-y-2;
   }
-  
+
+  #home__links {
+    @apply flex flex-col gap-y-4 items-center;
+  }
+
+  #home__links a {
+    @apply underline decoration-dotted underline-offset-4;
+  }
+
+  #home .flash-message {
+    @apply max-w-96 -translate-y-6;
+  }
+
+  #register__container__form__table{
+    @apply border-separate border-spacing-6 text-inputText
+  }
+
+  #register__container__form__table tr,
+  #register__container__form__table td {
+    @apply align-top;
+  }
+
+  #register__container__form__table label{
+    @apply after:content-['*'] after:ml-0.5 after:text-error after:font-semibold;
+  } 
+
+  #register__container__form__rules {
+    @apply text-center italic text-sm;
+  }
 
   /*---------------------Dashboard-------------------------*/
 
@@ -221,6 +269,10 @@
 
   #todo {
     @apply container md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl 2xl:max-w-screen-2xl mx-auto pt-5 px-4;
+  }
+
+  #todo[data-has-message="true"] {
+    @apply pt-20;
   }
 
   #todo input {

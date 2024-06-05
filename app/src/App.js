@@ -20,7 +20,8 @@ export default function App() {
       // navigo's method to add handlers to dynamically generated anchor elements
       // Router.updatePageLinks();
 
-      if (component.name !== 'Home') {
+      const excludedComponents = ['Home', 'Register', 'ResetPassword']
+      if (!excludedComponents.includes(component.name)) {
         //Chargement de la bonne îcone dès qu'on est sur une page
         let themeButton = document.querySelector("button#app-actions__theme");
         updateThemeButton({

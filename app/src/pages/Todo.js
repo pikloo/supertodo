@@ -8,7 +8,6 @@ import { setState, state } from "../store";
 
 const Todo = () => {
   const todoId = localStorage.getItem('currentProject');
-  // todoId && todoStore.getTodo(todoId);
   if (todoId) {
     const todo = todoStore
     todo.getTodo(todoId)
@@ -16,8 +15,6 @@ const Todo = () => {
     todo.getTasksByStatus(todoId, 'doing')
     todo.getTasksByStatus(todoId, 'complete')
   }
-
-
 
   const shell = document.querySelector('#app');
   shell.innerHTML = `
@@ -70,17 +67,16 @@ const Todo = () => {
   const todoContainer = document.querySelector('#todo');
   //Enregistrement du projet
   const submitButton = document.querySelector('button[data-todo-submit]');
-  
   submitButton.addEventListener('click', (e) => {
     e.preventDefault();
     submitButton.getAttribute('data-todo-submit') === 'new' ? todoStore.createTodo() : todoStore.updateTodo();
   })
 
   //Ecoute des flash messages si il y'en a
-  messageHandler(state, todoContainer)
+  messageHandler(todoContainer)
   //Ecoute des inputs description et title
   todoInformationsHandlerLogic()
-  //Ecoute des taches
+  //Ecoute des des champs taches
   tasksHandlerLogic()
 
 
@@ -104,15 +100,9 @@ const Todo = () => {
   })
 
 
-
-
-  
-
-
-  // each component from this example has this API returned
   return {
-    node: shell.firstElementChild, // node is used by the render function of App to place the element on the page
-    markup: shell.innerHTML, // markup is used by other components to compose the HTML into a bigger component
+    node: shell.firstElementChild, 
+    markup: shell.innerHTML,
   };
 }
 

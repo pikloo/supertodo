@@ -10,8 +10,6 @@ const Dashboard = (() => {
   
   userId ? userStore.allTodos(userId) : router.setRoute(`/`);
   const shell = document.querySelector('#app');
-  // notice the data-navigo attribute in the anchor tag.  this is used by navigo to bind event handlers to the element
-  // innerHTML formulaire de connexion
   shell.innerHTML = `
     ${AppAction()}
     <div id="dashboard">
@@ -42,11 +40,9 @@ const Dashboard = (() => {
           </div>
   `;
 
-
-  // each component from this example has this API returned
   return {
-    node: shell.firstElementChild, // node is used by the render function of App to place the element on the page
-    markup: shell.innerHTML, // markup is used by other components to compose the HTML into a bigger component
+    node: shell.firstElementChild, 
+    markup: shell.innerHTML, 
   };
 });
 

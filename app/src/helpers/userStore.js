@@ -1,5 +1,4 @@
 import Button from "../components/Button"
-import { router } from "../router"
 import { setState, state, subscribe } from "../store"
 import todoStore from "./todoStore"
 
@@ -69,12 +68,9 @@ class UserStore {
               const actions = projectElement.querySelector('.dashboard__content__projects__container__item__card__actions')
               actions.style.opacity = 0;
             })
-
-
-
           });
           projectSection.innerHTML += `
-          ${Button({ type: 'link', text: 'Nouveau projet ➕', centeredPosition: true, href: 'newproject', data: 'new-project' })}
+          ${Button({ type: 'link', text: 'Nouveau projet <i class="fa-regular fa-square-plus"></i>', centeredPosition: true, href: 'newproject', data: 'new-project' })}
         `;
           projectSection.appendChild(projectsList);
         } else {

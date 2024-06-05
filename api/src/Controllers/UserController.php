@@ -57,7 +57,7 @@ class UserController extends CoreController
             }
 
             if (count($errorsList) > 0) {
-                $this->json_response(503, ['error' =>  $errorsList]);
+                $this->json_response(503, ['errors' =>  $errorsList]);
             } else {
                 $user = new User();
                 $user->setFirstname($firstname);

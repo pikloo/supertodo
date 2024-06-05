@@ -2,7 +2,6 @@ import { setMessage, setTasksCollection } from "../actions"
 import { router } from "../router"
 import { setState, state, subscribe } from "../store"
 import { taskActionHandler, taskCreator, tasksHandlerLogic } from "./inputHandler"
-import { messageHandler } from "./messageHandler"
 import taskStore from "./taskStore"
 
 const TODOS_API_ROOT = "/todos"
@@ -136,7 +135,7 @@ class TodoStore {
                 //Rediriger vers la page
                 localStorage.setItem('currentProject', body.id);
                 //Mettre un message dans le state et rediriger vers la page de la todo créée
-                setMessage({ text: "Les modifications ont bien été sauvegardées", type: 'success' })
+                setMessage({ text: "Les modifications ont bien été sauvegardées", type: 'success', animation: true})
                 router.setRoute(`/project/${body.id}`)
 
                 this.listener()
@@ -199,7 +198,7 @@ class TodoStore {
                     }
                 }
 
-                setMessage({ text: "Les modifications ont bien été sauvegardées", type: 'success' })
+                setMessage({ text: "Les modifications ont bien été sauvegardées", type: 'success', animation: true })
                 router.setRoute(`/project/${body.id}`)
 
                 this.listener()

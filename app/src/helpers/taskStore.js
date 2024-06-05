@@ -24,7 +24,6 @@ class TaskStore {
     const response = await fetchJson(itemUrl(state.currentTodo.id) + `/tasks?status=${status}`)
     if (!response.ok) throw new Error('Failed to fetch todo')
     const body = await response.json()
-    // console.log(body)
 
     this.listener()
 
@@ -39,20 +38,12 @@ class TaskStore {
           const container = document.querySelector(`[data-tasks-status="${statusLink[status]}"]`)
           const listItem = document.createElement('ul');
           listItem.setAttribute('class', `todo__container__tasks__list`);
-
-          // console.log(newState.currentTodo.tasks[statusLink[status]])
-
           newState.currentTodo.tasks[statusLink[status]].forEach(task => {
             taskCreator(task.title, listItem)
           });
           container.appendChild(listItem);
         }
-        console.log(this)
-        // this.currentTodo.tasks[statusLink[status]] = newState.currentTodo.tasks[statusLink[status]]
       }
-
-
-      // inputHandlerLogic()
     });
 
     setTasksCollection(status, body);

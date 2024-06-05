@@ -1,7 +1,9 @@
+import { setMessage } from "../actions";
 import { router } from "../router"
 import { setState, state, subscribe } from "../store";
 
 const LOGIN_API_ROOT = '/login';
+const REGISTER_API_ROOT = '/users';
 const ME_API_ROOT = '/me';
 
 class AuthStore {
@@ -52,10 +54,49 @@ class AuthStore {
     } else {
       const body = await response.json()
       this.listener()
-
-      // await this.me()
       // Redirection vers la page dashboard
       router.setRoute('/dashboard')
+      return body
+    }
+  }
+
+
+  async register(firstname, lastname, email, password) {
+    const response = await fetchJson(new URL(REGISTER_API_ROOT, `${process.env.DOMAIN_URL}:${process.env.API_PORT}`), {
+      method: 'POST',
+      body: JSON.stringify({ firstname, lastname, email, password })
+    })
+    if (!response.ok) {
+      this.loginFormError = [];
+      const body = await response.json()
+      switch (response.status) {
+        case 400:
+          this.loginFormError.push(body.error)
+          break;
+        case 503:
+          this.loginFormError.push(body.errors)
+          break;
+        default:
+          break;
+      }
+      //Afficher les erreurs sous le sous titre
+      let errorList = document.querySelector('.errors');
+      if (errorList) errorList.innerHTML = '';
+      errorList = errorList != null ? errorList : document.createElement('ul');
+      errorList.classList.add('errors');
+      this.loginFormError.forEach(error => {
+        let errorItem = document.createElement('li');
+        errorItem.textContent = error;
+        errorList.appendChild(errorItem);
+      });
+      const titleContainer = document.querySelector('#register__container__title');
+      titleContainer.after(errorList);
+    } else {
+      const body = await response.json()
+      this.listener()
+      // Redirection vers la page dashboard
+      setMessage({ text: "Félicitations 🎉! Vous êtes désormais inscris, veuillez consulter vos e-mails pour activer votre compte", type: 'success', animation: false })
+      router.setRoute('/')
       return body
     }
   }
