@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS `st_user` (
     `lastname` VARCHAR(64),
     `email` VARCHAR(128) NOT NULL UNIQUE KEY,
     `password` VARCHAR(128) NOT NULL,
+    `status` ENUM('active', 'inactive') NOT NULL DEFAULT 'inactive',
+    `activation_token` LONGTEXT,
     `created_at` TIMESTAMP NOT NULL DEFAULT now(),
     `updated_at` TIMESTAMP NOT NULL DEFAULT now(),
     `role_id` INT UNSIGNED NOT NULL,

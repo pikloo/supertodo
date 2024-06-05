@@ -64,16 +64,27 @@ class UserController extends CoreController
                 $user->setLastname($lastname);
                 $user->setEmail($email);
                 $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
+                //Générer un token d'activation
+                $token = SecurityController::generateActivationToken();
+                $user->setActivationToken($token);
 
-                $user->save() ? $this->json_response(201, [
-                    'id' => $user->getId(),
-                    'firstname' => $user->getFirstname(),
-                    'lastname' => $user->getLastname(),
-                    'email' => $user->getEmail()
-                ]) : $this->json_response(502, ['error' => 'La sauvegarde a échoué']);
+
+                if($user->save()){
+                    $data = [
+                        'id' => $user->getId(),
+                        'firstname' => $user->getFirstname(),
+                        'lastname' => $user->getLastname(),
+                        'email' => $user->getEmail() ];
+
+                    $this->json_response(201, $data);
+
+                    //Gén
+
+                }else{
+                    $this->json_response(502, ['error' => 'La sauvegarde a échoué']);
+                }
             }
         } else {
-            // JSON decoding failed
             $this->json_response(400,  ['error' => 'invalid JSON data']);
         }
     }

@@ -22,15 +22,18 @@ class User extends CoreModel
 
     private $role_id;
 
-    private $member_since;
+    private $activation_token;
+
+    private $status;
+
 
     public function insert()
     {
         $pdo = Database::getPDO();
         $sql = '
         INSERT INTO st_user(
-        `firstname`, `lastname`,`email`,`password`, `role_id`)
-        values (:firstname, :lastname, :email, :password, :role_id)
+        `firstname`, `lastname`,`email`,`password`, `role_id`, `activation_token`)
+        values (:firstname, :lastname, :email, :password, :role_id, :activation_token)
         ';
         $pdoStatement = $pdo->prepare($sql);
         $pdoStatement->bindParam(':firstname', $this->firstname, PDO::PARAM_STR);
@@ -38,6 +41,7 @@ class User extends CoreModel
         $pdoStatement->bindParam(':email', $this->email, PDO::PARAM_STR);
         $pdoStatement->bindParam(':password', $this->password, PDO::PARAM_STR);
         $pdoStatement->bindValue(':role_id', $this->getRoleId(), PDO::PARAM_INT);
+        $pdoStatement->bindParam(':activation_token', $this->activation_token, PDO::PARAM_LOB);
         $pdoStatement->execute();
         if ($pdoStatement->rowCount() > 0) {
             //Récupération de l'auto-incrément généré par Mysql
@@ -58,6 +62,7 @@ class User extends CoreModel
             `email` = :email,
             `password` = :password,
             `role_id` = :role_id,
+            `status` = :status,
             `updated_at` = NOW()
         WHERE `id` = :id
         ';
@@ -68,6 +73,7 @@ class User extends CoreModel
         $pdoStatement->bindParam(':password', $this->password, PDO::PARAM_STR);
         $pdoStatement->bindValue(':role_id', $this->getRoleId(), PDO::PARAM_INT);
         $pdoStatement->bindParam(':id', $this->id, PDO::PARAM_INT);
+        $pdoStatement->bindParam(':status', $this->status, PDO::PARAM_STR);
         $pdoStatement->execute();
         return ($pdoStatement->rowCount() > 0);
     }
@@ -141,7 +147,7 @@ class User extends CoreModel
      */
     public function setFirstname($firstname)
     {
-        $this->firstname = $firstname;
+        $this->firstname = ucfirst($firstname);
 
         return $this;
     }
@@ -161,7 +167,7 @@ class User extends CoreModel
      */
     public function setLastname($lastname)
     {
-        $this->lastname = $lastname;
+        $this->lastname = ucfirst($lastname);
 
         return $this;
     }
@@ -255,5 +261,49 @@ class User extends CoreModel
                 , IntlDateFormatter::LONG, IntlDateFormatter::LONG, null, null, 'dd MMMM yyyy');
 
         return datefmt_format($formatter, new DateTime($this->created_at));
+    }
+
+    /**
+     * Get the value of activation_token
+     */ 
+    public function getActivationToken()
+    {
+        return $this->activation_token;
+    }
+
+    /**
+     * Set the value of activation_token
+     *
+     * @return  self
+     */ 
+    public function setActivationToken($activation_token)
+    {
+        $this->activation_token = $activation_token;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of status
+     */ 
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set the value of status
+     *
+     * @return  self
+     */ 
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getFullName(){
+        return $this->getFirstname().''. $this->getLastname();
     }
 }

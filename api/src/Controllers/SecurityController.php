@@ -78,7 +78,9 @@ class SecurityController extends CoreController
         return $jwt;
     }
 
-
+    public static function generateActivationToken($len = 32 ){
+        return substr(str_shuffle(str_repeat(MD5(uniqid(rand())), ceil($len/32))), 0, $len);
+    }
 
 
 
