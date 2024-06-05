@@ -3,15 +3,23 @@ import { setState, state } from "../store";
 
 
 
-const animeMessage = (messageElement, container) => {
+const animeMessage = (messageElement, container, isAnimate = true) => {
   container.setAttribute('data-has-message', 'true');
+
+  let keyFrame1 = {opacity: 1};
+  let keyFrame2 = {opacity: 0};
+
+  if (isAnimate) {
+    keyFrame1 = {...keyFrame1, transform: 'translateY(0)'};
+    keyFrame2 = {...keyFrame2, transform: 'translateY(-200%)'};
+  }
+
   const anim = messageElement.animate([
-    { opacity: 1, transform: 'translateY(0)' },
-    { opacity: 0, transform: 'translateY(-200%)' }
+    keyFrame1, keyFrame2
   ],
     {
-      duration: 1000,
-      delay: 2000,
+      duration: isAnimate ? 1000 : 300,
+      delay: isAnimate ? 2000 : 0,
       fill: "both",
     },
   )
@@ -36,7 +44,7 @@ export const messageHandler = (container) => {
       const closeButton = messageElement?.querySelector('#flash-message__close');
       closeButton?.addEventListener('click', (e) => {
         e.preventDefault();
-        animeMessage(messageElement, container);
+        animeMessage(messageElement, container, false);
       })
 }
 
