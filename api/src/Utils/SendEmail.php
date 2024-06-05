@@ -9,7 +9,19 @@ use PHPMailer\PHPMailer\Exception;
 class SendEmail
 {
 
-    public static function send($to, $toFullName, $subject, $body, $altBody)
+    public function sendActivationEmail($to, $toFullName, $token) {
+        $body = $this->render(__DIR__ .'./../emails/activation.php', ['name' => $toFullName, 'activation_token' => $token]);
+        $altBody = 'Bienvenue '. $toFullName .' !\n\n
+        Ton inscription a bien été effectuée,\n\n
+        Pour activer votre compte, clique sur le lien ci-dessous :\n
+        http://localhost:9000/register/activation/'. $token. '\n\n
+        A très bientot,\n\n
+        La team Toudou\n\n
+        Ce mail a été automatiquement envoyé à la suite de ton inscription, si tu ne souhaites pas poursuivre tu peux cliquer sur ce lien : http//localhost:9000';
+        $this->send($to, $toFullName, 'Ton compte Toudou a', $body, $altBody);
+    }
+
+    private function send($to, $toFullName, $subject, $body, $altBody)
     {
         $mail = new PHPMailer(true);
         try {
@@ -46,4 +58,14 @@ class SendEmail
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
     }
+
+    private function render($path, $data = []){
+        ob_start();
+        extract($data);
+        require __DIR__ . $path;
+        return ob_get_clean();
+    }
+
+
+    
 }

@@ -6,14 +6,17 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use SuperTodo\Models\User;
 use SuperTodo\Security\UserSecurity;
+use SuperTodo\Utils\SendEmail;
 
 class UserController extends CoreController
 {
     private $security;
+    private $mailer;
 
     public function __construct()
     {
         $this->security = new UserSecurity();
+        $this->mailer =  new SendEmail();
     }
 
     public function create()
@@ -69,18 +72,19 @@ class UserController extends CoreController
                 $user->setActivationToken($token);
 
 
-                if($user->save()){
+                if ($user->save()) {
                     $data = [
                         'id' => $user->getId(),
                         'firstname' => $user->getFirstname(),
                         'lastname' => $user->getLastname(),
-                        'email' => $user->getEmail() ];
+                        'email' => $user->getEmail()
+                    ];
 
                     $this->json_response(201, $data);
 
-                    //Gén
-
-                }else{
+                    //Envoyer un mail d'activation
+                    $this->mailer->sendActivationEmail($user->getEmail(), $user->getFullName(), $user->getActivationToken());
+                } else {
                     $this->json_response(502, ['error' => 'La sauvegarde a échoué']);
                 }
             }
@@ -143,7 +147,7 @@ class UserController extends CoreController
         !$userId && $userId = $this->getUserIdFromToken();
 
         $user = User::find($userId);
-        $user === null && $this->json_response(404,['error' =>'Utilisateur non trouvé ']);
+        $user === null && $this->json_response(404, ['error' => 'Utilisateur non trouvé ']);
         $this->security->checkUserAuthorization($user->getId());
 
         $datas = [
@@ -166,7 +170,7 @@ class UserController extends CoreController
         $user === null && $this->json_response(404, ['error' => 'Utilisateur non trouvé']);
         $this->security->checkUserAuthorization($userId);
 
-        $user->delete() ? $this->json_response(204, ['message' =>'L\'utilisateur ' . $user->getId() . ' a bien été supprimé(e) '])  : $this->json_response(502, ['error' =>'La sauvegarde a échoué']);
+        $user->delete() ? $this->json_response(204, ['message' => 'L\'utilisateur ' . $user->getId() . ' a bien été supprimé(e) '])  : $this->json_response(502, ['error' => 'La sauvegarde a échoué']);
     }
 
     private function getUserIdFromToken()
