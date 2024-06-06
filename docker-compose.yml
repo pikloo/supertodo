@@ -18,6 +18,14 @@ services:
       APP_PORT: ${APP_PORT}
       API_PORT: ${API_PORT}
   
+
+  smtp:
+    image: mailhog/mailhog:latest
+    restart: always
+    ports:
+      - 1025:1025
+      - 8025:8025
+  
   # nginx:
   #   image: nginx:latest
   #   restart: unless-stopped

@@ -79,11 +79,12 @@ class UserController extends CoreController
                         'lastname' => $user->getLastname(),
                         'email' => $user->getEmail()
                     ];
-
-                    $this->json_response(201, $data);
-
                     //Envoyer un mail d'activation
                     $this->mailer->sendActivationEmail($user->getEmail(), $user->getFullName(), $user->getActivationToken());
+                    $this->json_response(201, $data);
+                    
+
+                    
                 } else {
                     $this->json_response(502, ['error' => 'La sauvegarde a échoué']);
                 }

@@ -39,7 +39,7 @@ class CoreController
      */
     public function json_response($code, $message, $options = [])
     {
-        // header_remove();
+        header_remove();
         http_response_code($code);
 
         $status = array(

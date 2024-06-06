@@ -2,18 +2,12 @@
 <html lang="fr">
 
 <head>
-    <meta charset="utf-8" />
     <title>Toudou - Mail d'activation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http–equiv=“Content-Type” content=“text/html; charset=UTF-8” />
     <meta http–equiv=“X-UA-Compatible” content=“IE=edge” />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style type=”text/css”>
         body {
-            font-family: 'Montserrat', sans-serif;
             font-size: 16px;
             line-height: 1.5;
             color: rgb(45,39,47);
@@ -28,27 +22,30 @@
             line-height: 1.2;
             margin: 0;
             padding: 0;
-            text-align: center;
         }
         
         img {
             width: 100%;
             height: auto;
-            text-align: center;
+            border-radius: 10px;
+        }
+
+        .button:hover{
+            background-color: rgb(66,167,20);
         }
     </style>
 </head>
 
-<body>
-    <table>
+<body style="font-family:Arial, Helvetica, sans-serif">
+    <table style='margin:auto'>
         <tr>
-            <td>
-                <img src="/assets/images/activation_mail_header_welcome.jpg" alt="Bienvenue sur Toudou" />
+            <td style="text-align:center">
+                <img src="http://localhost:8090/assets/images/activation_mail_header_welcome.jpg" alt="Bienvenue sur Toudou" />
             </td>
         </tr>
         <tr>
             <td>
-                <h1>Bienvenue <?= $name?> !</h1>
+                <h1 style="text-align:center">Bienvenue <?= $name?> !</h1>
             </td>
         </tr>
         <tr>
@@ -65,9 +62,9 @@
                 </p>
             </td>
         </tr>
-        <tr>
+        <tr style="margin:0 2rem; text-align:center">
             <td>
-                <a href="http://localhost:9000/register/activation/<?= $activation_token?>">Activer mon compte</a>
+                <a class="button" style="text-decoration:none;padding:0.8rem;background:rgb(190,190,193);border-radius:5px;color:rgb(45,39,47)" href="http://localhost:9000/register/activation/<?= $activation_token?>">Activer mon compte</a>
             </td>
         </tr>
         <tr>

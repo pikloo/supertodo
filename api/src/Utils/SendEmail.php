@@ -18,7 +18,7 @@ class SendEmail
         A très bientot,\n\n
         La team Toudou\n\n
         Ce mail a été automatiquement envoyé à la suite de ton inscription, si tu ne souhaites pas poursuivre tu peux cliquer sur ce lien : http//localhost:9000';
-        $this->send($to, $toFullName, 'Ton compte Toudou a', $body, $altBody);
+        $this->send($to, $toFullName, "Bienvenue sur TOUDOU !", $body, $altBody);
     }
 
     private function send($to, $toFullName, $subject, $body, $altBody)
@@ -28,15 +28,15 @@ class SendEmail
             //Server settings
             $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
             $mail->isSMTP();                                            //Send using SMTP
-            $mail->Host       = 'smtp.example.com';                     //Set the SMTP server to send through
+            $mail->Host       = 'smtp';                     //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = 'user@example.com';                     //SMTP username
-            $mail->Password   = 'secret';                               //SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            $mail->Username   = null;                     //SMTP username
+            $mail->Password   = null;                               //SMTP password
+            $mail->SMTPSecure = null;            //Enable implicit TLS encryption
+            $mail->Port       = 1025;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
         
             //Recipients
-            $mail->setFrom('from@example.com', 'Mailer');
+            $mail->setFrom('contact@toudou.com', 'Toudou');
             $mail->addAddress($to, $toFullName);     //Add a recipient
             // $mail->addReplyTo('info@example.com', 'Information');
             // $mail->addCC('cc@example.com');
@@ -62,7 +62,7 @@ class SendEmail
     private function render($path, $data = []){
         ob_start();
         extract($data);
-        require __DIR__ . $path;
+        require  $path;
         return ob_get_clean();
     }
 
