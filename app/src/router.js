@@ -12,5 +12,6 @@ export const router = new Router({
         "/project": Todo,
         "/newproject": Todo,
         "/register": Register,
+        "/register/activation/" : Home,
     }
   })

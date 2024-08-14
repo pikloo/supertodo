@@ -39,8 +39,11 @@ class CoreController
      */
     public function json_response($code, $message, $options = [])
     {
-        header_remove();
+        // header_remove();
         http_response_code($code);
+
+        //test modif git
+        
 
         $status = array(
             200 => '200 OK',

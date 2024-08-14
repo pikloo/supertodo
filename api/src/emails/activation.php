@@ -64,7 +64,7 @@
         </tr>
         <tr style="margin:0 2rem; text-align:center">
             <td>
-                <a class="button" style="text-decoration:none;padding:0.8rem;background:rgb(190,190,193);border-radius:5px;color:rgb(45,39,47)" href="http://localhost:9000/register/activation/<?= $activation_token?>">Activer mon compte</a>
+                <a class="button" style="text-decoration:none;padding:0.8rem;background:rgb(190,190,193);border-radius:5px;color:rgb(45,39,47)" href=<?= $activation_url?>>Activer mon compte</a>
             </td>
         </tr>
         <tr>

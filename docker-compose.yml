@@ -57,6 +57,9 @@ services:
       DOMAIN_URL: ${DOMAIN_URL}
       APP_PORT: ${APP_PORT}
       API_PORT: ${API_PORT}
+      MAIL_ADDRESS: ${MAIL_ADDRESS}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
     depends_on:
       - db
     restart: unless-stopped

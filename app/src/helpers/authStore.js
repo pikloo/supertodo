@@ -33,6 +33,9 @@ class AuthStore {
         case 400:
           this.loginFormError.push(body.error)
           break;
+        case 403:
+          this.loginFormError.push(body.error)
+          break;
         case 503:
           this.loginFormError.push(body.errors)
           break;
@@ -56,6 +59,7 @@ class AuthStore {
       this.listener()
       // Redirection vers la page dashboard
       router.setRoute('/dashboard')
+      
       return body
     }
   }
@@ -111,7 +115,7 @@ class AuthStore {
 
     subscribe(function (newState) {
       //On compare l'ancien et le nouveau state pour éviter les doublons de mis à jour du DOM
-      if (newState.userDatas !== this.userDatas){
+      if (newState.userDatas !== this.userDatas) {
         document.querySelector('#dashboard__header__text').textContent += `${newState.userDatas.firstname} ${newState.userDatas.lastname} 👋🏿 !`;
         const memberRowElement = document.querySelector('#dashboard__content__user__stats [data-stats-member]');
         const celElement = document.createElement('td');
@@ -119,7 +123,7 @@ class AuthStore {
         memberRowElement.appendChild(celElement);
         this.userDatas = newState.userDatas
       }
-      
+
     });
 
     setUserDatas(body)
@@ -130,7 +134,7 @@ class AuthStore {
 }
 
 function setUserDatas(userDatas) {
-  setState({...state, userDatas});
+  setState({ ...state, userDatas });
 }
 
 async function fetchJson(url, options) {

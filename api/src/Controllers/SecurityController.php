@@ -36,8 +36,12 @@ class SecurityController extends CoreController
                 $errorsList[] = 'L\'email ou le mot de passe sont invalides';
             }
 
+
             if (count($errorsList) > 0) {
                 $this->json_response(503, ['errors' => $errorsList]);
+            } else if ($user && $user->getStatus() === 'inactive') // Si le user n'est pas actif indiquer un erreur 403
+            {
+                $this->json_response(403, ['error' => 'Votre compte n\'est pas activé, veuillez consulter vos e-mails pour activer votre compte']);
             } else {
                 $_SESSION['userId'] = $user->getId();
                 $_SESSION['userObject'] = $user;
@@ -78,8 +82,9 @@ class SecurityController extends CoreController
         return $jwt;
     }
 
-    public static function generateActivationToken($len = 32 ){
-        return substr(str_shuffle(str_repeat(MD5(uniqid(rand())), ceil($len/32))), 0, $len);
+    public static function generateActivationToken($len = 32)
+    {
+        return substr(str_shuffle(str_repeat(MD5(uniqid(rand())), ceil($len / 32))), 0, $len);
     }
 
 

@@ -5,8 +5,15 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $router = new AltoRouter();
 
+$domain_url = getenv('DOMAIN_URL', true) ?: getenv('DOMAIN_URL');
+$app_port = getenv('APP_PORT', true) ?: getenv('APP_PORT');
+
+if ($domain_url) {
+    $_SERVER['HTTP_HOST'] = $domain_url;
+}
+
 header_remove();
-header("Access-Control-Allow-Origin: http://localhost:9000");
+header("Access-Control-Allow-Origin: " . $domain_url . ':'. $app_port);
 header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
 header('Content-Type: application/json');
 header('Access-Control-Allow-Headers: Content-Type, Accept, X-Requested-With');

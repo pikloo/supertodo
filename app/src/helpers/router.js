@@ -45,6 +45,7 @@ class Router {
     }
 
     _triggerPopState(e) {
+        console.log(e, this)
         this._triggerRouteChange(e.state.path, e.target.location.href);
     }
 
